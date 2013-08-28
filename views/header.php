@@ -28,7 +28,15 @@
 	<div class="container">
 
 	<!-- Static navbar -->
+	  <div class="row login">
+		<div class="pull-right">
+			<a href="#">Customer Login</a> |
+			<a href="#">Card Holder Login</a> |
+			<a href="#">Employee Login</a>
+		</div>
+	  </div>
       <div class="navbar navbar-default">
+		
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
@@ -37,6 +45,7 @@
           </button>
           <a class="navbar-brand" href="index.php">Adshell Chemicals</a>
         </div>
+		
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li <?php if ($data['active_nav'] == 'home') { ?> class="active" <?php } ?>><a href="index.php">Home</a></li>
