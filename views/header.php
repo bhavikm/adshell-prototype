@@ -29,10 +29,14 @@
 
 	<!-- Static navbar -->
 	  <div class="row login">
-		<div class="pull-right">
+		<div class="pull-left">
 			<a href="#">Customer Login</a> |
 			<a href="#">Card Holder Login</a> |
 			<a href="#">Employee Login</a>
+		</div>
+		<div class="pull-right search">
+			<div class="button-search"></div>
+            <input type="text" name="filter_name" value="Search" onclick="this.value = '';" onkeydown="this.style.color = '#000000';" />
 		</div>
 	  </div>
       <div class="navbar navbar-default">
@@ -43,11 +47,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php">Adshell Chemicals</a>
+          <a class="navbar-brand" href="index.php"><img src="images/adshell-logo-grey.gif" /></a>
         </div>
 		
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav custom-navbar">
             <li <?php if ($data['active_nav'] == 'home') { ?> class="active" <?php } ?>><a href="index.php">Home</a></li>
             <li <?php if ($data['active_nav'] == 'apply') { ?> class="active" <?php } ?>><a href="index.php?apply">Apply</a></li>
             <li <?php if ($data['active_nav'] == 'faq') { ?> class="active" <?php } ?>><a href="index.php?faq">FAQs</a></li>
