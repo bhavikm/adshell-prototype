@@ -19,19 +19,24 @@ class Login_Controller
 		$header->assign('active_nav','');
 		$footer = new View_Model('footer');
 		
-		switch($getVars['logtype'])
-		{	
-			case 'customer':
-				$heading = 'Customer Login';	
-			break;
+		if (isset($getVars['logtype']))
+		{
+			switch($getVars['logtype'])
+			{	
+				case 'customer':
+					$heading = 'Customer Login';	
+				break;
 			
-			case 'card-holder':
-				$heading = 'Fuel Card Holder Login';
-			break;
+				case 'card-holder':
+					$heading = 'Fuel Card Holder Login';
+				break;
 			
-			case 'staff':
-				$heading = 'Adshell Staff Login';
-			break;
+				case 'staff':
+					$heading = 'Adshell Staff Login';
+				break;
+			}
+		} else {
+			$heading = 'Login';
 		}
 		//create a new view and pass it our template
 		$view = new View_Model($this->template);
