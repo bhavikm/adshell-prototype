@@ -205,6 +205,12 @@ a.custom-button:hover span {
 #apply-page > div.row > div > form > div > div > label {
 	font-size: 14px;
 }
+#apply-page label {
+	margin-left:12px;
+}
 .form-subheading > div > h4 {
 	color: #528bff;
+}
+#apply-page > div.row > div > form > div.short-form-row {
+	margin: 7px 0px;
 }

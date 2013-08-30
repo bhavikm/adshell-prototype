@@ -24,21 +24,39 @@ class Apply_Controller
 			switch ($getVars['page'])
 			{	
 				case '2':
-					
 					$this->template = 'apply-2';
-					
 				break;
 				
 				case '3':
-					
 					$this->template = 'apply-3';
-					
 				break;
 				
 				case '4':
-					
 					$this->template = 'apply-4';
-					
+				break;
+				
+				case '5':
+					$this->template = 'apply-5';
+				break;
+				
+				case '6':
+					$this->template = 'apply-6';
+				break;
+				
+				case '7':
+					$this->template = 'apply-7';
+				break;
+				
+				case '8':
+					$this->template = 'apply-8';
+				break;
+				
+				case '9':
+					$this->template = 'apply-9';
+				break;
+				
+				case '10':
+					$this->template = 'apply-10';
 				break;
 			}
 		
