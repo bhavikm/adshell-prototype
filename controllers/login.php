@@ -1,12 +1,12 @@
 <?php
 
-class Apply_Controller
+class Login_Controller
 {
 	/**
 	 * This template variable will hold the 'view' portion of our MVC for this 
 	 * controller
 	 */
-	public $template = 'apply';
+	public $template = 'login';
 	
 	/**
 	 * This is the default function that will be called by router.php
@@ -16,40 +16,30 @@ class Apply_Controller
 	public function main(array $getVars)
 	{
 		$header = new View_Model('header');
-		$header->assign('active_nav','apply');
+		$header->assign('active_nav','');
 		$footer = new View_Model('footer');
 		
-		if (isset($getVars['page']))
-		{
-			switch ($getVars['page'])
-			{	
-				case '2':
-					
-					$this->template = 'apply-2';
-					
-				break;
-				
-				case '3':
-					
-					$this->template = 'apply-3';
-					
-				break;
-				
-				case '4':
-					
-					$this->template = 'apply-4';
-					
-				break;
-			}
-		
+		switch($getVars['logtype'])
+		{	
+			case 'customer':
+				$heading = 'Customer Login';	
+			break;
+			
+			case 'card-holder':
+				$heading = 'Fuel Card Holder Login';
+			break;
+			
+			case 'staff':
+				$heading = 'Adshell Staff Login';
+			break;
 		}
-		
 		//create a new view and pass it our template
 		$view = new View_Model($this->template);
 		$view->assign('header', $header->render(FALSE));
 		$view->assign('footer', $footer->render(FALSE));
-		//assign article data to view
-		//$view->assign('article' , $article);
+		
+		// title for login page
+		$view->assign('heading' , $heading);
 		
 		$view->render();
 	}

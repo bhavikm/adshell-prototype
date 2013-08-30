@@ -1,12 +1,27 @@
 <?=$data['header'];?>
 
 <!-- Main component for a primary marketing message or call to action -->
-<div class="container">
-	<h1>Apply for Fuel Card</h1>
-	<p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-	<p>
-	  <a class="btn btn btn-primary" href="../../components/#navbar">View navbar docs &raquo;</a>
-	</p>
+<div class="container" id="apply-page1">
+	<h1 class="spacing-under">Apply for Adshell Chemicals Fuel Card Program</h1>
+	<div class="col-xs-12 col-sm-6 col-md-7 col-md-offset-1">
+		<p>The Adshell Chemicals fuel card program is designed for businesses who need to keep track of purchases.</p>
+		<p>
+		Before we begin please ensure you have the following:
+		<ul>
+			<li>Business information details</li>
+			<li>Contact details of at least two trade references</li>
+			<li>Contact details of your existing fuel supplier</li>
+			<li>Driver's licence numbers of your business partners/directors</li>
+			
+		</ul>
+		</p>
+		<p>
+		  <a class="btn btn btn-primary" href="index.php?apply&page=2">Start Your Application &raquo;</a>
+		</p>
+	</div>
+	<div class="col-xs-6 col-sm-6 col-md-4">
+		<img src="images/fuel-card.jpg" />
+	</div>
 </div>
 
 <?=$data['footer'];?>

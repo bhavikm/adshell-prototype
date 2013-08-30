@@ -8,6 +8,91 @@ footer {
 	border-right: 1px solid #c0c0c0;
 }
 
+.spacing-under {
+	margin-bottom:50px;
+}
+
+#front-banner {
+	background-color: #9ab2b6;
+	background-image: url('image/banner-lighter-back2.jpg');
+	height: 600px;
+	margin-bottom: 40px;
+}
+#front-banner > div  {
+	padding-left:100px;
+}
+#front-banner > div > h1 {
+	margin-top: 0px;
+}
+#front-banner > div > .btn, ul, p {
+	margin-top: 25px;
+}
+#front-banner > div > .btn {
+	padding: 15px 22px;
+}
+
+#why-choose-us > div {
+	text-align:center;
+}
+#why-choose-us > div > p {
+	padding: 0px 25px;
+}
+#why-choose-us > h2 {
+	margin-bottom:10px;
+}
+
+
+
+.question-answer {
+	margin: 30px 0px;
+}
+.question {
+	font-weight: bold;
+	margin-bottom: 9px;
+}
+
+
+
+.form-signin {
+  max-width: 500px;
+  padding: 15px;
+  margin: 0;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="text"] {
+  margin-bottom: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+.login-wrap > h1 {
+	margin-bottom:50px;
+}
+
 .login {
 	margin: 15px 0px;
 }
@@ -20,6 +105,9 @@ footer {
 }
 #contact-page * {
 	padding-left: 0px;
+}
+#contact-page button {
+	padding: 7px 20px;
 }
 #contact-page .row {
 	margin: 30px 0px;
@@ -93,4 +181,30 @@ a.custom-button:hover span {
 	height: 50px;
 	margin-top: 25px;
 	margin-left: 25px;
+}
+
+
+#apply-page1 > div > img {
+	margin-top:50px;
+}
+.apply-progress {
+	font-size:12px;
+	text-align:center;
+}
+#progress-circles {
+	margin-bottom: 50px;
+	margin-top: 5px;
+}
+#progress-circles > .apply-progress {
+	padding-left: 0px;
+}
+
+#apply-page > div.row > div > form > div.row {
+	margin: 20px 0px;
+}
+#apply-page > div.row > div > form > div > div > label {
+	font-size: 14px;
+}
+.form-subheading > div > h4 {
+	color: #528bff;
 }
