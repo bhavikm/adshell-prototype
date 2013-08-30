@@ -30,9 +30,7 @@
 	<!-- Static navbar -->
 	  <div class="row login">
 		<div class="pull-left">
-			<a href="index.php?login&logtype=customer">Customer Login</a> |
-			<a href="index.php?login&logtype=card-holder">Card Holder Login</a> |
-			<a href="index.php?login&logtype=staff">Employee Login</a>
+			<a href="index.php?login">Login</a>
 		</div>
 		<div class="pull-right search">
 			<div class="button-search"></div>
@@ -54,6 +52,7 @@
           <ul class="nav navbar-nav custom-navbar">
             <li <?php if ($data['active_nav'] == 'home') { ?> class="active" <?php } ?>><a href="index.php">Home</a></li>
             <li <?php if ($data['active_nav'] == 'apply') { ?> class="active" <?php } ?>><a href="index.php?apply">Apply</a></li>
+			<li <?php if ($data['active_nav'] == 'about') { ?> class="active" <?php } ?>><a href="index.php?about">About Us</a></li>
             <li <?php if ($data['active_nav'] == 'faq') { ?> class="active" <?php } ?>><a href="index.php?faq">FAQs</a></li>
 			<li <?php if ($data['active_nav'] == 'franchise') { ?> class="active" <?php } ?>><a href="index.php?franchise">Franchises</a></li>
 			<li <?php if ($data['active_nav'] == 'calculator') { ?> class="active" <?php } ?>><a href="index.php?calculator">Calculator</a></li>

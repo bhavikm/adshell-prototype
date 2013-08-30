@@ -1,12 +1,12 @@
 <?php
 
-class Login_Controller
+class About_Controller
 {
 	/**
 	 * This template variable will hold the 'view' portion of our MVC for this 
 	 * controller
 	 */
-	public $template = 'login';
+	public $template = 'about';
 	
 	/**
 	 * This is the default function that will be called by router.php
@@ -16,35 +16,14 @@ class Login_Controller
 	public function main(array $getVars)
 	{
 		$header = new View_Model('header');
-		$header->assign('active_nav','');
+		$header->assign('active_nav','about');
 		$footer = new View_Model('footer');
-		
-		if (isset($getVars['logtype']))
-		{
-			switch($getVars['logtype'])
-			{	
-				case 'customer':
-					$heading = 'Customer Login';	
-				break;
-			
-				case 'card-holder':
-					$heading = 'Fuel Card Holder Login';
-				break;
-			
-				case 'staff':
-					$heading = 'Adshell Staff Login';
-				break;
-			}
-		} else {
-			$heading = 'Login';
-		}
 		//create a new view and pass it our template
 		$view = new View_Model($this->template);
 		$view->assign('header', $header->render(FALSE));
 		$view->assign('footer', $footer->render(FALSE));
-		
-		// title for login page
-		$view->assign('heading' , $heading);
+		//assign article data to view
+		//$view->assign('article' , $article);
 		
 		$view->render();
 	}

@@ -61,7 +61,7 @@
 		<div class="col-xs-12 col-sm-6 col-md-8 col-md-offset-2">
 
 		
-			<form class="form" role="form">
+			<form class="form" role="form" action="index.php?apply&page=3">
 			  <div class="row form-subheading">
 			   <div class="col-md-12">
 			   <h4>Business Details</h4>
@@ -212,7 +212,7 @@
 			  <div class="row">
 				  <div class="col-md-6 col-md-offset-3">
 					 <br />
-					 <button type="submit" class="btn btn-primary">Next Step</button>
+					 <a class="btn btn btn-primary" href="index.php?apply&page=3">Next Step &raquo;</a>
 				  </div>
 			  </div>
 			</form>
