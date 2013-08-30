@@ -30,9 +30,9 @@
 	<!-- Static navbar -->
 	  <div class="row login">
 		<div class="pull-left">
-			<a href="#">Customer Login</a> |
-			<a href="#">Card Holder Login</a> |
-			<a href="#">Employee Login</a>
+			<a href="index.php?login&logtype=customer">Customer Login</a> |
+			<a href="index.php?login&logtype=card-holder">Card Holder Login</a> |
+			<a href="index.php?login&logtype=staff">Employee Login</a>
 		</div>
 		<div class="pull-right search">
 			<div class="button-search"></div>
