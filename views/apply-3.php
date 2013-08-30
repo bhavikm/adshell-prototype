@@ -125,7 +125,11 @@
 			  </div>
 	
 			  <div class="row">
-				  <div class="col-md-6 col-md-offset-3">
+				  <div class="col-md-3">
+					<br />
+					 <a class="btn btn btn-primary" href="index.php?apply&page=2">&laquo; Back</a>
+				  </div>
+				  <div class="col-md-6">
 					 <br />
 					 <a class="btn btn btn-primary" href="index.php?apply&page=4">Next Step &raquo;</a>
 				  </div>
