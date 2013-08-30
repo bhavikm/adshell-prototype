@@ -52,6 +52,7 @@
           <ul class="nav navbar-nav custom-navbar">
             <li <?php if ($data['active_nav'] == 'home') { ?> class="active" <?php } ?>><a href="index.php">Home</a></li>
             <li <?php if ($data['active_nav'] == 'apply') { ?> class="active" <?php } ?>><a href="index.php?apply">Apply</a></li>
+			<li <?php if ($data['active_nav'] == 'about') { ?> class="active" <?php } ?>><a href="index.php?about">About Us</a></li>
             <li <?php if ($data['active_nav'] == 'faq') { ?> class="active" <?php } ?>><a href="index.php?faq">FAQs</a></li>
 			<li <?php if ($data['active_nav'] == 'franchise') { ?> class="active" <?php } ?>><a href="index.php?franchise">Franchises</a></li>
 			<li <?php if ($data['active_nav'] == 'calculator') { ?> class="active" <?php } ?>><a href="index.php?calculator">Calculator</a></li>
