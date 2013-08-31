@@ -7,9 +7,15 @@ footer {
 .border-on-right {
 	border-right: 1px solid #c0c0c0;
 }
+.border-on-left {
+	border-left: 1px solid #c0c0c0;
+}
 
 .spacing-under {
 	margin-bottom:50px;
+}
+.spacing-under-small {
+	margin-bottom:20px;
 }
 
 #front-banner {

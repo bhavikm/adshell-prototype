@@ -19,6 +19,8 @@ class Login_Controller
 		$header->assign('active_nav','');
 		$footer = new View_Model('footer');
 		
+		$valid_user = 'not checked';
+		
 		if (isset($getVars['logtype']))
 		{
 			switch($getVars['logtype'])
@@ -34,19 +36,99 @@ class Login_Controller
 				case 'staff':
 					$heading = 'Adshell Staff Login';
 				break;
+				
+				case 'forgot':
+					$this->template = 'forgot';
+					$heading = '';
+				break;
 			}
 		} else {
 			$heading = 'Login';
 		}
-		//create a new view and pass it our template
-		$view = new View_Model($this->template);
-		$view->assign('header', $header->render(FALSE));
-		$view->assign('footer', $footer->render(FALSE));
 		
-		// title for login page
-		$view->assign('heading' , $heading);
-		
-		$view->render();
+		if (isset($getVars['action']) && isset($getVars['email']))
+		{
+			switch($getVars['action'])
+			{	
+				case 'forgot':
+					$this->template = 'forgot';
+					//create a new view and pass it our template
+					$view = new View_Model($this->template);
+					$view->assign('header', $header->render(FALSE));
+					$view->assign('footer', $footer->render(FALSE));
+					
+					$email = $getVars['email'];
+					if ($email == 'employee@adshell.com.au' || $email == 'customer@email.com' ||
+						$email == 'cardholder@email.com')
+					{
+						$valid_user = 'confirmed';
+					} else {
+						$valid_user = 'incorrect';
+					}
+					// title for login page
+					$view->assign('valid_user' , $valid_user);
+					
+					$view->render();
+				break;
+				
+				case 'login':
+					if (isset($getVars['password']) && ($getVars['password'] == 'password'))
+					{
+						$email = $getVars['email'];
+						if ($email == 'employee@adshell.com.au')
+						{
+							header('Location: index.php?employee&user='.$email);
+						}
+						elseif ($email == 'customer@email.com') 
+						{
+							header('Location: index.php?customer&user='.$email);
+						}
+						elseif ($email == 'cardholder@email.com')
+						{
+							header('Location: index.php?cardholder&user='.$email);
+						}
+						else {
+							$valid_user = 'incorrect';
+						}
+					} else {
+						$valid_user = 'incorrect';
+					}
+					//create a new view and pass it our template
+					$view = new View_Model($this->template);
+					$view->assign('header', $header->render(FALSE));
+					$view->assign('footer', $footer->render(FALSE));
+					
+					// title for login page
+					$view->assign('heading' , $heading);
+					
+					
+					$view->assign('valid_user' , $valid_user);
+					
+					
+					$view->render();
+							
+				break;
+			
+			}
+			
+			
+			
+		} else {
+			
+			//create a new view and pass it our template
+			$view = new View_Model($this->template);
+			$view->assign('header', $header->render(FALSE));
+			$view->assign('footer', $footer->render(FALSE));
+			
+			// title for login page
+			$view->assign('heading' , $heading);
+			
+			
+			$view->assign('valid_user' , $valid_user);
+			
+			
+			$view->render();
+		}
 	}
 }
 
