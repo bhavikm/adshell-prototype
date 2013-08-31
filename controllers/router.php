@@ -28,6 +28,12 @@ function __autoload($className)
 			$folder = 'libraries/drivers/';
 		
 		break;
+		
+		case 'controller':
+		
+			$folder = 'controllers/';
+		
+		break;
 	}
 
 	//compose file name
@@ -56,6 +62,10 @@ if (!empty($request))
 
 	//the page is the first element
 	$page = array_shift($parsed);
+	if (substr($page, -1) == '=')
+	{
+		$page = substr($page, 0, -1);  // bcd
+	}
 
 	//the rest of the array are get statements, parse them out.
 	$getVars = array();

@@ -1,10 +1,10 @@
 <?=$data['header'];?>
 
 <div class="container login-wrap">
-    <h1><?=$data['heading'];?></h1>
-    <div class="col-xs-12 col-sm-6 col-md-8 border-on-right">
+    <h1>Forgot Password</h1>
+    <div class="col-xs-12 col-sm-6 col-md-8">
 		<form class="form-signin" action="index.php">
-			<input type="hidden" name="login" value="" />
+			<input type="hidden" name="login" value="" />	
 			<?php if ($data['valid_user'] == 'incorrect') { ?>
 			<div class="row spacing-under-small">
 				  <div class="col-md-9 col-md-offset-3">
@@ -12,9 +12,10 @@
 				  </div>
 			</div>
 			<?php } ?>
+			<?php if (($data['valid_user'] == 'incorrect') || ($data['valid_user'] == 'not checked')) { ?>
 			<div class="row spacing-under-small">
 				  <div class="col-md-9 col-md-offset-3">
-					Customers and Fuel Card holders:
+					Please provide the email address attached to your account:
 				  </div>
 			</div>
 			<div class="row">
@@ -26,27 +27,28 @@
 				  </div>
 			</div>
 			<div class="row">
-				  <div class="col-md-3">
-					<label for="password" class="col-lg-2 control-label">Password</label>
-				  </div>
-				  <div class="col-md-9">
-					<input type="password" id="password" class="form-control" name="password" placeholder="Password">
-				  </div>
-			</div>
-			<div class="row">
 				  <div class="col-md-9 col-md-offset-3">
-					 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+					 <button class="btn btn-lg btn-primary btn-block" type="submit">Reset Password</button>
 				  </div>
 			</div>
-			<input type="hidden" name="action" value="login" />
-		</form>
+			<input type="hidden" name="action" value="forgot" />
+			<?php } ?>
+		</form>	
+		<?php if ($data['valid_user'] == 'confirmed') { ?>
+		<div class="row spacing-under-small">
+			  <div class="col-md-10">
+				Your password has been reset. Please check your email for instructions.
+			  </div>
+		</div>
+		<?php } ?>
+		
 				
 	</div>
 	
-	<div class="col-xs-6 col-sm-6 col-md-4">
+	<div class="col-xs-6 col-sm-6 col-md-4  border-on-left">
 		<div class="col-md-11 col-md-offset-1">
 			<br />
-			 Forgot your password? <br /><a href="index.php?login&logtype=forgot">Get new password &raquo;</a>
+			 Want to sign in? <br /><a href="index.php?login">Login &raquo;</a>
 			<br />
 			<br />
 			Don't have an account? <br /><a href="index.php?apply">Apply Today &raquo;</a>
