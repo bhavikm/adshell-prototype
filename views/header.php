@@ -30,11 +30,18 @@
 	<!-- Static navbar -->
 	  <div class="row login">
 		<div class="pull-left">
+		 <?php if (isset($data['logged_in'])) { ?>
+		 Welcome,  <?php echo $data['user_name']; ?> (<a href="index.php?login">Log Out</a>)
+		 <?php } else {?>
 			<a href="index.php?login">Login</a>
+		<?php } ?>
 		</div>
 		<div class="pull-right search">
 			<div class="button-search"></div>
-            <input type="text" name="filter_name" value="Search" onclick="this.value = '';" onkeydown="this.style.color = '#000000';" />
+			<form class="form-signin" action="index.php">
+				<input type="hidden" name="search" value="" />
+				<input type="text" name="query" id="query" value="Search" onclick="this.value = '';" onkeydown="this.style.color = '#000000';" />
+			</form>
 		</div>
 	  </div>
       <div class="navbar navbar-default">

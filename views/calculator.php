@@ -5,8 +5,7 @@
 	<div id="contact-page">
 		<div class="row">
 			<div class="col-md-10">
-			   Have any questions? <br />
-			   No problems! Just use the form below to get in touch, call us or email us and we will get back to you fast.
+			   Use this calculator to estimate the cost of using our different fuel types.
 			</div>
 		</div>
 		<div class="row">

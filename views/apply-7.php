@@ -2,7 +2,7 @@
 
 <!-- Main component for a primary marketing message or call to action -->
 <div class="container" id="apply-page">
-	<h1 class="spacing-under">Application - Page 7 - Authorisations and Acknowledgements</h1>
+	<h1 class="spacing-under">Application - Page 6 - Authorisations and Acknowledgements</h1>
 	<div class="row">
 		<div class="col-md-1 col-md-offset-2 apply-progress">
 			Details
