@@ -12,11 +12,13 @@
 				  </div>
 			</div>
 			<?php } ?>
+			<?php if ($data['heading'] != 'Adshell Staff Login') { ?>
 			<div class="row spacing-under-small">
 				  <div class="col-md-9 col-md-offset-3">
 					Customers and Fuel Card holders:
 				  </div>
 			</div>
+			<?php } ?>
 			<div class="row">
 				  <div class="col-md-3">
 					<label for="email" class="col-lg-2 control-label">Email</label>

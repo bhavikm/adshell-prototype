@@ -220,3 +220,11 @@ a.custom-button:hover span {
 #apply-page > div.row > div > form > div.short-form-row {
 	margin: 7px 0px;
 }
+
+
+
+#right-menu {
+	border:1px solid #c0c0c0;
+	padding:25px;
+	margin: 0px;
+}
