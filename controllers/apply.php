@@ -38,11 +38,25 @@ class Apply_Controller
 				break;
 				
 				case '3':
-					$this->template = 'apply-3';
+					$errorAndValids = $this->validatePage2($getVars);
+					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					{
+						$this->template = 'apply-3';
+					} else {
+						// move on to next page
+						$this->template = 'apply-4';
+					}
 				break;
 				
 				case '4':
-					$this->template = 'apply-4';
+					$errorAndValids = $this->validatePage3($getVars);
+					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					{
+						$this->template = 'apply-4';
+					} else {
+						// move on to next page
+						$this->template = 'apply-5';
+					}
 				break;
 				
 				case '5':
@@ -278,12 +292,105 @@ class Apply_Controller
 		return $errorAndValids;
 	}
 	
-	//
-	private function splitErrorsAndValid($errorAndValids)
+	
+	private function validatePage2($fieldValues)
 	{
-	
-	
+		session_start();
+		
+		$errorAndValids = array('errors' => array(), 'valids' => array());
+		
+		if (isset($fieldValues['refName1']))
+		{
+			if (strlen($fieldValues['refName1']) == 0 )
+			{
+				$errorAndValids['errors']['refName1'] = 'Reference name must not be empty.';
+			} elseif (strlen($fieldValues['refName1']) > 40) { 
+				$errorAndValids['errors']['refName1'] = 'Reference name must be 40 characters or less.';
+			} else {
+				$_SESSION['refName1'] = $fieldValues['refName1'];
+				$errorAndValids['valids']['refName1'] = $fieldValues['refName1'];
+			}
+		}
+		
+		if (isset($fieldValues['refPhone1']))
+		{
+			if (strlen($fieldValues['refPhone1']) == 0)
+			{
+				$errorAndValids['errors']['refPhone1'] = 'Reference phone must not be empty.';
+			} elseif (strlen($fieldValues['refPhone1']) > 10) { 
+				$errorAndValids['errors']['refPhone1'] = 'Reference phone number must be 10 digits or less.';
+			} else {
+				$_SESSION['refPhone1'] = $fieldValues['refPhone1'];
+				$errorAndValids['valids']['refPhone1'] = $fieldValues['refPhone1'];
+			}
+		}
+		
+		if (isset($fieldValues['refName2']))
+		{
+			if (strlen($fieldValues['refName2']) == 0 )
+			{
+				$errorAndValids['errors']['refName2'] = 'Reference name must not be empty.';
+			} elseif (strlen($fieldValues['refName2']) > 40) { 
+				$errorAndValids['errors']['refName2'] = 'Reference name must be 40 characters or less.';
+			} else {
+				$_SESSION['refName2'] = $fieldValues['refName2'];
+				$errorAndValids['valids']['refName2'] = $fieldValues['refName2'];
+			}
+		}
+		
+		if (isset($fieldValues['refPhone2']))
+		{
+			if (strlen($fieldValues['refPhone2']) == 0)
+			{
+				$errorAndValids['errors']['refPhone2'] = 'Reference phone must not be empty.';
+			} elseif (strlen($fieldValues['refPhone2']) > 10) { 
+				$errorAndValids['errors']['refPhone2'] = 'Reference phone number must be 10 digits or less.';
+			} else {
+				$_SESSION['refPhone2'] = $fieldValues['refPhone2'];
+				$errorAndValids['valids']['refPhone2'] = $fieldValues['refPhone2'];
+			}
+		}
+		
+		
+		if (isset($fieldValues['fuelSupplierName']))
+		{
+			if (strlen($fieldValues['fuelSupplierName']) == 0 )
+			{
+				$errorAndValids['errors']['fuelSupplierName'] = 'Fuel supplier name must not be empty.';
+			} elseif (strlen($fieldValues['fuelSupplierName']) > 40) { 
+				$errorAndValids['errors']['fuelSupplierName'] = 'Fuel supplier name must be 40 characters or less.';
+			} else {
+				$_SESSION['fuelSupplierName'] = $fieldValues['fuelSupplierName'];
+				$errorAndValids['valids']['fuelSupplierName'] = $fieldValues['fuelSupplierName'];
+			}
+		}
+		
+		if (isset($fieldValues['fuelSupplierPhone']))
+		{
+			if (strlen($fieldValues['fuelSupplierPhone']) == 0)
+			{
+				$errorAndValids['errors']['fuelSupplierPhone'] = 'Fuel supplier phone must not be empty.';
+			} elseif (strlen($fieldValues['fuelSupplierPhone']) > 10) { 
+				$errorAndValids['errors']['fuelSupplierPhone'] = 'Fuel supplier phone number must be 10 digits or less.';
+			} else {
+				$_SESSION['fuelSupplierPhone'] = $fieldValues['fuelSupplierPhone'];
+				$errorAndValids['valids']['fuelSupplierPhone'] = $fieldValues['fuelSupplierPhone'];
+			}
+		}
+		
+		return $errorAndValids;
 	}
+	
+	
+	private function validatePage3($fieldValues)
+	{
+		session_start();
+		
+		$errorAndValids = array('errors' => array(), 'valids' => array());
+		
+		return $errorAndValids;
+	}
+
 }
 
 ?>

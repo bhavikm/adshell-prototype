@@ -58,54 +58,105 @@
 	
 	<div class="row">
 	
-		<div class="col-xs-12 col-sm-6 col-md-8 col-md-offset-2">
+		<div class="col-xs-12 col-sm-6 col-md-12">
 
 		
-			<form class="form" role="form">
+			<form class="form" method="post" role="form" action="index.php?apply">
 			  <div class="row form-subheading">
 			   <div class="col-md-12">
 			   <h4>Business Partner 1</h4>
 			   </div>
 			  </div>
+			  <input type="hidden" class="form-control" name="page" id="page" value="4">
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Full Name</label>
-				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Full Name">
-				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputPhone" class="control-label">Phone</label>
+					<label for="partnerName1" class=" control-label">Full Name</label>
 				  </div>
 				  <div class="col-md-4">
-					 <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+					<input type="text" class="form-control" id="partnerName1" name="partnerName1" placeholder="Full Name">
 				  </div>
+				  <?php if (isset($data['errors']['partnerName1'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['partnerName1']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Address</label>
+					<label for="partnerPhone1" class="control-label">Phone</label>
 				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Address">
+				  <div class="col-md-4">
+					 <input type="text" class="form-control" id="partnerPhone1" name="partnerPhone1" placeholder="Phone">
 				  </div>
+				  <?php if (isset($data['errors']['partnerPhone1'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['partnerPhone1']; ?>
+				  </div>	
+				  <?php } ?>
+			  </div>
+			  
+			  <div class="row">
+				  <div class="col-md-3">
+					<label for="partnerAddress1" class=" control-label">Address</label>
+				  </div>
+				  <div class="col-md-4">
+					<input type="textarea" class="form-control" id="partnerAddress1" name="partnerAddress1" placeholder="Address">
+				  </div>
+				  <?php if (isset($data['errors']['partnerAddress1'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['partnerAddress1']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">State</label>
+					<label for="partnerState1" class=" control-label">State</label>
 				  </div>
-				  <div class="col-md-3">
-					<input type="text" class="form-control" id="inputName" placeholder="State">
+				  <div class="col-md-4">
+					  <select name="partnerState1">
+							<?php if (isset($data['valids']['partnerState1'])) { 
+								$selected_value = $data['valids']['partnerState1'];
+							?>
+							<option value="select">Select...</option>
+							<option value="Victoria" <?php if ($selected_value == 'sole') echo 'selected';?>>Victoria</option>
+							<option value="New South Wales" <?php if ($selected_value == 'nsw') echo 'selected';?>>New South Wales</option>
+							<option value="Queensland" <?php if ($selected_value == 'qld') echo 'selected';?>>Queensland</option>
+							<option value="South Autralia" <?php if ($selected_value == 'sa') echo 'selected';?>>South Autralia</option>
+							<option value="Western Australia" <?php if ($selected_value == 'wa') echo 'selected';?>>Western Australia</option>
+							<option value="Tasmania" <?php if ($selected_value == 'government') echo 'tas';?>>Tasmania</option>
+							<option value="Australian Capital Territory" <?php if ($selected_value == 'act') echo 'selected';?>>Australian Capital Territory</option>
+							<option value="Northern Territory" <?php if ($selected_value == 'nt') echo 'selected';?>>Northern Territory</option>
+							<?php } else { ?>
+							<option value="select">Select...</option>
+							<option value="Victoria">Victoria</option>
+							<option value="New South Wales">New South Wales</option>
+							<option value="Queensland">Queensland</option>
+							<option value="South Autralia">South Autralia</option>
+							<option value="Western Australia">Western Australia</option>
+							<option value="Tasmania">Tasmania</option>
+							<option value="Australian Capital Territory">Australian Capital Territory</option>
+							<option value="Northern Territory">Northern Territory</option>
+							<?php } ?>
+						</select>
 				  </div>
+				  <?php if (isset($data['errors']['partnerState1'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['partnerState1']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Postcode</label>
+					<label for="partnerPostcode1" class=" control-label">Postcode</label>
 				  </div>
 				  <div class="col-md-3">
-					<input type="text" class="form-control" id="inputName" placeholder="Postcode">
+					<input type="text" class="form-control" id="partnerPostcode1" name="partnerPostcode1" placeholder="Postcode">
 				  </div>
+				  <?php if (isset($data['errors']['partnerPostcode1'])) { ?>
+				  <div class="col-md-4 col-md-offset-2 red-text">	
+					<?php echo $data['errors']['partnerPostcode1']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  
 			  
@@ -208,7 +259,7 @@
 				  </div>
 				  <div class="col-md-6">
 					 <br />
-					 <a class="btn btn btn-primary" href="index.php?apply&page=5">Next Step &raquo;</a>
+					 <button class="btn btn btn-primary" type="submit">Next Step &raquo;</button>
 				  </div>
 			  </div>
 			</form>
