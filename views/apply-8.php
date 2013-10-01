@@ -58,99 +58,72 @@
 	
 	<div class="row">
 	
-		<div class="col-xs-12 col-sm-6 col-md-8 col-md-offset-2">
+		<div class="col-xs-12 col-sm-6 col-md-12">
 
-		
-			<form class="form" role="form">
-			  <div class="row form-subheading">
+			<form class="form" method="post" role="form" action="index.php?apply">
+				
+			  <input type="hidden" class="form-control" name="page" id="page" value="8">
+			   <div class="row form-subheading">
 			   <div class="col-md-12">
-			   <h4>Business Partner 1</h4>
+				<h4>Acceptance</h4>
+				<p>I/We hereby state that the above information is true and correct and agree to be bound by the Terms and Conditions attached hereto concerning the use of APJ Petro Chemicals Card.</p>
 			   </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Full Name</label>
-				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Full Name">
-				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Signature</label>
-				  </div>
-				  <div class="col-md-3">
-					<input type="text" class="form-control" id="inputName" placeholder="Signature">
-				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputPhone" class="control-label">Date</label>
-				  </div>
-				  <div class="col-md-3">
-					 <input type="text" class="form-control" id="inputPhone" placeholder="Date">
-				  </div>
 			  </div>
 			  
-			  <div class="row form-subheading">
-			   <div class="col-md-12">
-			   <h4>Business Partner 2</h4>
-			   </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Full Name</label>
+			  <?php if (!isset($data['errors']['numberOfPartners'])) { ?>
+				  <?php 
+				  for ($i = 1; $i <= (int)$data['valids']['numberOfPartners']; $i++)
+				  {
+				  ?>
+				  
+				  <div class="row form-subheading">
+				   <div class="col-md-12">
+					<h4>Business Partner <?php echo $i; ?> Acceptance</h4>
+				   </div>
 				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Full Name">
+				  <div class="row">
+					  <div class="col-md-3">
+						<label for="acceptanceName<?php echo $i; ?>" class=" control-label">Full Name</label>
+					  </div>
+					  <div class="col-md-4">
+						<?php if (isset($data['valids']['acceptanceName'.$i])) { ?>
+						<input type="text" class="form-control" id="acceptanceName<?php echo $i; ?>" name="acceptanceName<?php echo $i; ?>" placeholder="Full Name" value="<?php echo $data['valids']['acceptanceName'.$i];?>">
+						<?php } else { ?>
+						<input type="text" class="form-control" id="acceptanceName<?php echo $i; ?>" name="acceptanceName<?php echo $i; ?>" placeholder="Full Name">
+						<?php } ?>
+					  </div>
+					  <?php if (isset($data['errors']['acceptanceName'.$i])) { ?>
+					  <div class="col-md-4 col-md-offset-1 red-text">	
+						<?php echo $data['errors']['acceptanceName'.$i]; ?>
+					  </div>	
+					  <?php } ?>
 				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Signature</label>
+				  
+				  
+				  <div class="row">
+					  <div class="col-md-3">
+						<label for="acceptanceSignature<?php echo $i; ?>" class=" control-label">Signature (Full Name)</label>
+					  </div>
+					  <div class="col-md-4">
+						<?php if (isset($data['valids']['acceptanceSignature'.$i])) { ?>
+						<input type="text" class="form-control" id="acceptanceSignature<?php echo $i; ?>" name="acceptanceSignature<?php echo $i; ?>" placeholder="Full Name" value="<?php echo $data['valids']['acceptanceSignature'.$i]; ?>">
+						<?php } else { ?>
+						<input type="text" class="form-control" id="acceptanceSignature<?php echo $i; ?>" name="acceptanceSignature<?php echo $i; ?>" placeholder="Full Name">
+						<?php } ?>
+					  </div>
+					  
+					  <?php if (isset($data['errors']['acceptanceSignature'.$i])) { ?>
+					  <div class="col-md-4 col-md-offset-1 red-text">	
+						<?php echo $data['errors']['acceptanceSignature'.$i]; ?>
+					  </div>	
+					  <?php } ?>
 				  </div>
-				  <div class="col-md-3">
-					<input type="text" class="form-control" id="inputName" placeholder="Signature">
-				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputPhone" class="control-label">Date</label>
-				  </div>
-				  <div class="col-md-3">
-					 <input type="text" class="form-control" id="inputPhone" placeholder="Date">
-				  </div>
-			  </div>
+				  <?php } ?>
+			  <?php } else { ?>
 			  
-			  <div class="row form-subheading">
-			   <div class="col-md-12">
-			   <h4>Business Partner 3</h4>
-			   </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Full Name</label>
-				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Full Name">
-				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Signature</label>
-				  </div>
-				  <div class="col-md-3">
-					<input type="text" class="form-control" id="inputName" placeholder="Signature">
-				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputPhone" class="control-label">Date</label>
-				  </div>
-				  <div class="col-md-3">
-					 <input type="text" class="form-control" id="inputPhone" placeholder="Date">
-				  </div>
-			  </div>
+				<?php echo $data['errors']['numberOfPartners']; ?>
+			  
+			  <?php } ?>
 
 			  <div class="row">
 				  <div class="col-md-3">
@@ -159,7 +132,7 @@
 				  </div>
 				  <div class="col-md-6">
 					 <br />
-					 <a class="btn btn btn-primary" href="index.php?apply&page=9">Next Step &raquo;</a>
+					 <button class="btn btn btn-primary" type="submit">Next Step &raquo;</button>
 				  </div>
 			  </div>
 			</form>

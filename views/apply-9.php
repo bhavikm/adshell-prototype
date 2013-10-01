@@ -60,8 +60,6 @@
 	
 		<div class="col-xs-12 col-sm-6 col-md-8 col-md-offset-2">
 
-		
-			<form class="form" role="form">
 			  <div class="row form-subheading">
 			   <div class="col-md-12">
 			   <h4>Business Details</h4>
@@ -85,7 +83,7 @@
 					<b>Monthly Credit Limit:</b>
 				  </div>
 				  <div class="col-md-4">
-					 Company<br />
+					<?php echo $_SESSION['biztype']; ?><br />
 					 Apple Inc.<br />
 					 123456789<br />
 					 1984<br />
@@ -189,7 +187,6 @@
 					 <a class="btn btn btn-danger" href="index.php?apply&page=10">Complete and Submit Application &raquo;</a>
 				  </div>
 			  </div>
-			</form>
 			
 			
 		</div>

@@ -44,7 +44,7 @@ class Apply_Controller
 						$this->template = 'apply-3';
 					} else {
 						// move on to next page
-						$this->template = 'apply-4';
+						$getVars['page'] = '4';
 					}
 				break;
 				
@@ -53,36 +53,43 @@ class Apply_Controller
 					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
 					{
 						$this->template = 'apply-4';
-					} else {
-						// move on to next page
-						$this->template = 'apply-5';
+						break;
 					}
-				break;
-				
+					
 				case '5':
 					$errorAndValids = $this->validatePage4($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 2)
 					{
 						$this->template = 'apply-5';
-					} else {
-						// move on to next page
-						$this->template = 'apply-6';
+						break;
 					}
-				break;
 				
 				case '6':
-					$this->template = 'apply-6';
-				break;
+					$errorAndValids = $this->validatePage5($getVars);
+					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					{
+						$this->template = 'apply-6';
+						break;
+					}
 				
 				case '7':
-					$this->template = 'apply-7';
-				break;
+					$errorAndValids = $this->validatePage6($getVars);
+					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					{
+						$this->template = 'apply-7';
+						break;
+					}
 				
 				case '8':
-					$this->template = 'apply-8';
-				break;
+					$errorAndValids = $this->validatePage7($getVars);
+					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					{
+						$this->template = 'apply-8';
+						break;
+					}
 				
 				case '9':
+					$completedForm = $this->getCompletedFormArray();
 					$this->template = 'apply-9';
 				break;
 				
@@ -523,17 +530,18 @@ class Apply_Controller
 			}
 		}
 		
+		$cardHolderNameIdentifier = 'cardHolderName';
+		$cardHolderRegistrationIdentifier = 'registrationNo';
+		$cardHolderAllProductsIdentifier = 'allFuelCardProducts';
+		$cardHolderProductsIdentifier = 'fuelCardProducts';
+		$cardHolderPinRequiredIdentifier = 'pinRequired';
+		
 		if (isset($fieldValues['numberOfCardholders']))
 		{
 			$errorAndValids['valids']['numberOfCardholders'] = $fieldValues['numberOfCardholders'];
 			$numberCardholders = (int)$fieldValues['numberOfCardholders'];
 			$_SESSION['numberOfCardholders'] = $numberCardholders;
 
-			$cardHolderNameIdentifier = 'cardHolderName';
-			$cardHolderRegistrationIdentifier = 'registrationNo';
-			$cardHolderAllProductsIdentifier = 'allFuelCardProducts';
-			$cardHolderProductsIdentifier = 'fuelCardProducts';
-			
 			for ($i = 1; $i <= $numberCardholders; $i++)
 			{
 				// Card holder name
@@ -564,6 +572,13 @@ class Apply_Controller
 					}
 				}
 				
+				// Pin required select box
+				if (isset($fieldValues[$cardHolderPinRequiredIdentifier.$i]))
+				{
+					$_SESSION[$cardHolderPinRequiredIdentifier.$i] = $fieldValues[$cardHolderPinRequiredIdentifier.$i];
+					$errorAndValids['valids'][$cardHolderPinRequiredIdentifier.$i] = $fieldValues[$cardHolderPinRequiredIdentifier.$i];
+				}
+				
 				// Checked products, initially create array for all product options as false for unselected
 				$errorAndValids['valids'][$cardHolderProductsIdentifier.$i] = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );
 				if (isset($fieldValues[$cardHolderProductsIdentifier.$i]))
@@ -588,9 +603,430 @@ class Apply_Controller
 			
 		} else {
 			$errorAndValids['valids']['numberOfCardholders'] = 1;
+			// have to setup array of fuel card options 
+			$errorAndValids['valids'][$cardHolderProductsIdentifier.'1'] = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );
 		}	
 
 	
+		return $errorAndValids;
+	}
+	
+	private function validatePage5($fieldValues)
+	{
+		session_start();
+		
+		$errorAndValids = array('errors' => array(), 'valids' => array());
+		
+		if (isset($fieldValues['paymentType']))
+		{
+			if ($fieldValues['paymentType'] == 'select')
+			{
+				$errorAndValids['errors']['paymentType'] = 'Must select and complete a payment option.';
+			} else {
+				$_SESSION['paymentType'] = $fieldValues['paymentType'];
+				$errorAndValids['valids']['paymentType'] = $fieldValues['paymentType'];
+				
+				if ($fieldValues['paymentType'] == 'directDebit')
+				{
+					$directDebitAuthorizeIdentifier = 'ddAuthoriseName';
+					$directDebitAccountTypeIdentifier = 'accountType';
+					$directDebitBankNameIdentifier = 'bankName';
+					$directDebitAccountNameIdentifier = 'accountName';
+					$directDebitBSBIdentifier = 'bsbNo';
+					$directDebitAccountNumberIdentifier = 'accountNo';
+					$directDebitAcknowledgeIdentifier = 'ddAcknowdledgeName';
+					
+					// Authorisation name
+					if (isset($fieldValues[$directDebitAuthorizeIdentifier]))
+					{
+						if (strlen($fieldValues[$directDebitAuthorizeIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$directDebitAuthorizeIdentifier] = 'Authorisation name must not be empty.';
+						} elseif (strlen($fieldValues[$directDebitAuthorizeIdentifier]) > 40) { 
+							$errorAndValids['errors'][$directDebitAuthorizeIdentifier] = 'Authorisation name must be 40 character or less.';
+						} else {
+							$_SESSION[$directDebitAuthorizeIdentifier] = $fieldValues[$directDebitAuthorizeIdentifier];
+							$errorAndValids['valids'][$directDebitAuthorizeIdentifier] = $fieldValues[$directDebitAuthorizeIdentifier];
+						}
+					}
+					
+					// Account type
+					if (isset($fieldValues[$directDebitAccountTypeIdentifier]))
+					{
+						if ($fieldValues[$directDebitAccountTypeIdentifier] == 'select')
+						{
+							$errorAndValids['errors'][$directDebitAccountTypeIdentifier] = 'You must select an account type.';
+						} else {
+							$_SESSION[$directDebitAccountTypeIdentifier] = $fieldValues[$directDebitAccountTypeIdentifier];
+							$errorAndValids['valids'][$directDebitAccountTypeIdentifier] = $fieldValues[$directDebitAccountTypeIdentifier];
+						}
+					}
+					
+					// Bank name
+					if (isset($fieldValues[$directDebitBankNameIdentifier]))
+					{
+						if (strlen($fieldValues[$directDebitBankNameIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$directDebitBankNameIdentifier] = 'Financial Institution must not be empty.';
+						} elseif (strlen($fieldValues[$directDebitBankNameIdentifier]) > 40) { 
+							$errorAndValids['errors'][$directDebitBankNameIdentifier] = 'Financial Institution must be 40 character or less.';
+						} else {
+							$_SESSION[$directDebitBankNameIdentifier] = $fieldValues[$directDebitBankNameIdentifier];
+							$errorAndValids['valids'][$directDebitBankNameIdentifier] = $fieldValues[$directDebitBankNameIdentifier];
+						}
+					}
+					
+					// Account name
+					if (isset($fieldValues[$directDebitAccountNameIdentifier]))
+					{
+						if (strlen($fieldValues[$directDebitAccountNameIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$directDebitAccountNameIdentifier] = 'Account name must not be empty.';
+						} elseif (strlen($fieldValues[$directDebitAccountNameIdentifier]) > 40) { 
+							$errorAndValids['errors'][$directDebitAccountNameIdentifier] = 'Account name must be 40 character or less.';
+						} else {
+							$_SESSION[$directDebitAccountNameIdentifier] = $fieldValues[$directDebitAccountNameIdentifier];
+							$errorAndValids['valids'][$directDebitAccountNameIdentifier] = $fieldValues[$directDebitAccountNameIdentifier];
+						}
+					}
+					
+					// BSB
+					if (isset($fieldValues[$directDebitBSBIdentifier]))
+					{
+						if (strlen($fieldValues[$directDebitBSBIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$directDebitBSBIdentifier] = 'BSB must not be empty.';
+						} elseif (strlen($fieldValues[$directDebitBSBIdentifier]) != 6) { 
+							$errorAndValids['errors'][$directDebitBSBIdentifier] = 'BSB must be 6 digits.';
+						} else {
+							$_SESSION[$directDebitBSBIdentifier] = $fieldValues[$directDebitBSBIdentifier];
+							$errorAndValids['valids'][$directDebitBSBIdentifier] = $fieldValues[$directDebitBSBIdentifier];
+						}
+					}
+					
+					// Account number
+					if (isset($fieldValues[$directDebitAccountNumberIdentifier]))
+					{
+						if (strlen($fieldValues[$directDebitAccountNumberIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$directDebitAccountNumberIdentifier] = 'Account number must not be empty.';
+						} elseif (strlen($fieldValues[$directDebitAccountNumberIdentifier]) > 9) { 
+							$errorAndValids['errors'][$directDebitAccountNumberIdentifier] = 'Account number must be 9 digits or less.';
+						} else {
+							$_SESSION[$directDebitAccountNumberIdentifier] = $fieldValues[$directDebitAccountNumberIdentifier];
+							$errorAndValids['valids'][$directDebitAccountNumberIdentifier] = $fieldValues[$directDebitAccountNumberIdentifier];
+						}
+					}
+					
+					// Acknowledgement name
+					if (isset($fieldValues[$directDebitAcknowledgeIdentifier]))
+					{
+						if (strlen($fieldValues[$directDebitAcknowledgeIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$directDebitAcknowledgeIdentifier] = 'Acknowledgement name must not be empty.';
+						} elseif (strlen($fieldValues[$directDebitAcknowledgeIdentifier]) > 40) { 
+							$errorAndValids['errors'][$directDebitAcknowledgeIdentifier] = 'Acknowledgement name must be 40 character or less.';
+						} else {
+							$_SESSION[$directDebitAcknowledgeIdentifier] = $fieldValues[$directDebitAcknowledgeIdentifier];
+							$errorAndValids['valids'][$directDebitAcknowledgeIdentifier] = $fieldValues[$directDebitAcknowledgeIdentifier];
+						}
+					}
+					
+				} else {
+					
+					$creditCardAuthorizeIdentifier = 'ccAuthoriseName';
+					$creditCardPaymentDateIdentifier = 'ccPaymentDate';
+					$creditCardNameIdentifier = 'ccName';
+					$creditCardNumberIdentifier = 'ccNo';
+					$creditCardExpiryMonthIdentifier = 'ccExpiryMonth';
+					$creditCardExpiryYearIdentifier = 'ccExpiryYear';
+					$creditCardExpiryDateIdentifier = 'ccExpiryDate';
+					$creditCardTypeIdentifier = 'ccType';
+					$creditCardAcknowledgeIdentifier = 'ccAcknowdledgeName';
+					
+					// Authorisation name
+					if (isset($fieldValues[$creditCardAuthorizeIdentifier]))
+					{
+						if (strlen($fieldValues[$creditCardAuthorizeIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$creditCardAuthorizeIdentifier] = 'Authorisation name must not be empty.';
+						} elseif (strlen($fieldValues[$creditCardAuthorizeIdentifier]) > 40) { 
+							$errorAndValids['errors'][$creditCardAuthorizeIdentifier] = 'Authorisation name must be 40 character or less.';
+						} else {
+							$_SESSION[$creditCardAuthorizeIdentifier] = $fieldValues[$creditCardAuthorizeIdentifier];
+							$errorAndValids['valids'][$creditCardAuthorizeIdentifier] = $fieldValues[$creditCardAuthorizeIdentifier];
+						}
+					}
+					
+					// Monthly Payment Date
+					if (isset($fieldValues[$creditCardPaymentDateIdentifier]))
+					{
+						if ($fieldValues[$creditCardPaymentDateIdentifier] == 'select')
+						{
+							$errorAndValids['errors'][$creditCardPaymentDateIdentifier] = 'You must select a payment date.';
+						} else {
+							$_SESSION[$creditCardPaymentDateIdentifier] = $fieldValues[$creditCardPaymentDateIdentifier];
+							$errorAndValids['valids'][$creditCardPaymentDateIdentifier] = $fieldValues[$creditCardPaymentDateIdentifier];
+						}
+					}
+					
+					//Credit card name
+					if (isset($fieldValues[$creditCardNameIdentifier]))
+					{
+						if (strlen($fieldValues[$creditCardNameIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$creditCardNameIdentifier] = 'Credit card name must not be empty.';
+						} elseif (strlen($fieldValues[$creditCardNameIdentifier]) > 40) { 
+							$errorAndValids['errors'][$creditCardNameIdentifier] = 'Credit card name must be 40 character or less.';
+						} else {
+							$_SESSION[$creditCardNameIdentifier] = $fieldValues[$creditCardNameIdentifier];
+							$errorAndValids['valids'][$creditCardNameIdentifier] = $fieldValues[$creditCardNameIdentifier];
+						}
+					}
+					
+					//Credit card number
+					if (isset($fieldValues[$creditCardNumberIdentifier]))
+					{
+						if (strlen($fieldValues[$creditCardNumberIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$creditCardNumberIdentifier] = 'Credit card number must not be empty.';
+						} elseif (strlen($fieldValues[$creditCardNumberIdentifier]) != 16) { 
+							$errorAndValids['errors'][$creditCardNumberIdentifier] = 'Credit card number must be 16 digits.';
+						} else {
+							$_SESSION[$creditCardNumberIdentifier] = $fieldValues[$creditCardNumberIdentifier];
+							$errorAndValids['valids'][$creditCardNumberIdentifier] = $fieldValues[$creditCardNumberIdentifier];
+						}
+					}
+					
+					// Expiry Date
+					if ($fieldValues[$creditCardExpiryMonthIdentifier] == 'select' || $fieldValues[$creditCardExpiryYearIdentifier] == 'select')
+					{
+						$errorAndValids['errors'][$creditCardExpiryDateIdentifier] = 'You must select an expiry date.';
+						
+						if ($fieldValues[$creditCardExpiryMonthIdentifier] != 'select')
+						{
+							$_SESSION[$creditCardExpiryMonthIdentifier] = $fieldValues[$creditCardExpiryMonthIdentifier];
+							$errorAndValids['valids'][$creditCardExpiryMonthIdentifier] = $fieldValues[$creditCardExpiryMonthIdentifier];
+						}
+						
+						if ($fieldValues[$creditCardExpiryYearIdentifier] != 'select')
+						{
+							$_SESSION[$creditCardExpiryYearIdentifier] = $fieldValues[$creditCardExpiryYearIdentifier];
+							$errorAndValids['valids'][$creditCardExpiryYearIdentifier] = $fieldValues[$creditCardExpiryYearIdentifier];
+						}	
+						
+					} else {
+						$_SESSION[$creditCardExpiryMonthIdentifier] = $fieldValues[$creditCardExpiryMonthIdentifier];
+						$errorAndValids['valids'][$creditCardExpiryMonthIdentifier] = $fieldValues[$creditCardExpiryMonthIdentifier];
+						
+						$_SESSION[$creditCardExpiryYearIdentifier] = $fieldValues[$creditCardExpiryYearIdentifier];
+						$errorAndValids['valids'][$creditCardExpiryYearIdentifier] = $fieldValues[$creditCardExpiryYearIdentifier];
+					}
+					
+					// Card type
+					if (isset($fieldValues[$creditCardTypeIdentifier]))
+					{
+						if ($fieldValues[$creditCardTypeIdentifier] == 'select')
+						{
+							$errorAndValids['errors'][$creditCardTypeIdentifier] = 'You must select a card type.';
+						} else {
+							$_SESSION[$creditCardTypeIdentifier] = $fieldValues[$creditCardTypeIdentifier];
+							$errorAndValids['valids'][$creditCardTypeIdentifier] = $fieldValues[$creditCardTypeIdentifier];
+						}
+					}
+					
+					// Acknowledgement name
+					if (isset($fieldValues[$creditCardAcknowledgeIdentifier]))
+					{
+						if (strlen($fieldValues[$creditCardAcknowledgeIdentifier]) == 0 )
+						{
+							$errorAndValids['errors'][$creditCardAcknowledgeIdentifier] = 'Acknowledgement name must not be empty.';
+						} elseif (strlen($fieldValues[$creditCardAcknowledgeIdentifier]) > 40) { 
+							$errorAndValids['errors'][$creditCardAcknowledgeIdentifier] = 'Acknowledgement name must be 40 character or less.';
+						} else {
+							$_SESSION[$creditCardAcknowledgeIdentifier] = $fieldValues[$creditCardAcknowledgeIdentifier];
+							$errorAndValids['valids'][$creditCardAcknowledgeIdentifier] = $fieldValues[$creditCardAcknowledgeIdentifier];
+						}
+					}
+					
+				}
+			}
+		}
+		
+		return $errorAndValids;
+	}
+	
+	private function validatePage6($fieldValues)
+	{
+		session_start();
+		
+		$errorAndValids = array('errors' => array(), 'valids' => array());
+		
+		
+		if (isset($_SESSION['numberOfPartners']))
+		{
+			$errorAndValids['valids']['numberOfPartners'] = $_SESSION['numberOfPartners'];
+			$numberPartners = (int)$_SESSION['numberOfPartners'];
+			
+			for ($i = 1; $i <= $numberPartners; $i++)
+			{
+				$authoriseAckNameIdentifier = 'authoriseAckName'.$i;
+				$authoriseAckDOBIdentifier = 'authoriseAckDOB'.$i;
+				$authoriseAckDOBDayIdentifier = 'authoriseAckDOBDay'.$i;
+				$authoriseAckDOBMonthIdentifier = 'authoriseAckDOBMonth'.$i;
+				$authoriseAckDOBYearIdentifier = 'authoriseAckDOBYear'.$i;
+				$authoriseAckLicenceIdentifier = 'authoriseAckLicence'.$i;
+				$authoriseAckSignatureIdentifier = 'authoriseAckSignature'.$i;
+			
+			
+				// Business partner name 1
+				if (isset($fieldValues[$authoriseAckNameIdentifier]))
+				{
+					if (strlen($fieldValues[$authoriseAckNameIdentifier]) == 0 )
+					{
+						$errorAndValids['errors'][$authoriseAckNameIdentifier] = 'Business partner name must not be empty.';
+					} elseif (strlen($fieldValues[$authoriseAckNameIdentifier]) > 40) { 
+						$errorAndValids['errors'][$authoriseAckNameIdentifier] = 'Business partner name must be 40 characters or less.';
+					} else {
+						$_SESSION[$authoriseAckNameIdentifier] = $fieldValues[$authoriseAckNameIdentifier];
+						$errorAndValids['valids'][$authoriseAckNameIdentifier] = $fieldValues[$authoriseAckNameIdentifier];
+					}
+				}
+				
+				// Date of Birth
+				if (isset($fieldValues[$authoriseAckDOBDayIdentifier]) && isset($fieldValues[$authoriseAckDOBMonthIdentifier]))
+				{
+					if ($fieldValues[$authoriseAckDOBDayIdentifier] == 'select' || $fieldValues[$authoriseAckDOBMonthIdentifier] == 'select')
+					{
+						$errorAndValids['errors'][$authoriseAckDOBIdentifier] = 'You must select a date of birth day and month.';
+						
+						if ($fieldValues[$authoriseAckDOBDayIdentifier] != 'select')
+						{
+							$_SESSION[$authoriseAckDOBDayIdentifier] = $fieldValues[$authoriseAckDOBDayIdentifier];
+							$errorAndValids['valids'][$authoriseAckDOBDayIdentifier] = $fieldValues[$authoriseAckDOBDayIdentifier];
+						}
+						
+						if ($fieldValues[$authoriseAckDOBMonthIdentifier] != 'select')
+						{
+							$_SESSION[$authoriseAckDOBMonthIdentifier] = $fieldValues[$authoriseAckDOBMonthIdentifier];
+							$errorAndValids['valids'][$authoriseAckDOBMonthIdentifier] = $fieldValues[$authoriseAckDOBMonthIdentifier];
+						}	
+						
+					} else {
+						$_SESSION[$authoriseAckDOBDayIdentifier] = $fieldValues[$authoriseAckDOBDayIdentifier];
+						$errorAndValids['valids'][$authoriseAckDOBDayIdentifier] = $fieldValues[$authoriseAckDOBDayIdentifier];
+						
+						$_SESSION[$authoriseAckDOBMonthIdentifier] = $fieldValues[$authoriseAckDOBMonthIdentifier];
+						$errorAndValids['valids'][$authoriseAckDOBMonthIdentifier] = $fieldValues[$authoriseAckDOBMonthIdentifier];
+					}
+				}
+				
+				// Date of birth year
+				if (isset($fieldValues[$authoriseAckDOBYearIdentifier]))
+				{
+					if (strlen($fieldValues[$authoriseAckDOBYearIdentifier]) == 0 )
+					{
+						$errorAndValids['errors'][$authoriseAckDOBYearIdentifier] = 'Date of birth year must not be empty.';
+					} elseif (strlen($fieldValues[$authoriseAckDOBYearIdentifier]) != 4) { 
+						$errorAndValids['errors'][$authoriseAckDOBYearIdentifier] = 'Date of birth year must be 4 digits.';
+					} else {
+						$_SESSION[$authoriseAckDOBYearIdentifier] = $fieldValues[$authoriseAckDOBYearIdentifier];
+						$errorAndValids['valids'][$authoriseAckDOBYearIdentifier] = $fieldValues[$authoriseAckDOBYearIdentifier];
+					}
+				}
+				
+				// Driver Licence
+				if (isset($fieldValues[$authoriseAckLicenceIdentifier]))
+				{
+					if (strlen($fieldValues[$authoriseAckLicenceIdentifier]) == 0 )
+					{
+						$errorAndValids['errors'][$authoriseAckLicenceIdentifier] = 'Driver Licence must not be empty.';
+					} elseif (strlen($fieldValues[$authoriseAckLicenceIdentifier]) > 20) { 
+						$errorAndValids['errors'][$authoriseAckLicenceIdentifier] = 'Driver Licence must be 20 characters or less.';
+					} else {
+						$_SESSION[$authoriseAckLicenceIdentifier] = $fieldValues[$authoriseAckLicenceIdentifier];
+						$errorAndValids['valids'][$authoriseAckLicenceIdentifier] = $fieldValues[$authoriseAckLicenceIdentifier];
+					}
+				}
+				
+				// Signature, must be the same as the full name provided
+				if (isset($fieldValues[$authoriseAckSignatureIdentifier]))
+				{
+					if (strlen($fieldValues[$authoriseAckSignatureIdentifier]) == 0 )
+					{
+						$errorAndValids['errors'][$authoriseAckSignatureIdentifier] = 'Signature name must not be empty.';
+					} elseif ($fieldValues[$authoriseAckSignatureIdentifier] != $fieldValues[$authoriseAckNameIdentifier]) { 
+						$errorAndValids['errors'][$authoriseAckSignatureIdentifier] = 'Signature name must be the same as Full Name provided above.';
+					} else {
+						$_SESSION[$authoriseAckSignatureIdentifier] = $fieldValues[$authoriseAckSignatureIdentifier];
+						$errorAndValids['valids'][$authoriseAckSignatureIdentifier] = $fieldValues[$authoriseAckSignatureIdentifier];
+					}
+				}
+				
+			
+			}
+			
+			
+		} else {
+			
+			$errorAndValids['errors']['numberOfPartners'] = 'You have not filled out the business partners. Please go back to page 3 (Partners) and complete that form.';
+		}
+		
+		return $errorAndValids;
+	}
+	
+	private function validatePage7($fieldValues)
+	{
+		session_start();
+		
+		$errorAndValids = array('errors' => array(), 'valids' => array());
+		
+		
+		if (isset($_SESSION['numberOfPartners']))
+		{
+			$errorAndValids['valids']['numberOfPartners'] = $_SESSION['numberOfPartners'];
+			$numberPartners = (int)$_SESSION['numberOfPartners'];
+			
+			for ($i = 1; $i <= $numberPartners; $i++)
+			{
+				$acceptNameIdentifier = 'acceptanceName'.$i;
+				$acceptSignatureIdentifier = 'acceptanceSignature'.$i;
+			
+				// Business partner name 1
+				if (isset($fieldValues[$acceptNameIdentifier]))
+				{
+					if (strlen($fieldValues[$acceptNameIdentifier]) == 0 )
+					{
+						$errorAndValids['errors'][$acceptNameIdentifier] = 'Business partner name must not be empty.';
+					} elseif (strlen($fieldValues[$acceptNameIdentifier]) > 40) { 
+						$errorAndValids['errors'][$acceptNameIdentifier] = 'Business partner name must be 40 characters or less.';
+					} else {
+						$_SESSION[$acceptNameIdentifier] = $fieldValues[$acceptNameIdentifier];
+						$errorAndValids['valids'][$acceptNameIdentifier] = $fieldValues[$acceptNameIdentifier];
+					}
+				}
+				
+				// Signature, must be the same as the full name provided
+				if (isset($fieldValues[$acceptSignatureIdentifier]))
+				{
+					if (strlen($fieldValues[$acceptSignatureIdentifier]) == 0 )
+					{
+						$errorAndValids['errors'][$acceptSignatureIdentifier] = 'Signature name must not be empty.';
+					} elseif ($fieldValues[$acceptSignatureIdentifier] != $fieldValues[$acceptNameIdentifier]) { 
+						$errorAndValids['errors'][$acceptSignatureIdentifier] = 'Signature name must be the same as Full Name provided above.';
+					} else {
+						$_SESSION[$acceptSignatureIdentifier] = $fieldValues[$acceptSignatureIdentifier];
+						$errorAndValids['valids'][$acceptSignatureIdentifier] = $fieldValues[$acceptSignatureIdentifier];
+					}
+				}
+			}
+			
+			
+		} else {
+			
+			$errorAndValids['errors']['numberOfPartners'] = 'You have not filled out the business partners. Please go back to page 3 (Partners) and complete that form.';
+		}
+		
 		return $errorAndValids;
 	}
 

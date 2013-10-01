@@ -133,6 +133,30 @@
 			  </div>
 			  
 			  <div class="row">
+				  <div class="col-md-3">
+					<label for="pinRequired<?php echo $i; ?>" class=" control-label">Pin Required</label>
+				  </div>
+				  <div class="col-md-4">
+					  <select name="pinRequired<?php echo $i; ?>">
+							<?php if (isset($data['valids']['pinRequired'.$i])) { 
+								$selected_value = $data['valids']['pinRequired'.$i];
+							?>
+							<option value="yes" <?php if ($selected_value == 'yes') echo 'selected';?>>Yes</option>
+							<option value="no" <?php if ($selected_value == 'no') echo 'selected';?>>No</option>
+							<?php } else { ?>
+							<option value="yes">Yes</option>
+							<option value="no">No</option>
+							<?php } ?>
+						</select>
+				  </div>
+				  <?php if (isset($data['errors']['pinRequired'.$i])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['pinRequired'.$i]; ?>
+				  </div>	
+				  <?php } ?>
+			  </div>
+			  
+			  <div class="row">
 				<div class="col-md-3">
 					<label for="inputName" class="control-label">Card Products</label>
 				  </div>
@@ -236,6 +260,8 @@ $(document).ready(function(){
 		
 		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="inputName" class="control-label">Card Products</label></div><div class="col-md-4"><label class="checkbox-inline" id="busType"><input type="checkbox" id="allCardProducts" name="allFuelCardProducts'+nextCardHoldersNumb+'" class="allProductsCheckbox"  value="all"> All Products</label><br /><br />OR SELECT INDIVIDUALLY:</div></div>');
 		
+		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="pinRequired'+nextCardHoldersNumb+'" class=" control-label">Pin Required</label></div><div class="col-md-4"><select name="pinRequired'+nextCardHoldersNumb+'"><option value="yes">Yes</option><option value="no">No</option></select></div></div>');
+
 		$('#extraCardHolders').before('<div class="row short-form-row"><div class="col-md-4 col-md-offset-3"><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="unleaded" class="productCheckbox"> Unleaded </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="biodiesel" class="productCheckbox"> BioDiesel </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="unleadedMax" class="productCheckbox"> Unleaded Max e10 </label><br /><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="lpg" class="productCheckbox"> LPG </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="gas" class="productCheckbox"> Gas </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="carWash" class="productCheckbox"> Car Wash </label><br /><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="shop" class="productCheckbox"> Shop </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="premiumUnleaded" class="productCheckbox"> Premium Unleaded </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="octane" class="productCheckbox"> 98 Octane </label></div></div>');
 		
 		//update the business partner number value

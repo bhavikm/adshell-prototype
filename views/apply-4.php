@@ -142,7 +142,7 @@
 							<option value="qld" <?php if ($selected_value == 'qld') echo 'selected';?>>Queensland</option>
 							<option value="sa" <?php if ($selected_value == 'sa') echo 'selected';?>>South Autralia</option>
 							<option value="wa" <?php if ($selected_value == 'wa') echo 'selected';?>>Western Australia</option>
-							<option value="tas" <?php if ($selected_value == 'tas') echo 'tas';?>>Tasmania</option>
+							<option value="tas" <?php if ($selected_value == 'tas') echo 'selected';?>>Tasmania</option>
 							<option value="act" <?php if ($selected_value == 'act') echo 'selected';?>>Australian Capital Territory</option>
 							<option value="nt" <?php if ($selected_value == 'nt') echo 'selected';?>>Northern Territory</option>
 							<?php } else { ?>
