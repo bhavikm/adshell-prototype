@@ -70,18 +70,18 @@
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="tradingName" class="control-label">Trading Name for card</label>
+					<label for="tradingNameFuelCard" class="control-label">Trading Name for card</label>
 				  </div>
 				  <div class="col-md-4">
-					<?php if (isset($data['valids']['tradingName'])) { ?>
-					<input type="text" class="form-control" id="tradingName" name="tradingName" placeholder="Trading Name to appear on card" value="<?php echo $data['valids']['tradingName']; ?>">
+					<?php if (isset($data['valids']['tradingNameFuelCard'])) { ?>
+					<input type="text" class="form-control" id="tradingNameFuelCard" name="tradingNameFuelCard" placeholder="Trading Name to appear on card" value="<?php echo $data['valids']['tradingNameFuelCard']; ?>">
 					<?php } else { ?>
-					<input type="text" class="form-control" id="tradingName" name="tradingName" placeholder="Trading Name to appear on card">
+					<input type="text" class="form-control" id="tradingNameFuelCard" name="tradingNameFuelCard" placeholder="Trading Name to appear on card">
 					<?php } ?>
 				  </div>
-				  <?php if (isset($data['errors']['tradingName'])) { ?>
+				  <?php if (isset($data['errors']['tradingNameFuelCard'])) { ?>
 				  <div class="col-md-4 col-md-offset-1 red-text">	
-				  <?php echo $data['errors']['tradingName']; ?>
+				  <?php echo $data['errors']['tradingNameFuelCard']; ?>
 				  </div>	
 				  <?php } ?>
 			  </div>

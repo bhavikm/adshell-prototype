@@ -517,16 +517,16 @@ class Apply_Controller
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
 		//have to check for trading name
-		if (isset($fieldValues['tradingName']))
+		if (isset($fieldValues['tradingNameFuelCard']))
 		{
-			if (strlen($fieldValues['tradingName']) == 0 )
+			if (strlen($fieldValues['tradingNameFuelCard']) == 0 )
 			{
-				$errorAndValids['errors']['tradingName'] = 'Trading name must not be empty.';
-			} elseif (strlen($fieldValues['tradingName']) > 40) { 
-				$errorAndValids['errors']['tradingName'] = 'Trading name must be 40 characters or less.';
+				$errorAndValids['errors']['tradingNameFuelCard'] = 'Trading name must not be empty.';
+			} elseif (strlen($fieldValues['tradingNameFuelCard']) > 40) { 
+				$errorAndValids['errors']['tradingNameFuelCard'] = 'Trading name must be 40 characters or less.';
 			} else {
-				$_SESSION['tradingName'] = $fieldValues['tradingName'];
-				$errorAndValids['valids']['tradingName'] = $fieldValues['tradingName'];
+				$_SESSION['tradingNameFuelCard'] = $fieldValues['tradingNameFuelCard'];
+				$errorAndValids['valids']['tradingNameFuelCard'] = $fieldValues['tradingNameFuelCard'];
 			}
 		}
 		
@@ -1028,6 +1028,121 @@ class Apply_Controller
 		}
 		
 		return $errorAndValids;
+	}
+	
+	private function getCompletedFormArray()
+	{
+		$completedPages = array();
+		
+		//Page 1
+		$completedPages['page1'] = array();
+		
+		if (isset($_SESSION['biztype']))
+			$completedPages['page1']['biztype'] = $_SESSION['biztype']:
+		if (isset($_SESSION['businessName']))
+			$completedPages['page1']['businessName'] = $_SESSION['businessName']:	
+		if (isset($_SESSION['tradingName']))
+			$completedPages['page1']['tradingName'] = $_SESSION['tradingName']:	
+		if (isset($_SESSION['yearBizStart']))
+			$completedPages['page1']['yearBizStart'] = $_SESSION['yearBizStart']:
+		if (isset($_SESSION['abn']))
+			$completedPages['page1']['abn'] = $_SESSION['abn']:
+		if (isset($_SESSION['operations']))
+			$completedPages['page1']['operations'] = $_SESSION['operations']:
+		if (isset($_SESSION['contactFirstName']))
+			$completedPages['page1']['contactFirstName'] = $_SESSION['contactFirstName']:
+		if (isset($_SESSION['contactLastName']))
+			$completedPages['page1']['contactLastName'] = $_SESSION['contactLastName']:	
+		if (isset($_SESSION['inputPosition']))
+			$completedPages['page1']['inputPosition'] = $_SESSION['inputPosition']:		
+		if (isset($_SESSION['inputPhone']))
+			$completedPages['page1']['inputPhone'] = $_SESSION['inputPhone']:			
+		if (isset($_SESSION['inputFax']))
+			$completedPages['page1']['inputFax'] = $_SESSION['inputFax']:			
+		if (isset($_SESSION['inputMobile']))
+			$completedPages['page1']['inputMobile'] = $_SESSION['inputFax']:	
+		if (isset($_SESSION['inputEmail1']))
+			$completedPages['page1']['inputEmail1'] = $_SESSION['inputEmail1']:		
+		if (isset($_SESSION['creditLimit']))
+			$completedPages['page1']['creditLimit'] = $_SESSION['creditLimit']:		
+			
+		//Page 2
+		$completedPages['page2'] = array();
+		
+		if (isset($_SESSION['refName1']))
+			$completedPages['page2']['refName1'] = $_SESSION['refName1']:
+		if (isset($_SESSION['refPhone1']))
+			$completedPages['page2']['refPhone1'] = $_SESSION['refPhone1']:	
+		if (isset($_SESSION['refName2']))
+			$completedPages['page2']['refName2'] = $_SESSION['refName2']:
+		if (isset($_SESSION['refPhone2']))
+			$completedPages['page2']['refPhone2'] = $_SESSION['refPhone2']:	
+		if (isset($_SESSION['fuelSupplierName']))
+			$completedPages['page2']['fuelSupplierName'] = $_SESSION['fuelSupplierName']:
+		if (isset($_SESSION['fuelSupplierPhone']))
+			$completedPages['page2']['fuelSupplierPhone'] = $_SESSION['fuelSupplierPhone']:		
+		
+		//Page 3
+		$completedPages['page3'] = array();
+		
+		if (isset($_SESSION['numberOfPartners']))
+		{
+			$completedPages['page3']['numberOfPartners'] = $_SESSION['numberOfPartners']:
+			
+			$completedPages['page3']['partnerDetails'] = array();
+			for ($i = 1; $i <= $completedPages['page3']['numberOfPartners']; $i++)
+			{
+				$partnerDetails = array();
+				if (isset($_SESSION['partnerName'.$i]))
+					$partnerDetails['partnerName'] = $_SESSION['partnerName']:
+				if (isset($_SESSION['partnerPhone'.$i]))
+					$partnerDetails['partnerPhone'] = $_SESSION['partnerPhone']:
+				if (isset($_SESSION['partnerAddress'.$i]))
+					$partnerDetails['partnerAddress'] = $_SESSION['partnerAddress']:	
+				if (isset($_SESSION['partnerState'.$i]))
+					$partnerDetails['partnerState'] = $_SESSION['partnerState']:		
+				if (isset($_SESSION['partnerPostcode'.$i]))
+					$partnerDetails['partnerPostcode'] = $_SESSION['partnerPostcode']:	
+					
+				$completedPages['page3']['partnerDetails'][] = $partnerDetails;	
+			}
+		}
+		
+		//Page 4
+		$completedPages['page4'] = array();
+		
+		if (isset($_SESSION['tradingName']))
+			$completedPages['page4']['tradingName'] = $_SESSION['tradingName']:
+			
+		if (isset($_SESSION['numberOfCardholders']))
+		{
+			$completedPages['page4']['numberOfCardholders'] = $_SESSION['numberOfCardholders']:
+			
+			$completedPages['page4']['cardHolderDetails'] = array();
+			for ($i = 1; $i <= $completedPages['page4']['numberOfCardholders']; $i++)
+			{
+				$cardHolderDetails = array();
+				if (isset($_SESSION['cardHolderName'.$i]))
+					$cardHolderDetails['cardHolderName'] = $_SESSION['cardHolderName']:
+				if (isset($_SESSION['registrationNo'.$i]))
+					$cardHolderDetails['registrationNo'] = $_SESSION['registrationNo']:
+				if (isset($_SESSION['pinRequired'.$i]))
+					$cardHolderDetails['pinRequired'] = $_SESSION['pinRequired']:	
+				$fuelCardProducts = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );	
+				if (isset($_SESSION['fuelCardProducts'.$i]))
+				{
+					foreach ($_SESSION['fuelCardProducts'.$i] as $product => $true)
+					{
+						$fuelCardProducts[$product] = true;
+					}
+				}
+				$cardHolderDetails['fuelCardProducts'] = $fuelCardProducts;
+					
+				$completedPages['page4']['partnerDetails'][] = $cardHolderDetails;	
+			}
+		}
+		
+		return $completedPages;
 	}
 
 }
