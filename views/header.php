@@ -20,6 +20,8 @@
 	
 	<link href="css/navbar.css" rel="stylesheet">
 	<link href="css/custom.css" rel="stylesheet">
+	
+	<script src="js/jquery.js"></script>
   </head>
 <!-- NAVBAR
 ================================================== -->

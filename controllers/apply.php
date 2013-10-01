@@ -50,7 +50,7 @@ class Apply_Controller
 				
 				case '4':
 					$errorAndValids = $this->validatePage3($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
 					{
 						$this->template = 'apply-4';
 					} else {
@@ -60,7 +60,14 @@ class Apply_Controller
 				break;
 				
 				case '5':
-					$this->template = 'apply-5';
+					$errorAndValids = $this->validatePage4($getVars);
+					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					{
+						$this->template = 'apply-5';
+					} else {
+						// move on to next page
+						$this->template = 'apply-6';
+					}
 				break;
 				
 				case '6':
@@ -382,12 +389,208 @@ class Apply_Controller
 	}
 	
 	
+	// Validate business partners
+	/*  Each business partner has the format:	
+	*		Full Name 
+	*		Phone
+	*		Address
+	*		State
+	*		Postcode
+	*	
+	*	A minimum of one business partner is required to be filled in (for sole trader) but more
+	* 	can be added if needed
+	*
+	*/
 	private function validatePage3($fieldValues)
 	{
 		session_start();
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
+
+		if (isset($fieldValues['numberOfPartners']))
+		{
+			$errorAndValids['valids']['numberOfPartners'] = $fieldValues['numberOfPartners'];
+			$numberPartners = (int)$fieldValues['numberOfPartners'];
+			$_SESSION['numberOfPartners'] = $numberPartners;
 		
+			
+			// The string prefixes used to get passed field values and set error and valid fields for return
+			// Each input box has name="" set to the matching prefix below with a number attached at the end 
+			// to indicate the partner number (starting from 1). So for Business Partner 1 the inputs are 
+			// are identified by partnerName1, partnerPhone1 etc.
+			$partnerNameIdentifier = 'partnerName';
+			$partnerPhoneIdentifier = 'partnerPhone';
+			$partnerAddressIdentifier = 'partnerAddress';
+			$partnerStateIdentifier = 'partnerState';
+			$partnerPostcodeIdentifier = 'partnerPostcode';
+			
+			for ($i = 1; $i <= $numberPartners; $i++)
+			{
+				// Full name for partner
+				if (isset($fieldValues[$partnerNameIdentifier.$i]))
+				{
+					if (strlen($fieldValues[$partnerNameIdentifier.$i]) == 0 )
+					{
+						$errorAndValids['errors'][$partnerNameIdentifier.$i] = 'Business partner name must not be empty.';
+					} elseif (strlen($fieldValues[$partnerNameIdentifier.$i]) > 40) { 
+						$errorAndValids['errors'][$partnerNameIdentifier.$i] = 'Business partner name must be 40 characters or less.';
+					} else {
+						$_SESSION[$partnerNameIdentifier.$i] = $fieldValues[$partnerNameIdentifier.$i];
+						$errorAndValids['valids'][$partnerNameIdentifier.$i] = $fieldValues[$partnerNameIdentifier.$i];
+					}
+				}
+				
+				// Phone for partner
+				if (isset($fieldValues[$partnerPhoneIdentifier.$i]))
+				{
+					if (strlen($fieldValues[$partnerPhoneIdentifier.$i]) == 0 )
+					{
+						$errorAndValids['errors'][$partnerPhoneIdentifier.$i] = 'Business partner phone must not be empty.';
+					} elseif (strlen($fieldValues[$partnerPhoneIdentifier.$i]) > 40) { 
+						$errorAndValids['errors'][$partnerPhoneIdentifier.$i] = 'Business partner phone must be 10 digits or less.';
+					} else {
+						$_SESSION[$partnerPhoneIdentifier.$i] = $fieldValues[$partnerPhoneIdentifier.$i];
+						$errorAndValids['valids'][$partnerPhoneIdentifier.$i] = $fieldValues[$partnerPhoneIdentifier.$i];
+					}
+				}
+				
+				// Address string for partner
+				if (isset($fieldValues[$partnerAddressIdentifier.$i]))
+				{
+					if (strlen($fieldValues[$partnerAddressIdentifier.$i]) == 0 )
+					{
+						$errorAndValids['errors'][$partnerAddressIdentifier.$i] = 'Business partner address must not be empty.';
+					} elseif (strlen($fieldValues[$partnerAddressIdentifier.$i]) > 200) { 
+						$errorAndValids['errors'][$partnerAddressIdentifier.$i] = 'Business partner address must be 200 characters or less.';
+					} else {
+						$_SESSION[$partnerAddressIdentifier.$i] = $fieldValues[$partnerAddressIdentifier.$i];
+						$errorAndValids['valids'][$partnerAddressIdentifier.$i] = $fieldValues[$partnerAddressIdentifier.$i];
+					}
+				}
+				
+				// State select box for partner, just check if its not on first 'select...' option
+				if (isset($fieldValues[$partnerStateIdentifier.$i]))
+				{
+					if ($fieldValues[$partnerStateIdentifier.$i] == 'select')
+					{
+						$errorAndValids['errors'][$partnerStateIdentifier.$i] = 'Must select a state for the business partner.';
+					} else {
+						$_SESSION[$partnerStateIdentifier.$i] = $fieldValues[$partnerStateIdentifier.$i];
+						$errorAndValids['valids'][$partnerStateIdentifier.$i] = $fieldValues[$partnerStateIdentifier.$i];
+					}
+				}
+				
+				// Postcode for partner
+				if (isset($fieldValues[$partnerPostcodeIdentifier.$i]))
+				{
+					if (strlen($fieldValues[$partnerPostcodeIdentifier.$i]) == 0 )
+					{
+						$errorAndValids['errors'][$partnerPostcodeIdentifier.$i] = 'Business partner postcode must not be empty.';
+					} elseif (strlen($fieldValues[$partnerPostcodeIdentifier.$i]) != 4) { 
+						$errorAndValids['errors'][$partnerPostcodeIdentifier.$i] = 'Business partner postcode must be 4 digits.';
+					} else {
+						$_SESSION[$partnerPostcodeIdentifier.$i] = $fieldValues[$partnerPostcodeIdentifier.$i];
+						$errorAndValids['valids'][$partnerPostcodeIdentifier.$i] = $fieldValues[$partnerPostcodeIdentifier.$i];
+					}
+				}
+			
+			}
+		} else {
+			$errorAndValids['valids']['numberOfPartners'] = 1;
+		}
+		
+		return $errorAndValids;
+	}
+	
+	
+	private function validatePage4($fieldValues)
+	{
+		session_start();
+		
+		$errorAndValids = array('errors' => array(), 'valids' => array());
+		
+		//have to check for trading name
+		if (isset($fieldValues['tradingName']))
+		{
+			if (strlen($fieldValues['tradingName']) == 0 )
+			{
+				$errorAndValids['errors']['tradingName'] = 'Trading name must not be empty.';
+			} elseif (strlen($fieldValues['tradingName']) > 40) { 
+				$errorAndValids['errors']['tradingName'] = 'Trading name must be 40 characters or less.';
+			} else {
+				$_SESSION['tradingName'] = $fieldValues['tradingName'];
+				$errorAndValids['valids']['tradingName'] = $fieldValues['tradingName'];
+			}
+		}
+		
+		if (isset($fieldValues['numberOfCardholders']))
+		{
+			$errorAndValids['valids']['numberOfCardholders'] = $fieldValues['numberOfCardholders'];
+			$numberCardholders = (int)$fieldValues['numberOfCardholders'];
+			$_SESSION['numberOfCardholders'] = $numberCardholders;
+
+			$cardHolderNameIdentifier = 'cardHolderName';
+			$cardHolderRegistrationIdentifier = 'registrationNo';
+			$cardHolderAllProductsIdentifier = 'allFuelCardProducts';
+			$cardHolderProductsIdentifier = 'fuelCardProducts';
+			
+			for ($i = 1; $i <= $numberCardholders; $i++)
+			{
+				// Card holder name
+				if (isset($fieldValues[$cardHolderNameIdentifier.$i]))
+				{
+					if (strlen($fieldValues[$cardHolderNameIdentifier.$i]) == 0 )
+					{
+						$errorAndValids['errors'][$cardHolderNameIdentifier.$i] = 'Card holder name must not be empty.';
+					} elseif (strlen($fieldValues[$cardHolderNameIdentifier.$i]) > 40) { 
+						$errorAndValids['errors'][$cardHolderNameIdentifier.$i] = 'Card holder name must be 40 characters or less.';
+					} else {
+						$_SESSION[$cardHolderNameIdentifier.$i] = $fieldValues[$cardHolderNameIdentifier.$i];
+						$errorAndValids['valids'][$cardHolderNameIdentifier.$i] = $fieldValues[$cardHolderNameIdentifier.$i];
+					}
+				}
+				
+				// Card Holder registration number
+				if (isset($fieldValues[$cardHolderRegistrationIdentifier.$i]))
+				{
+					if (strlen($fieldValues[$cardHolderRegistrationIdentifier.$i]) == 0 )
+					{
+						$errorAndValids['errors'][$cardHolderRegistrationIdentifier.$i] = 'Card holder registration number must not be empty.';
+					} elseif (strlen($fieldValues[$cardHolderRegistrationIdentifier.$i]) > 15) { 
+						$errorAndValids['errors'][$cardHolderRegistrationIdentifier.$i] = 'Card holder registration number must be 15 character or less.';
+					} else {
+						$_SESSION[$cardHolderRegistrationIdentifier.$i] = $fieldValues[$cardHolderRegistrationIdentifier.$i];
+						$errorAndValids['valids'][$cardHolderRegistrationIdentifier.$i] = $fieldValues[$cardHolderRegistrationIdentifier.$i];
+					}
+				}
+				
+				// Checked products, initially create array for all product options as false for unselected
+				$errorAndValids['valids'][$cardHolderProductsIdentifier.$i] = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );
+				if (isset($fieldValues[$cardHolderProductsIdentifier.$i]))
+				{
+					if (count($fieldValues[$cardHolderProductsIdentifier.$i]) == 0 )
+					{
+						$errorAndValids['errors'][$cardHolderProductsIdentifier.$i] = 'Must select at least one product for fuel card.';
+					} else {
+						$_SESSION[$cardHolderProductsIdentifier.$i] = $fieldValues[$cardHolderProductsIdentifier.$i];
+						// add for each selected item to be set to true in the array of all product options
+						foreach ($fieldValues[$cardHolderProductsIdentifier.$i] as $selectedProductVal)
+						{
+							$errorAndValids['valids'][$cardHolderProductsIdentifier.$i][$selectedProductVal] = true;
+						}
+					}
+				} else {
+					$errorAndValids['errors'][$cardHolderProductsIdentifier.$i] = 'Must select at least one product for fuel card.';
+				}
+			
+			}
+			
+			
+		} else {
+			$errorAndValids['valids']['numberOfCardholders'] = 1;
+		}	
+
+	
 		return $errorAndValids;
 	}
 
