@@ -16,9 +16,6 @@ class Apply_Controller
 	public function main(array $getVars)
 	{	
 	
-		$header = new View_Model('header');
-		$header->assign('active_nav','apply');
-		$footer = new View_Model('footer');
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -28,56 +25,84 @@ class Apply_Controller
 			{	
 				case '2':
 					$errorAndValids = $this->validatePage1($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage2($getVars);
+						$this->template = 'apply-3';
+						break;
+					} else {
 						$this->template = 'apply-2';
 						break;
 					}
 				
 				case '3':
 					$errorAndValids = $this->validatePage2($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage3($getVars);
+						$this->template = 'apply-4';
+						break;
+					} else {
 						$this->template = 'apply-3';
 						break;
-					} 
+					}
 					
 				case '4':
 					$errorAndValids = $this->validatePage3($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage4($getVars);
+						$this->template = 'apply-5';
+						break;
+					} else {
 						$this->template = 'apply-4';
 						break;
 					}
 					
 				case '5':
 					$errorAndValids = $this->validatePage4($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 2)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage5($getVars);
+						$this->template = 'apply-6';
+						break;
+					} else {
 						$this->template = 'apply-5';
 						break;
 					}
 				
 				case '6':
 					$errorAndValids = $this->validatePage5($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage6($getVars);
+						$this->template = 'apply-7';
+						break;
+					} else {
 						$this->template = 'apply-6';
 						break;
 					}
 				
 				case '7':
 					$errorAndValids = $this->validatePage6($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage7($getVars);
+						$this->template = 'apply-8';
+						break;
+					} else {
 						$this->template = 'apply-7';
 						break;
 					}
 				
 				case '8':
 					$errorAndValids = $this->validatePage7($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$completedForm = $this->getCompletedFormArray();
+						$this->template = 'apply-9';
+						break;
+					} else {
 						$this->template = 'apply-8';
 						break;
 					}
@@ -90,6 +115,7 @@ class Apply_Controller
 				case '10':
 					$this->template = 'apply-10';
 				break;
+				
 			}
 		
 		}
@@ -104,14 +130,22 @@ class Apply_Controller
 			session_write_close();
 			setcookie(session_name(),'',0,'/');
 			session_regenerate_id(true);
+			
+			$header = new View_Model('header');
+			$footer = new View_Model('footer');
+		} else {
+			$header = new View_Model('header-application');
+			$footer = new View_Model('footer-application');
 		}
+		
+		
+		$header->assign('active_nav','apply');
 		
 		//create a new view and pass it our template
 		$view = new View_Model($this->template);
 		$view->assign('header', $header->render(FALSE));
 		$view->assign('footer', $footer->render(FALSE));
-		//assign article data to view
-		//$view->assign('article' , $article);
+		
 		
 		//assign the errors array to the template data
 		$view->assign('errors', $errorAndValids['errors']);
@@ -121,8 +155,6 @@ class Apply_Controller
 		{
 			$view->assign('completedPages', $completedForm);
 		}
-		
-		echo count($_SESSION);
 		
 		$view->render();
 	}
@@ -143,6 +175,12 @@ class Apply_Controller
 				$errorAndValids['valids']['biztype'] = $fieldValues['biztype'];
 			}
 		}
+		if (isset($_SESSION['biztype']) && !isset($errorAndValids['errors']['biztype']))
+		{
+			$errorAndValids['valids']['biztype'] = $_SESSION['biztype'];
+		} elseif (isset($_SESSION['biztype'])) {
+			unset($_SESSION['biztype']);
+		}
 		
 		if (isset($fieldValues['businessName']))
 		{
@@ -156,6 +194,13 @@ class Apply_Controller
 				$errorAndValids['valids']['businessName'] = $fieldValues['businessName'];
 			}
 		}
+		if (isset($_SESSION['businessName']) && !isset($errorAndValids['errors']['businessName']))
+		{
+			$errorAndValids['valids']['businessName'] = $_SESSION['businessName'];
+		} elseif (isset($_SESSION['businessName'])) {
+			unset($_SESSION['businessName']);
+		}
+		
 		
 		if (isset($fieldValues['tradingName']))
 		{
@@ -168,6 +213,12 @@ class Apply_Controller
 				$_SESSION['tradingName'] = $fieldValues['tradingName'];
 				$errorAndValids['valids']['tradingName'] = $fieldValues['tradingName'];
 			}
+		}
+		if (isset($_SESSION['tradingName']) && !isset($errorAndValids['errors']['tradingName']))
+		{
+			$errorAndValids['valids']['tradingName'] = $_SESSION['tradingName'];
+		} elseif (isset($_SESSION['tradingName'])) {
+			unset($_SESSION['tradingName']);
 		}
 		
 		if (isset($fieldValues['yearBizStart']))
@@ -182,6 +233,12 @@ class Apply_Controller
 				$errorAndValids['valids']['yearBizStart'] = $fieldValues['yearBizStart'];
 			}
 		}
+		if (isset($_SESSION['yearBizStart']) && !isset($errorAndValids['errors']['yearBizStart']))
+		{
+			$errorAndValids['valids']['yearBizStart'] = $_SESSION['yearBizStart'];
+		} elseif (isset($_SESSION['yearBizStart'])) {
+			unset($_SESSION['yearBizStart']);
+		}
 		
 		if (isset($fieldValues['abn']))
 		{
@@ -194,6 +251,12 @@ class Apply_Controller
 				$_SESSION['abn'] = $fieldValues['abn'];
 				$errorAndValids['valids']['abn'] = $fieldValues['abn'];
 			}
+		}
+		if (isset($_SESSION['abn']) && !isset($errorAndValids['errors']['abn']))
+		{
+			$errorAndValids['valids']['abn'] = $_SESSION['abn'];
+		} elseif (isset($_SESSION['abn'])) {
+			unset($_SESSION['abn']);
 		}
 		
 		if (isset($fieldValues['operations']))
@@ -208,6 +271,12 @@ class Apply_Controller
 				$errorAndValids['valids']['operations'] = $fieldValues['operations'];
 			}
 		}
+		if (isset($_SESSION['operations']) && !isset($errorAndValids['errors']['operations']))
+		{
+			$errorAndValids['valids']['operations'] = $_SESSION['operations'];
+		} elseif (isset($_SESSION['operations'])) {
+			unset($_SESSION['operations']);
+		}
 		
 		if (isset($fieldValues['contactFirstName']))
 		{
@@ -220,6 +289,12 @@ class Apply_Controller
 				$_SESSION['contactFirstName'] = $fieldValues['contactFirstName'];
 				$errorAndValids['valids']['contactFirstName'] = $fieldValues['contactFirstName'];
 			}
+		}
+		if (isset($_SESSION['contactFirstName']) && !isset($errorAndValids['errors']['contactFirstName']))
+		{
+			$errorAndValids['valids']['contactFirstName'] = $_SESSION['contactFirstName'];
+		} elseif (isset($_SESSION['contactFirstName'])) {
+			unset($_SESSION['contactFirstName']);
 		}
 		
 		if (isset($fieldValues['contactLastName']))
@@ -234,6 +309,12 @@ class Apply_Controller
 				$errorAndValids['valids']['contactLastName'] = $fieldValues['contactLastName'];
 			}
 		}
+		if (isset($_SESSION['contactLastName']) && !isset($errorAndValids['errors']['contactLastName']))
+		{
+			$errorAndValids['valids']['contactLastName'] = $_SESSION['contactLastName'];
+		} elseif (isset($_SESSION['contactLastName'])) {
+			unset($_SESSION['contactLastName']);
+		}
 		
 		if (isset($fieldValues['inputPosition']))
 		{
@@ -246,6 +327,12 @@ class Apply_Controller
 				$_SESSION['inputPosition'] = $fieldValues['inputPosition'];
 				$errorAndValids['valids']['inputPosition'] = $fieldValues['inputPosition'];
 			}
+		}
+		if (isset($_SESSION['inputPosition']) && !isset($errorAndValids['errors']['inputPosition']))
+		{
+			$errorAndValids['valids']['inputPosition'] = $_SESSION['inputPosition'];
+		} elseif (isset($_SESSION['inputPosition'])) {
+			unset($_SESSION['inputPosition']);
 		}
 		
 		if (isset($fieldValues['inputPhone']))
@@ -260,6 +347,12 @@ class Apply_Controller
 				$errorAndValids['valids']['inputPhone'] = $fieldValues['inputPhone'];
 			}
 		}
+		if (isset($_SESSION['inputPhone']) && !isset($errorAndValids['errors']['inputPhone']))
+		{
+			$errorAndValids['valids']['inputPhone'] = $_SESSION['inputPhone'];
+		} elseif (isset($_SESSION['inputPhone'])) {
+			unset($_SESSION['inputPhone']);
+		}
 		
 		if (isset($fieldValues['inputFax']))
 		{
@@ -272,6 +365,12 @@ class Apply_Controller
 				$_SESSION['inputFax'] = $fieldValues['inputFax'];
 				$errorAndValids['valids']['inputFax'] = $fieldValues['inputFax'];
 			}
+		}
+		if (isset($_SESSION['inputFax']) && !isset($errorAndValids['errors']['inputFax']))
+		{
+			$errorAndValids['valids']['inputFax'] = $_SESSION['inputFax'];
+		} elseif (isset($_SESSION['inputFax'])) {
+			unset($_SESSION['inputFax']);
 		}
 		
 		if (isset($fieldValues['inputMobile']))
@@ -286,6 +385,12 @@ class Apply_Controller
 				$errorAndValids['valids']['inputMobile'] = $fieldValues['inputMobile'];
 			}
 		}
+		if (isset($_SESSION['inputMobile']) && !isset($errorAndValids['errors']['inputMobile']))
+		{
+			$errorAndValids['valids']['inputMobile'] = $_SESSION['inputMobile'];
+		} elseif (isset($_SESSION['inputMobile'])) {
+			unset($_SESSION['inputMobile']);
+		}
 		
 		if (isset($fieldValues['inputEmail1']))
 		{
@@ -299,6 +404,13 @@ class Apply_Controller
 				$errorAndValids['valids']['inputEmail1'] = $fieldValues['inputEmail1'];
 			}
 		}
+		if (isset($_SESSION['inputEmail1']) && !isset($errorAndValids['errors']['inputEmail1']))
+		{
+			$errorAndValids['valids']['inputEmail1'] = $_SESSION['inputEmail1'];
+		} elseif (isset($_SESSION['inputEmail1'])) {
+			unset($_SESSION['inputEmail1']);
+		}
+		
 		
 		if (isset($fieldValues['creditLimit']))
 		{
@@ -312,6 +424,21 @@ class Apply_Controller
 				$errorAndValids['valids']['creditLimit'] = $fieldValues['creditLimit'];
 			}
 		}
+		if (isset($_SESSION['creditLimit']) && !isset($errorAndValids['errors']['creditLimit']))
+		{
+			$errorAndValids['valids']['creditLimit'] = $_SESSION['creditLimit'];
+		} elseif (isset($_SESSION['creditLimit'])) {
+			unset($_SESSION['creditLimit']);
+		}
+		
+		
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page1valid'] = true;
+		} else {
+			 $_SESSION['page1valid'] = false;
+		}
 		
 		
 		return $errorAndValids;
@@ -320,8 +447,6 @@ class Apply_Controller
 	
 	private function validatePage2($fieldValues)
 	{
-		session_start();
-		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
 		if (isset($fieldValues['refName1']))
@@ -336,6 +461,12 @@ class Apply_Controller
 				$errorAndValids['valids']['refName1'] = $fieldValues['refName1'];
 			}
 		}
+		if (isset($_SESSION['refName1']) && !isset($errorAndValids['errors']['refName1']))
+		{
+			$errorAndValids['valids']['refName1'] = $_SESSION['refName1'];
+		} elseif (isset($_SESSION['refName1'])) {
+			unset($_SESSION['refName1']);
+		}
 		
 		if (isset($fieldValues['refPhone1']))
 		{
@@ -348,6 +479,12 @@ class Apply_Controller
 				$_SESSION['refPhone1'] = $fieldValues['refPhone1'];
 				$errorAndValids['valids']['refPhone1'] = $fieldValues['refPhone1'];
 			}
+		}
+		if (isset($_SESSION['refPhone1']) && !isset($errorAndValids['errors']['refPhone1']))
+		{
+			$errorAndValids['valids']['refPhone1'] = $_SESSION['refPhone1'];
+		} elseif (isset($_SESSION['refPhone1'])) {
+			unset($_SESSION['refPhone1']);
 		}
 		
 		if (isset($fieldValues['refName2']))
@@ -362,6 +499,12 @@ class Apply_Controller
 				$errorAndValids['valids']['refName2'] = $fieldValues['refName2'];
 			}
 		}
+		if (isset($_SESSION['refName2']) && !isset($errorAndValids['errors']['refName2']))
+		{
+			$errorAndValids['valids']['refName2'] = $_SESSION['refName2'];
+		} elseif (isset($_SESSION['refName2'])) {
+			unset($_SESSION['refName2']);
+		}
 		
 		if (isset($fieldValues['refPhone2']))
 		{
@@ -374,6 +517,12 @@ class Apply_Controller
 				$_SESSION['refPhone2'] = $fieldValues['refPhone2'];
 				$errorAndValids['valids']['refPhone2'] = $fieldValues['refPhone2'];
 			}
+		}
+		if (isset($_SESSION['refPhone2']) && !isset($errorAndValids['errors']['refPhone2']))
+		{
+			$errorAndValids['valids']['refPhone2'] = $_SESSION['refPhone2'];
+		} elseif (isset($_SESSION['refPhone2'])) {
+			unset($_SESSION['refPhone2']);
 		}
 		
 		
@@ -389,6 +538,13 @@ class Apply_Controller
 				$errorAndValids['valids']['fuelSupplierName'] = $fieldValues['fuelSupplierName'];
 			}
 		}
+		if (isset($_SESSION['fuelSupplierName']) && !isset($errorAndValids['errors']['fuelSupplierName']))
+		{
+			$errorAndValids['valids']['fuelSupplierName'] = $_SESSION['fuelSupplierName'];
+		} elseif (isset($_SESSION['fuelSupplierName'])) {
+			unset($_SESSION['fuelSupplierName']);
+		}
+		
 		
 		if (isset($fieldValues['fuelSupplierPhone']))
 		{
@@ -401,6 +557,20 @@ class Apply_Controller
 				$_SESSION['fuelSupplierPhone'] = $fieldValues['fuelSupplierPhone'];
 				$errorAndValids['valids']['fuelSupplierPhone'] = $fieldValues['fuelSupplierPhone'];
 			}
+		}
+		if (isset($_SESSION['fuelSupplierPhone']) && !isset($errorAndValids['errors']['fuelSupplierPhone']))
+		{
+			$errorAndValids['valids']['fuelSupplierPhone'] = $_SESSION['fuelSupplierPhone'];
+		} elseif (isset($_SESSION['fuelSupplierPhone'])) {
+			unset($_SESSION['fuelSupplierPhone']);
+		}
+		
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page2valid'] = true;
+		} else {
+			 $_SESSION['page2valid'] = false;
 		}
 		
 		return $errorAndValids;
@@ -421,7 +591,6 @@ class Apply_Controller
 	*/
 	private function validatePage3($fieldValues)
 	{
-		session_start();
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 
@@ -517,13 +686,19 @@ class Apply_Controller
 			$errorAndValids['valids']['numberOfPartners'] = 1;
 		}
 		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page3valid'] = true;
+		} else {
+			 $_SESSION['page3valid'] = false;
+		}
+		
 		return $errorAndValids;
 	}
 	
 	
 	private function validatePage4($fieldValues)
 	{
-		session_start();
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -617,14 +792,19 @@ class Apply_Controller
 			// have to setup array of fuel card options 
 			$errorAndValids['valids'][$cardHolderProductsIdentifier.'1'] = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );
 		}	
-
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page4valid'] = true;
+		} else {
+			 $_SESSION['page4valid'] = false;
+		}
 	
 		return $errorAndValids;
 	}
 	
 	private function validatePage5($fieldValues)
 	{
-		session_start();
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -864,13 +1044,18 @@ class Apply_Controller
 			}
 		}
 		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page5valid'] = true;
+		} else {
+			 $_SESSION['page5valid'] = false;
+		}
+		
 		return $errorAndValids;
 	}
 	
 	private function validatePage6($fieldValues)
 	{
-		session_start();
-		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
 		
@@ -983,12 +1168,18 @@ class Apply_Controller
 			$errorAndValids['errors']['numberOfPartners'] = 'You have not filled out the business partners. Please go back to page 3 (Partners) and complete that form.';
 		}
 		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page6valid'] = true;
+		} else {
+			 $_SESSION['page6valid'] = false;
+		}
+		
 		return $errorAndValids;
 	}
 	
 	private function validatePage7($fieldValues)
 	{
-		session_start();
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -1036,6 +1227,13 @@ class Apply_Controller
 		} else {
 			
 			$errorAndValids['errors']['numberOfPartners'] = 'You have not filled out the business partners. Please go back to page 3 (Partners) and complete that form.';
+		}
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page7valid'] = true;
+		} else {
+			 $_SESSION['page7valid'] = false;
 		}
 		
 		return $errorAndValids;

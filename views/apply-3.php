@@ -2,57 +2,65 @@
 
 <!-- Main component for a primary marketing message or call to action -->
 <div class="container" id="apply-page">
-	<h1 class="spacing-under">Application - Page 2 - Business References</h1>
 	<div class="row">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			<b>Rerferences</b>
-		</div>
-		<div class="col-md-1 apply-progress">
-			Partners
-		</div>
-		<div class="col-md-1 apply-progress">
-			Fuel Cards
-		</div>
-		<div class="col-md-1 apply-progress">
-			Payment Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			Authorization
-		</div>
-		<div class="col-md-1 apply-progress">
-			Terms and Conditions
-		</div>
-		<div class="col-md-1 apply-progress">
-			Review and Finish
+		<div class="col-md-12 center">
+		<h2 class="spacing-under">Page 2 of 8 - Business References</h2>
 		</div>
 	</div>
-	<div class="row" id="progress-circles">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			<img src="images/progress-green-left.jpeg" />
+	<div class="row">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+				Details
+			</div>
+			<div class="apply-progress">
+				<b>Rerferences</b>
+			</div>
+			<div class="apply-progress">
+				Partners
+			</div>
+			<div class="apply-progress">
+				Fuel Cards
+			</div>
+			<div class="apply-progress">
+				Payment Details
+			</div>
+			<div class="apply-progress">
+				Authorization
+			</div>
+			<div class="apply-progress">
+				Terms and Conditions
+			</div>
+			<div class="apply-progress">
+				Review and Finish
+			</div>
 		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-right.jpeg" />
+	</div>
+	<div class="row spacing-under">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+			<img src="images/progress-green-left-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-right-big.jpeg" />
+			</div>
 		</div>
 	</div>
 	
@@ -67,6 +75,8 @@
 			   </div>
 			  </div>
 			  <input type="hidden" class="form-control" name="page" id="page" value="3">
+			  
+			  <input type="hidden" class="form-control" name="navigation" id="navigation" value="next">
 			  <div class="row">
 				  <div class="col-md-3">
 					<label for="refName1" class=" control-label">Reference 1</label>

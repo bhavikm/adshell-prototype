@@ -2,59 +2,68 @@
 
 <!-- Main component for a primary marketing message or call to action -->
 <div class="container" id="apply-page">
-	<h1 class="spacing-under">Application - Page 4 - Fuel Cards</h1>
 	<div class="row">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			Rerferences
-		</div>
-		<div class="col-md-1 apply-progress">
-			Partners
-		</div>
-		<div class="col-md-1 apply-progress">
-			<b>Fuel Cards</b>
-		</div>
-		<div class="col-md-1 apply-progress">
-			Payment Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			Authorization
-		</div>
-		<div class="col-md-1 apply-progress">
-			Terms and Conditions
-		</div>
-		<div class="col-md-1 apply-progress">
-			Review and Finish
+		<div class="col-md-12 center">
+		<h2 class="spacing-under">Page 4 of 8 - Fuel Cards</h2>
 		</div>
 	</div>
-	<div class="row" id="progress-circles">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			<img src="images/progress-green-left.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-right.jpeg" />
+	<div class="row">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+				Details
+			</div>
+			<div class="apply-progress">
+				Rerferences
+			</div>
+			<div class="apply-progress">
+				Partners
+			</div>
+			<div class="apply-progress">
+				<b>Fuel Cards</b>
+			</div>
+			<div class="apply-progress">
+				Payment Details
+			</div>
+			<div class="apply-progress">
+				Authorization
+			</div>
+			<div class="apply-progress">
+				Terms and Conditions
+			</div>
+			<div class="apply-progress">
+				Review and Finish
+			</div>
 		</div>
 	</div>
+	<div class="row spacing-under">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+			<img src="images/progress-green-left-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-right-big.jpeg" />
+			</div>
+		</div>
+	</div>
+	
 	
 	<div class="row">
 	
@@ -62,6 +71,7 @@
 
 			<form class="form" method="post" role="form" action="index.php?apply">
 			  <input type="hidden" class="form-control" name="page" id="page" value="5">
+			  <input type="hidden" class="form-control" name="navigation" id="navigation" value="next">
 			  <input type="hidden" class="form-control" name="numberOfCardholders" id="numberOfCardholders" value="<?php echo $data['valids']['numberOfCardholders']; ?>">
 			  <div class="row form-subheading">
 			   <div class="col-md-12">
@@ -258,10 +268,11 @@ $(document).ready(function(){
 		
 		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="registrationNo'+nextCardHoldersNumb+'" class="control-label">Registration No.</label></div><div class="col-md-4"><input type="text" class="form-control" id="registrationNo'+nextCardHoldersNumb+'" name="registrationNo'+nextCardHoldersNumb+'" placeholder="Card Holder Registration No."></div></div>');
 		
-		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="inputName" class="control-label">Card Products</label></div><div class="col-md-4"><label class="checkbox-inline" id="busType"><input type="checkbox" id="allCardProducts" name="allFuelCardProducts'+nextCardHoldersNumb+'" class="allProductsCheckbox"  value="all"> All Products</label><br /><br />OR SELECT INDIVIDUALLY:</div></div>');
 		
 		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="pinRequired'+nextCardHoldersNumb+'" class=" control-label">Pin Required</label></div><div class="col-md-4"><select name="pinRequired'+nextCardHoldersNumb+'"><option value="yes">Yes</option><option value="no">No</option></select></div></div>');
-
+		
+		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="inputName" class="control-label">Card Products</label></div><div class="col-md-4"><label class="checkbox-inline" id="busType"><input type="checkbox" id="allCardProducts" name="allFuelCardProducts'+nextCardHoldersNumb+'" class="allProductsCheckbox"  value="all"> All Products</label><br /><br />OR SELECT INDIVIDUALLY:</div></div>');
+		
 		$('#extraCardHolders').before('<div class="row short-form-row"><div class="col-md-4 col-md-offset-3"><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="unleaded" class="productCheckbox"> Unleaded </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="biodiesel" class="productCheckbox"> BioDiesel </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="unleadedMax" class="productCheckbox"> Unleaded Max e10 </label><br /><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="lpg" class="productCheckbox"> LPG </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="gas" class="productCheckbox"> Gas </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="carWash" class="productCheckbox"> Car Wash </label><br /><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="shop" class="productCheckbox"> Shop </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="premiumUnleaded" class="productCheckbox"> Premium Unleaded </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="octane" class="productCheckbox"> 98 Octane </label></div></div>');
 		
 		//update the business partner number value
