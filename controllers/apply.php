@@ -31,23 +31,17 @@ class Apply_Controller
 					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
 					{
 						$this->template = 'apply-2';
-					} else {
-						// move on to next page
-						$this->template = 'apply-3';
+						break;
 					}
-				break;
 				
 				case '3':
 					$errorAndValids = $this->validatePage2($getVars);
 					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
 					{
 						$this->template = 'apply-3';
-					} else {
-						// move on to next page
-						$getVars['page'] = '4';
-					}
-				break;
-				
+						break;
+					} 
+					
 				case '4':
 					$errorAndValids = $this->validatePage3($getVars);
 					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
@@ -101,6 +95,16 @@ class Apply_Controller
 		}
 		
 		
+		//If we are going to very first page, clear session variables to begin
+		if ($this->template == 'apply')
+		{
+			session_start();
+			session_unset();
+			session_destroy();
+			session_write_close();
+			setcookie(session_name(),'',0,'/');
+			session_regenerate_id(true);
+		}
 		
 		//create a new view and pass it our template
 		$view = new View_Model($this->template);
@@ -112,6 +116,13 @@ class Apply_Controller
 		//assign the errors array to the template data
 		$view->assign('errors', $errorAndValids['errors']);
 		$view->assign('valids', $errorAndValids['valids']);
+		
+		if ($this->template == 'apply-9')
+		{
+			$view->assign('completedPages', $completedForm);
+		}
+		
+		echo count($_SESSION);
 		
 		$view->render();
 	}
@@ -1038,71 +1049,71 @@ class Apply_Controller
 		$completedPages['page1'] = array();
 		
 		if (isset($_SESSION['biztype']))
-			$completedPages['page1']['biztype'] = $_SESSION['biztype']:
+			$completedPages['page1']['biztype'] = $_SESSION['biztype'];
 		if (isset($_SESSION['businessName']))
-			$completedPages['page1']['businessName'] = $_SESSION['businessName']:	
+			$completedPages['page1']['businessName'] = $_SESSION['businessName'];	
 		if (isset($_SESSION['tradingName']))
-			$completedPages['page1']['tradingName'] = $_SESSION['tradingName']:	
+			$completedPages['page1']['tradingName'] = $_SESSION['tradingName'];
 		if (isset($_SESSION['yearBizStart']))
-			$completedPages['page1']['yearBizStart'] = $_SESSION['yearBizStart']:
+			$completedPages['page1']['yearBizStart'] = $_SESSION['yearBizStart'];
 		if (isset($_SESSION['abn']))
-			$completedPages['page1']['abn'] = $_SESSION['abn']:
+			$completedPages['page1']['abn'] = $_SESSION['abn'];
 		if (isset($_SESSION['operations']))
-			$completedPages['page1']['operations'] = $_SESSION['operations']:
+			$completedPages['page1']['operations'] = $_SESSION['operations'];
 		if (isset($_SESSION['contactFirstName']))
-			$completedPages['page1']['contactFirstName'] = $_SESSION['contactFirstName']:
+			$completedPages['page1']['contactFirstName'] = $_SESSION['contactFirstName'];
 		if (isset($_SESSION['contactLastName']))
-			$completedPages['page1']['contactLastName'] = $_SESSION['contactLastName']:	
+			$completedPages['page1']['contactLastName'] = $_SESSION['contactLastName'];
 		if (isset($_SESSION['inputPosition']))
-			$completedPages['page1']['inputPosition'] = $_SESSION['inputPosition']:		
+			$completedPages['page1']['inputPosition'] = $_SESSION['inputPosition'];
 		if (isset($_SESSION['inputPhone']))
-			$completedPages['page1']['inputPhone'] = $_SESSION['inputPhone']:			
+			$completedPages['page1']['inputPhone'] = $_SESSION['inputPhone'];	
 		if (isset($_SESSION['inputFax']))
-			$completedPages['page1']['inputFax'] = $_SESSION['inputFax']:			
+			$completedPages['page1']['inputFax'] = $_SESSION['inputFax'];		
 		if (isset($_SESSION['inputMobile']))
-			$completedPages['page1']['inputMobile'] = $_SESSION['inputFax']:	
+			$completedPages['page1']['inputMobile'] = $_SESSION['inputMobile'];	
 		if (isset($_SESSION['inputEmail1']))
-			$completedPages['page1']['inputEmail1'] = $_SESSION['inputEmail1']:		
+			$completedPages['page1']['inputEmail1'] = $_SESSION['inputEmail1'];		
 		if (isset($_SESSION['creditLimit']))
-			$completedPages['page1']['creditLimit'] = $_SESSION['creditLimit']:		
+			$completedPages['page1']['creditLimit'] = $_SESSION['creditLimit'];		
 			
 		//Page 2
 		$completedPages['page2'] = array();
 		
 		if (isset($_SESSION['refName1']))
-			$completedPages['page2']['refName1'] = $_SESSION['refName1']:
+			$completedPages['page2']['refName1'] = $_SESSION['refName1'];
 		if (isset($_SESSION['refPhone1']))
-			$completedPages['page2']['refPhone1'] = $_SESSION['refPhone1']:	
+			$completedPages['page2']['refPhone1'] = $_SESSION['refPhone1'];	
 		if (isset($_SESSION['refName2']))
-			$completedPages['page2']['refName2'] = $_SESSION['refName2']:
+			$completedPages['page2']['refName2'] = $_SESSION['refName2'];
 		if (isset($_SESSION['refPhone2']))
-			$completedPages['page2']['refPhone2'] = $_SESSION['refPhone2']:	
+			$completedPages['page2']['refPhone2'] = $_SESSION['refPhone2'];	
 		if (isset($_SESSION['fuelSupplierName']))
-			$completedPages['page2']['fuelSupplierName'] = $_SESSION['fuelSupplierName']:
+			$completedPages['page2']['fuelSupplierName'] = $_SESSION['fuelSupplierName'];
 		if (isset($_SESSION['fuelSupplierPhone']))
-			$completedPages['page2']['fuelSupplierPhone'] = $_SESSION['fuelSupplierPhone']:		
+			$completedPages['page2']['fuelSupplierPhone'] = $_SESSION['fuelSupplierPhone'];		
 		
 		//Page 3
 		$completedPages['page3'] = array();
 		
 		if (isset($_SESSION['numberOfPartners']))
 		{
-			$completedPages['page3']['numberOfPartners'] = $_SESSION['numberOfPartners']:
+			$completedPages['page3']['numberOfPartners'] = $_SESSION['numberOfPartners'];
 			
 			$completedPages['page3']['partnerDetails'] = array();
 			for ($i = 1; $i <= $completedPages['page3']['numberOfPartners']; $i++)
 			{
 				$partnerDetails = array();
 				if (isset($_SESSION['partnerName'.$i]))
-					$partnerDetails['partnerName'] = $_SESSION['partnerName']:
+					$partnerDetails['partnerName'] = $_SESSION['partnerName'.$i];
 				if (isset($_SESSION['partnerPhone'.$i]))
-					$partnerDetails['partnerPhone'] = $_SESSION['partnerPhone']:
+					$partnerDetails['partnerPhone'] = $_SESSION['partnerPhone'.$i];
 				if (isset($_SESSION['partnerAddress'.$i]))
-					$partnerDetails['partnerAddress'] = $_SESSION['partnerAddress']:	
+					$partnerDetails['partnerAddress'] = $_SESSION['partnerAddress'.$i];	
 				if (isset($_SESSION['partnerState'.$i]))
-					$partnerDetails['partnerState'] = $_SESSION['partnerState']:		
+					$partnerDetails['partnerState'] = $_SESSION['partnerState'.$i];	
 				if (isset($_SESSION['partnerPostcode'.$i]))
-					$partnerDetails['partnerPostcode'] = $_SESSION['partnerPostcode']:	
+					$partnerDetails['partnerPostcode'] = $_SESSION['partnerPostcode'.$i];	
 					
 				$completedPages['page3']['partnerDetails'][] = $partnerDetails;	
 			}
@@ -1111,23 +1122,23 @@ class Apply_Controller
 		//Page 4
 		$completedPages['page4'] = array();
 		
-		if (isset($_SESSION['tradingName']))
-			$completedPages['page4']['tradingName'] = $_SESSION['tradingName']:
+		if (isset($_SESSION['tradingNameFuelCard']))
+			$completedPages['page4']['tradingNameFuelCard'] = $_SESSION['tradingNameFuelCard'];
 			
 		if (isset($_SESSION['numberOfCardholders']))
 		{
-			$completedPages['page4']['numberOfCardholders'] = $_SESSION['numberOfCardholders']:
+			$completedPages['page4']['numberOfCardholders'] = $_SESSION['numberOfCardholders'];
 			
 			$completedPages['page4']['cardHolderDetails'] = array();
-			for ($i = 1; $i <= $completedPages['page4']['numberOfCardholders']; $i++)
+			for ($i = 1; $i <= (int)$completedPages['page4']['numberOfCardholders']; $i++)
 			{
 				$cardHolderDetails = array();
 				if (isset($_SESSION['cardHolderName'.$i]))
-					$cardHolderDetails['cardHolderName'] = $_SESSION['cardHolderName']:
+					$cardHolderDetails['cardHolderName'] = $_SESSION['cardHolderName'.$i];
 				if (isset($_SESSION['registrationNo'.$i]))
-					$cardHolderDetails['registrationNo'] = $_SESSION['registrationNo']:
+					$cardHolderDetails['registrationNo'] = $_SESSION['registrationNo'.$i];
 				if (isset($_SESSION['pinRequired'.$i]))
-					$cardHolderDetails['pinRequired'] = $_SESSION['pinRequired']:	
+					$cardHolderDetails['pinRequired'] = $_SESSION['pinRequired'.$i];
 				$fuelCardProducts = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );	
 				if (isset($_SESSION['fuelCardProducts'.$i]))
 				{
@@ -1138,7 +1149,98 @@ class Apply_Controller
 				}
 				$cardHolderDetails['fuelCardProducts'] = $fuelCardProducts;
 					
-				$completedPages['page4']['partnerDetails'][] = $cardHolderDetails;	
+				$completedPages['page4']['cardHolderDetails'][] = $cardHolderDetails;	
+			}
+		}
+		
+		//Page 5
+		$completedPages['page5'] = array();
+		
+		if (isset($_SESSION['paymentType']))
+		{
+			$completedPages['page5']['paymentType'] = $_SESSION['paymentType'];
+			
+			if ($_SESSION['paymentType'] == 'directDebit')
+			{	
+				if (isset($_SESSION['ddAuthoriseName']))
+					$completedPages['page5']['ddAuthoriseName'] = $_SESSION['ddAuthoriseName'];
+				if (isset($_SESSION['accountType']))
+					$completedPages['page5']['accountType'] = $_SESSION['accountType'];
+				if (isset($_SESSION['bankName']))
+					$completedPages['page5']['bankName'] = $_SESSION['bankName'];	
+				if (isset($_SESSION['accountName']))
+					$completedPages['page5']['accountName'] = $_SESSION['accountName'];		
+				if (isset($_SESSION['bsbNo']))
+					$completedPages['page5']['bsbNo'] = $_SESSION['bsbNo'];	
+				if (isset($_SESSION['accountNo']))
+					$completedPages['page5']['accountNo'] = $_SESSION['accountNo'];		
+				if (isset($_SESSION['ddAcknowdledgeName']))
+					$completedPages['page5']['ddAcknowdledgeName'] = $_SESSION['ddAcknowdledgeName'];		
+					
+			} else {
+			
+				if (isset($_SESSION['ccAuthoriseName']))
+					$completedPages['page5']['ccAuthoriseName'] = $_SESSION['ccAuthoriseName'];
+				if (isset($_SESSION['ccPaymentDate']))
+					$completedPages['page5']['ccPaymentDate'] = $_SESSION['ccPaymentDate'];
+				if (isset($_SESSION['ccName']))
+					$completedPages['page5']['ccName'] = $_SESSION['ccName'];	
+				if (isset($_SESSION['ccNo']))
+					$completedPages['page5']['ccNo'] = $_SESSION['ccNo'];		
+				if (isset($_SESSION['ccExpiryMonth']))
+					$completedPages['page5']['ccExpiryMonth'] = $_SESSION['ccExpiryMonth'];	
+				if (isset($_SESSION['ccExpiryYear']))
+					$completedPages['page5']['ccExpiryYear'] = $_SESSION['ccExpiryYear'];		
+				if (isset($_SESSION['ccType']))
+					$completedPages['page5']['ccType'] = $_SESSION['ccType'];	
+				if (isset($_SESSION['ccAcknowdledgeName']))
+					$completedPages['page5']['ccAcknowdledgeName'] = $_SESSION['ccAcknowdledgeName'];		
+			}
+		}
+			
+			
+		//Page 6
+		$completedPages['page6'] = array();
+		
+		if (isset($_SESSION['numberOfPartners']))
+		{
+			$completedPages['page6']['partnerAuthorisations'] = array();
+			for ($i = 1; $i <= $completedPages['page3']['numberOfPartners']; $i++)
+			{
+				$partnerAuthorisation = array();
+				if (isset($_SESSION['authoriseAckName'.$i]))
+					$partnerAuthorisation['authoriseAckName'] = $_SESSION['authoriseAckName'.$i];
+				if (isset($_SESSION['authoriseAckDOBDay'.$i]))
+					$partnerAuthorisation['authoriseAckDOBDay'] = $_SESSION['authoriseAckDOBDay'.$i];
+				if (isset($_SESSION['authoriseAckDOBMonth'.$i]))
+					$partnerAuthorisation['authoriseAckDOBMonth'] = $_SESSION['authoriseAckDOBMonth'.$i];	
+				if (isset($_SESSION['authoriseAckDOBYear'.$i]))
+					$partnerAuthorisation['authoriseAckDOBYear'] = $_SESSION['authoriseAckDOBYear'.$i];	
+				if (isset($_SESSION['authoriseAckLicence'.$i]))
+					$partnerAuthorisation['authoriseAckLicence'] = $_SESSION['authoriseAckLicence'.$i];
+				if (isset($_SESSION['authoriseAckSignature'.$i]))
+					$partnerAuthorisation['authoriseAckSignature'] = $_SESSION['authoriseAckSignature'.$i];	
+					
+				$completedPages['page6']['partnerAuthorisations'][] = $partnerAuthorisation;	
+			}
+		}
+			
+		
+		//Page 7
+		$completedPages['page7'] = array();
+		
+		if (isset($_SESSION['numberOfPartners']))
+		{
+			$completedPages['page7']['partnerAcceptances'] = array();
+			for ($i = 1; $i <= $completedPages['page3']['numberOfPartners']; $i++)
+			{
+				$partnerAcceptance = array();
+				if (isset($_SESSION['acceptanceName'.$i]))
+					$partnerAcceptance['acceptanceName'] = $_SESSION['acceptanceName'.$i];
+				if (isset($_SESSION['acceptanceSignature'.$i]))
+					$partnerAcceptance['acceptanceSignature'] = $_SESSION['acceptanceSignature'.$i];
+					
+				$completedPages['page7']['partnerAcceptances'][] = $partnerAcceptance;	
 			}
 		}
 		
