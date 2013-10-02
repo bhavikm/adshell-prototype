@@ -58,47 +58,83 @@
 	
 	<div class="row">
 	
-		<div class="col-xs-12 col-sm-6 col-md-8 col-md-offset-2">
-
+		<div class="col-xs-12 col-sm-6 col-md-12">
 		
-			<form class="form" role="form">
+			<form class="form" method="post" role="form" action="index.php?apply">
 			  <div class="row form-subheading">
 			   <div class="col-md-12">
 			   <h4>Business/Trade References</h4>
 			   </div>
 			  </div>
+			  <input type="hidden" class="form-control" name="page" id="page" value="3">
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Reference 1</label>
+					<label for="refName1" class=" control-label">Reference 1</label>
 				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Reference Name 1">
+				  <div class="col-md-4">
+					<?php if (isset($data['valids']['refName1'])) { ?>
+					<input type="text" class="form-control" id="refName1" name="refName1" placeholder="Reference Name 1" value="<?php echo $data['valids']['refName1'];?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="refName1" name="refName1" placeholder="Reference Name 1">
+					<?php } ?>
 				  </div>
+				  <?php if (isset($data['errors']['refName1'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['refName1']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputPhone" class="control-label">Phone</label>
+					<label for="refPhone1" class="control-label">Phone</label>
 				  </div>
 				  <div class="col-md-4">
-					 <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+					<?php if (isset($data['valids']['refPhone1'])) { ?>
+					<input type="text" class="form-control" id="refPhone1" name="refPhone1" placeholder="Phone" value="<?php echo $data['valids']['refPhone1'];?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="refPhone1" name="refPhone1" placeholder="Phone">
+					<?php } ?>
 				  </div>
+				  <?php if (isset($data['errors']['refPhone1'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['refPhone1']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class="control-label">Reference 2</label>
+					<label for="refName2" class=" control-label">Reference 2</label>
 				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Reference Name 2">
+				  <div class="col-md-4">
+					<?php if (isset($data['valids']['refName2'])) { ?>
+					<input type="text" class="form-control" id="refName2" name="refName2" placeholder="Reference Name 2" value="<?php echo $data['valids']['refName2'];?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="refName2" name="refName2" placeholder="Reference Name 2">
+					<?php } ?>
 				  </div>
+				  <?php if (isset($data['errors']['refName2'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['refName2']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputPhone" class="control-label">Phone</label>
+					<label for="refPhone2" class="control-label">Phone</label>
 				  </div>
 				  <div class="col-md-4">
-					 <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+					<?php if (isset($data['valids']['refPhone2'])) { ?>
+					<input type="text" class="form-control" id="refPhone2" name="refPhone2" placeholder="Phone" value="<?php echo $data['valids']['refPhone2'];?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="refPhone2" name="refPhone2" placeholder="Phone">
+					<?php } ?>
 				  </div>
+				  <?php if (isset($data['errors']['refPhone2'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['refPhone2']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  
 			  <div class="row form-subheading">
@@ -109,19 +145,37 @@
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class="control-label">Existing Fuel Supplier</label>
+					<label for="fuelSupplierName" class="control-label">Existing Fuel Supplier</label>
 				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Existing Fuel Supplier Name">
+				  <div class="col-md-4">
+					<?php if (isset($data['valids']['fuelSupplierName'])) { ?>
+					<input type="text" class="form-control" id="fuelSupplierName" name="fuelSupplierName" placeholder="Existing Fuel Supplier Name"  value="<?php echo $data['valids']['fuelSupplierName'];?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="fuelSupplierName" name="fuelSupplierName" placeholder="Existing Fuel Supplier Name">
+					<?php } ?>
 				  </div>
+				  <?php if (isset($data['errors']['fuelSupplierName'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['fuelSupplierName']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputPhone" class="control-label">Phone</label>
+					<label for="fuelSupplierPhone" class="control-label">Phone</label>
 				  </div>
 				  <div class="col-md-4">
-					 <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+					<?php if (isset($data['valids']['fuelSupplierPhone'])) { ?>
+					<input type="text" class="form-control" id="fuelSupplierPhone" name="fuelSupplierPhone" placeholder="Phone" value="<?php echo $data['valids']['fuelSupplierPhone'];?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="fuelSupplierPhone" name="fuelSupplierPhone" placeholder="Phone">
+					<?php } ?>
 				  </div>
+				  <?php if (isset($data['errors']['fuelSupplierPhone'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['fuelSupplierPhone']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 	
 			  <div class="row">
@@ -131,7 +185,7 @@
 				  </div>
 				  <div class="col-md-6">
 					 <br />
-					 <a class="btn btn btn-primary" href="index.php?apply&page=4">Next Step &raquo;</a>
+					 <button class="btn btn btn-primary" type="submit">Next Step &raquo;</button>
 				  </div>
 			  </div>
 			</form>

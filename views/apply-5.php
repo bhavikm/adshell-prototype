@@ -58,9 +58,11 @@
 	
 	<div class="row">
 	
-		<div class="col-xs-12 col-sm-6 col-md-8 col-md-offset-2">
+		<div class="col-xs-12 col-sm-6 col-md-12">
 
-			<form class="form" role="form">
+			<form class="form" method="post" role="form" action="index.php?apply">
+			  <input type="hidden" class="form-control" name="page" id="page" value="5">
+			  <input type="hidden" class="form-control" name="numberOfCardholders" id="numberOfCardholders" value="<?php echo $data['valids']['numberOfCardholders']; ?>">
 			  <div class="row form-subheading">
 			   <div class="col-md-12">
 			   <h4>Trading Name</h4>
@@ -68,236 +70,157 @@
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class=" control-label">Trading Name for card</label>
+					<label for="tradingNameFuelCard" class="control-label">Trading Name for card</label>
 				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Trading Name to appear on card">
+				  <div class="col-md-4">
+					<?php if (isset($data['valids']['tradingNameFuelCard'])) { ?>
+					<input type="text" class="form-control" id="tradingNameFuelCard" name="tradingNameFuelCard" placeholder="Trading Name to appear on card" value="<?php echo $data['valids']['tradingNameFuelCard']; ?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="tradingNameFuelCard" name="tradingNameFuelCard" placeholder="Trading Name to appear on card">
+					<?php } ?>
 				  </div>
+				  <?php if (isset($data['errors']['tradingNameFuelCard'])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+				  <?php echo $data['errors']['tradingNameFuelCard']; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
+			  
+			  <?php 
+			  for ($i = 1; $i <= (int)$data['valids']['numberOfCardholders']; $i++)
+			  {
+			  ?>
 			  
 			  <div class="row form-subheading">
 				<div class="col-md-12">
-				<h4>Cardholder 1</h4>
+				<h4>Cardholder <?php echo $i; ?></h4>
 				</div>
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class="control-label">Card Holder Name</label>
+					<label for="cardHolderName<?php echo $i; ?>" class="control-label">Card Holder Name</label>
 				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Card Holder Name">
+				  <div class="col-md-4">
+				    <?php if (isset($data['valids']['cardHolderName'.$i])) { ?>
+					<input type="text" class="form-control" id="cardHolderName<?php echo $i; ?>" name="cardHolderName<?php echo $i; ?>" placeholder="Card Holder Name" value="<?php echo $data['valids']['cardHolderName'.$i]; ?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="cardHolderName<?php echo $i; ?>" name="cardHolderName<?php echo $i; ?>" placeholder="Card Holder Name">
+					<?php } ?>
 				  </div>
-			  </div>
-			  <div class="row short-form-row">
-				  <div class="col-md-9 col-md-offset-3">
-					<b>OR</b>
-				  </div>
+				  <?php if (isset($data['errors']['cardHolderName'.$i])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['cardHolderName'.$i]; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputName" class="control-label">Registration No.</label>
+					<label for="registrationNo<?php echo $i; ?>" class="control-label">Registration No.</label>
 				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Card Holder Registration No.">
+				  <div class="col-md-4">
+					
+					<?php if (isset($data['valids']['registrationNo'.$i])) { ?>
+					<input type="text" class="form-control" id="registrationNo<?php echo $i; ?>" name="registrationNo<?php echo $i; ?>" placeholder="Card Holder Registration No." value="<?php echo $data['valids']['registrationNo'.$i]; ?>">
+					<?php } else { ?>
+					<input type="text" class="form-control" id="registrationNo<?php echo $i; ?>" name="registrationNo<?php echo $i; ?>" placeholder="Card Holder Registration No.">
+					<?php } ?>
 				  </div>
+				  <?php if (isset($data['errors']['registrationNo'.$i])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['registrationNo'.$i]; ?>
+				  </div>	
+				  <?php } ?>
+			  </div>
+			  
+			  <div class="row">
+				  <div class="col-md-3">
+					<label for="pinRequired<?php echo $i; ?>" class=" control-label">Pin Required</label>
+				  </div>
+				  <div class="col-md-4">
+					  <select name="pinRequired<?php echo $i; ?>">
+							<?php if (isset($data['valids']['pinRequired'.$i])) { 
+								$selected_value = $data['valids']['pinRequired'.$i];
+							?>
+							<option value="yes" <?php if ($selected_value == 'yes') echo 'selected';?>>Yes</option>
+							<option value="no" <?php if ($selected_value == 'no') echo 'selected';?>>No</option>
+							<?php } else { ?>
+							<option value="yes">Yes</option>
+							<option value="no">No</option>
+							<?php } ?>
+						</select>
+				  </div>
+				  <?php if (isset($data['errors']['pinRequired'.$i])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['pinRequired'.$i]; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>
 			  
 			  <div class="row">
 				<div class="col-md-3">
 					<label for="inputName" class="control-label">Card Products</label>
 				  </div>
-				  <div class="col-md-9">
+				  <div class="col-md-4">
 					<label class="checkbox-inline" id="busType">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> All Products
+					  <input type="checkbox" id="allCardProducts<?php echo $i; ?>" class="allProductsCheckbox" name="allFuelCardProducts<?php echo $i; ?>" value="all"> All Products
 					</label>
-					<label class="checkbox-inline" id="busType">
-					  <b>OR SELECT INDIVIDUALLY:</b> 
-					</label>
+					<br /><br />
+					  OR SELECT INDIVIDUALLY:
 				  </div>
 			  </div>	
 			  
 			  <div class="row short-form-row">
-				  <div class="col-md-9 col-md-offset-3">
+				  <div class="col-md-4 col-md-offset-3">
+					<label class="checkbox-inline">
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="unleaded" class="productCheckbox" <?php if ($data['valids']['fuelCardProducts'.$i]['unleaded']) { ?> checked="checked" <?php } ?>> Unleaded 
 					</label>
 					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox2" value="option2"> Unleaded 
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="biodiesel"  class="productCheckbox"  <?php if ($data['valids']['fuelCardProducts'.$i]['biodiesel']) { ?> checked="checked" <?php } ?>> BioDiesel
 					</label>
 					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> BioDiesel
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="unleadedMax" class="productCheckbox"  <?php if ($data['valids']['fuelCardProducts'.$i]['unleadedMax']) { ?> checked="checked" <?php } ?>> Unleaded Max e10
+					</label>
+					<br />
+					<label class="checkbox-inline">
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="lpg" class="productCheckbox"  <?php if ($data['valids']['fuelCardProducts'.$i]['lpg']) { ?> checked="checked" <?php } ?>> LPG
 					</label>
 					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Unleaded Max e10
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="gas" class="productCheckbox"  <?php if ($data['valids']['fuelCardProducts'.$i]['gas']) { ?> checked="checked" <?php } ?>> Gas
 					</label>
 					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> LPG
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="carWash" class="productCheckbox"  <?php if ($data['valids']['fuelCardProducts'.$i]['carWash']) { ?> checked="checked" <?php } ?>> Car Wash
+					</label>
+					<br />
+					<label class="checkbox-inline">
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="shop" class="productCheckbox"  <?php if ($data['valids']['fuelCardProducts'.$i]['shop']) { ?> checked="checked" <?php } ?>> Shop
 					</label>
 					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Gas
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="premiumUnleaded" class="productCheckbox"  <?php if ($data['valids']['fuelCardProducts'.$i]['premiumUnleaded']) { ?> checked="checked" <?php } ?>> Premium Unleaded
 					</label>
 					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Car Wash
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Shop
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Premium Unleaded
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> 98 Octane
+					  <input type="checkbox" name="fuelCardProducts<?php echo $i; ?>[]" value="octane" class="productCheckbox"  <?php if ($data['valids']['fuelCardProducts'.$i]['octane']) { ?> checked="checked" <?php } ?>> 98 Octane
 					</label>
 				  </div>
+				  <?php if (isset($data['errors']['fuelCardProducts'.$i])) { ?>
+				  <div class="col-md-4 col-md-offset-1 red-text">	
+					<?php echo $data['errors']['fuelCardProducts'.$i]; ?>
+				  </div>	
+				  <?php } ?>
 			  </div>	
 			  
+			  <?php } ?>
 			  
-			  <div class="row form-subheading">
-				<div class="col-md-12">
-				<h4>Cardholder 2</h4>
-				</div>
-			  </div>
+			  <span id="extraCardHolders">
+			  
+			  </span>
+			 
+			 
 			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class="control-label">Card Holder Name</label>
-				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Card Holder Name">
+				  <div class="col-md-6 col-md-offset-3">
+					 <br />
+					 <a class="btn btn btn-warning" id="addCardHolder" href="#">Add Extra Fuel Card Holder</a>
 				  </div>
 			  </div>
-			  <div class="row short-form-row">
-				  <div class="col-md-9 col-md-offset-3">
-					<b>OR</b>
-				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class="control-label">Registration No.</label>
-				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Card Holder Registration No.">
-				  </div>
-			  </div>
-			  
-			  <div class="row">
-				<div class="col-md-3">
-					<label for="inputName" class="control-label">Card Products</label>
-				  </div>
-				  <div class="col-md-9">
-					<label class="checkbox-inline" id="busType">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> All Products
-					</label>
-					<label class="checkbox-inline" id="busType">
-					  <b>OR SELECT INDIVIDUALLY:</b> 
-					</label>
-				  </div>
-			  </div>	
-			  
-			  <div class="row short-form-row">
-				  <div class="col-md-9 col-md-offset-3">
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox2" value="option2"> Unleaded 
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> BioDiesel
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Unleaded Max e10
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> LPG
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Gas
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Car Wash
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Shop
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Premium Unleaded
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> 98 Octane
-					</label>
-				  </div>
-			  </div>	
-			  
-			  
-			  <div class="row form-subheading">
-				<div class="col-md-12">
-				<h4>Cardholder 3</h4>
-				</div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class="control-label">Card Holder Name</label>
-				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Card Holder Name">
-				  </div>
-			  </div>
-			  <div class="row short-form-row">
-				  <div class="col-md-9 col-md-offset-3">
-					<b>OR</b>
-				  </div>
-			  </div>
-			  <div class="row">
-				  <div class="col-md-3">
-					<label for="inputName" class="control-label">Registration No.</label>
-				  </div>
-				  <div class="col-md-9">
-					<input type="text" class="form-control" id="inputName" placeholder="Card Holder Registration No.">
-				  </div>
-			  </div>
-			  
-			  <div class="row">
-				<div class="col-md-3">
-					<label for="inputName" class="control-label">Card Products</label>
-				  </div>
-				  <div class="col-md-9">
-					<label class="checkbox-inline" id="busType">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> All Products
-					</label>
-					<label class="checkbox-inline" id="busType">
-					  <b>OR SELECT INDIVIDUALLY:</b> 
-					</label>
-				  </div>
-			  </div>	
-			  
-			  <div class="row short-form-row">
-				  <div class="col-md-9 col-md-offset-3">
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox2" value="option2"> Unleaded 
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> BioDiesel
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Unleaded Max e10
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> LPG
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Gas
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Car Wash
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Shop
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> Premium Unleaded
-					</label>
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" value="option3"> 98 Octane
-					</label>
-				  </div>
-			  </div>	
 	
 			  <div class="row">
 				 <div class="col-md-3">
@@ -306,7 +229,7 @@
 				  </div>
 				  <div class="col-md-6">
 					 <br />
-					 <a class="btn btn btn-primary" href="index.php?apply&page=6">Next Step &raquo;</a>
+					 <button class="btn btn btn-primary" type="submit">Next Step &raquo;</button>
 				  </div>
 			  </div>
 			</form>
@@ -315,7 +238,66 @@
 		</div>
 		
 	</div>
-	
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+	  //once user presses button to add another partner
+	  $(document).on('click','#addCardHolder',function(event) {
+	    event.preventDefault();
+		
+		//first get the number of current business partners
+		var numberCardHolders = $('#numberOfCardholders').val();
+		
+		var nextCardHoldersNumb = Number(numberCardHolders) + 1;
+		
+		$('#extraCardHolders').before('<div class="row form-subheading"><div class="col-md-12"><h4>Cardholder '+nextCardHoldersNumb+'</h4></div></div>');	  
+		
+		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="cardHolderName'+nextCardHoldersNumb+'" class="control-label">Card Holder Name</label></div><div class="col-md-4"><input type="text" class="form-control" id="cardHolderName'+nextCardHoldersNumb+'" name="cardHolderName'+nextCardHoldersNumb+'" placeholder="Card Holder Name"></div></div>');
+		
+		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="registrationNo'+nextCardHoldersNumb+'" class="control-label">Registration No.</label></div><div class="col-md-4"><input type="text" class="form-control" id="registrationNo'+nextCardHoldersNumb+'" name="registrationNo'+nextCardHoldersNumb+'" placeholder="Card Holder Registration No."></div></div>');
+		
+		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="inputName" class="control-label">Card Products</label></div><div class="col-md-4"><label class="checkbox-inline" id="busType"><input type="checkbox" id="allCardProducts" name="allFuelCardProducts'+nextCardHoldersNumb+'" class="allProductsCheckbox"  value="all"> All Products</label><br /><br />OR SELECT INDIVIDUALLY:</div></div>');
+		
+		$('#extraCardHolders').before('<div class="row"><div class="col-md-3"><label for="pinRequired'+nextCardHoldersNumb+'" class=" control-label">Pin Required</label></div><div class="col-md-4"><select name="pinRequired'+nextCardHoldersNumb+'"><option value="yes">Yes</option><option value="no">No</option></select></div></div>');
+
+		$('#extraCardHolders').before('<div class="row short-form-row"><div class="col-md-4 col-md-offset-3"><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="unleaded" class="productCheckbox"> Unleaded </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="biodiesel" class="productCheckbox"> BioDiesel </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="unleadedMax" class="productCheckbox"> Unleaded Max e10 </label><br /><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="lpg" class="productCheckbox"> LPG </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="gas" class="productCheckbox"> Gas </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="carWash" class="productCheckbox"> Car Wash </label><br /><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="shop" class="productCheckbox"> Shop </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="premiumUnleaded" class="productCheckbox"> Premium Unleaded </label><label class="checkbox-inline"><input type="checkbox" name="fuelCardProducts'+nextCardHoldersNumb+'[]" value="octane" class="productCheckbox"> 98 Octane </label></div></div>');
+		
+		//update the business partner number value
+		$('#numberOfCardholders').val(nextCardHoldersNumb);
+		
+	  });
+
+	  $(document).on('click','.allProductsCheckbox', function(event) {
+		
+		var checkboxes = $(this).parent().parent().parent().next().find("input");
+	  
+		if ($(this).is(":checked"))
+		{
+			checkboxes.prop("checked", true);
+		} else {
+			checkboxes.prop("checked", false);
+		}
+		
+	  });
+	  
+	  $(document).on('click','.productCheckbox', function(event) {
+	  
+		var allProductsCheckbox = $(this).parent().parent().parent().prev().find("input");
+		
+		
+		if (allProductsCheckbox.is(":checked"))
+		{
+			allProductsCheckbox.prop("checked", !allProductsCheckbox.prop("checked"));
+		} else if (!allProductsCheckbox.is(":checked") && $(this).parent().parent().find("input:checked").length == 9) {
+			allProductsCheckbox.prop("checked", !allProductsCheckbox.prop("checked"));
+		}
+		
+	  });
+	  
+	  
+});
+</script>
 
 <?=$data['footer'];?>

@@ -75,6 +75,15 @@ if (!empty($request))
 		list($variable , $value) = explode('=' , $argument);
 		$getVars[$variable] = urldecode($value);
 	}
+	
+	if (!empty($_POST))
+	{
+		foreach ($_POST as $key => $value)
+		{
+			$getVars[$key] = $value;
+		}
+	}
+	
 } else {
 	$page = 'main';
 	$getVars = array();
