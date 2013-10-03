@@ -2,59 +2,68 @@
 
 <!-- Main component for a primary marketing message or call to action -->
 <div class="container" id="apply-page">
-	<h1 class="spacing-under">Application - Page 3 - Business Partners</h1>
 	<div class="row">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			Rerferences
-		</div>
-		<div class="col-md-1 apply-progress">
-			<b>Partners</b>
-		</div>
-		<div class="col-md-1 apply-progress">
-			Fuel Cards
-		</div>
-		<div class="col-md-1 apply-progress">
-			Payment Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			Authorization
-		</div>
-		<div class="col-md-1 apply-progress">
-			Terms and Conditions
-		</div>
-		<div class="col-md-1 apply-progress">
-			Review and Finish
+		<div class="col-md-12 center">
+		<h2 class="spacing-under">Page 3 of 8 - Business Partners</h2>
 		</div>
 	</div>
-	<div class="row" id="progress-circles">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			<img src="images/progress-green-left.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-right.jpeg" />
+	<div class="row">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+				Details
+			</div>
+			<div class="apply-progress">
+				Rerferences
+			</div>
+			<div class="apply-progress">
+				<b>Partners</b>
+			</div>
+			<div class="apply-progress">
+				Fuel Cards
+			</div>
+			<div class="apply-progress">
+				Payment Details
+			</div>
+			<div class="apply-progress">
+				Authorization
+			</div>
+			<div class="apply-progress">
+				Terms and Conditions
+			</div>
+			<div class="apply-progress">
+				Review and Finish
+			</div>
 		</div>
 	</div>
+	<div class="row spacing-under">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+			<img src="images/progress-green-left-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-right-big.jpeg" />
+			</div>
+		</div>
+	</div>
+	
 	
 	<div class="row">
 	
@@ -63,6 +72,7 @@
 		
 			<form class="form" method="post" role="form" action="index.php?apply">
 			  <input type="hidden" class="form-control" name="page" id="page" value="4">
+			  <input type="hidden" class="form-control" name="navigation" id="navigation" value="next">
 			  <input type="hidden" class="form-control" name="numberOfPartners" id="numberOfPartners" value="<?php echo $data['valids']['numberOfPartners']; ?>">
 			  
 			  <?php 

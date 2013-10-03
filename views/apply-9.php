@@ -2,57 +2,65 @@
 
 <!-- Main component for a primary marketing message or call to action -->
 <div class="container" id="apply-page">
-	<h1 class="spacing-under">Application - Page 8 - Review and Finish</h1>
 	<div class="row">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			Rerferences
-		</div>
-		<div class="col-md-1 apply-progress">
-			Partners
-		</div>
-		<div class="col-md-1 apply-progress">
-			Fuel Cards
-		</div>
-		<div class="col-md-1 apply-progress">
-			Payment Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			Authorization
-		</div>
-		<div class="col-md-1 apply-progress">
-			Terms and Conditions
-		</div>
-		<div class="col-md-1 apply-progress">
-			<b>Review and Finish</b>
+		<div class="col-md-12 center">
+		<h2 class="spacing-under">Page 8 of 8 - Review and Finish</h2>
 		</div>
 	</div>
-	<div class="row" id="progress-circles">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			<img src="images/progress-green-left.jpeg" />
+	<div class="row">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+				Details
+			</div>
+			<div class="apply-progress">
+				Rerferences
+			</div>
+			<div class="apply-progress">
+				Partners
+			</div>
+			<div class="apply-progress">
+				Fuel Cards
+			</div>
+			<div class="apply-progress">
+				Payment Details
+			</div>
+			<div class="apply-progress">
+				Authorization
+			</div>
+			<div class="apply-progress">
+				Terms and Conditions
+			</div>
+			<div class="apply-progress">
+				<b>Review and Finish</b>
+			</div>
 		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-green-right.jpeg" />
+	</div>
+	<div class="row spacing-under">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+			<img src="images/progress-green-left-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-green-right-big.jpeg" />
+			</div>
 		</div>
 	</div>
 	
@@ -237,6 +245,8 @@
 			  </div>
 			  <!-- -----------------PAGE 1 END-------------------- -->
 			  
+			  <br /><br />
+			  
 			  <!-- -----------------PAGE 2 START-------------------- -->
 			  <div class="row form-subheading">
 			   <div class="col-md-12">
@@ -319,6 +329,7 @@
 			  </div>
 			  <!-- -----------------PAGE 2 END-------------------- -->
 			  
+			  <br /><br />
 			  
 			  <!-- -----------------PAGE 3 START-------------------- -->
 			  <div class="row form-subheading">
@@ -357,6 +368,8 @@
 				 </div>
 			  </div>
 			  <!-- -----------------PAGE 3 END-------------------- -->
+			  
+			  <br /><br />
 			  
 			  <!-- -----------------PAGE 4 START-------------------- -->
 			  <div class="row form-subheading">
@@ -415,6 +428,8 @@
 				 </div>
 			  </div>
 			  <!-- -----------------PAGE 4 END-------------------- -->
+			  
+			  <br /><br />
 			  
 			  
 			  <!-- -----------------PAGE 5 START-------------------- -->
@@ -613,6 +628,8 @@
 				<?php } ?>
 			  <?php } ?>
 			  <!-- -----------------PAGE 5 END-------------------- -->
+			  
+			  <br /><br />
 			
 			  <!-- -----------------PAGE 6 START-------------------- -->
 			  <div class="row form-subheading">
@@ -658,6 +675,8 @@
 			  </div>
 			  <!-- -----------------PAGE 6 END--------------------->
 			  
+			  <br /><br />
+			  
 			   <!-- -----------------PAGE 7 START-------------------- -->
 			  <div class="row form-subheading">
 			   <div class="col-md-12">
@@ -697,7 +716,7 @@
 					</table>
 				 </div>
 			  </div>
-			  <!-- -----------------PAGE 6 END--------------------->
+			  <!-- -----------------PAGE 7 END--------------------->
 			  
 			  
 				

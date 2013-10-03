@@ -8,6 +8,16 @@ class Apply_Controller
 	 */
 	public $template = 'apply';
 	
+	public function stringIsInteger($string)
+	{
+		if (preg_match("/^[0-9]+$/",$string))
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * This is the default function that will be called by router.php
 	 * 
@@ -15,10 +25,6 @@ class Apply_Controller
 	 */
 	public function main(array $getVars)
 	{	
-	
-		$header = new View_Model('header');
-		$header->assign('active_nav','apply');
-		$footer = new View_Model('footer');
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -28,56 +34,85 @@ class Apply_Controller
 			{	
 				case '2':
 					$errorAndValids = $this->validatePage1($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage2($getVars);
+						$this->template = 'apply-3';
+						break;
+					} else {
 						$this->template = 'apply-2';
 						break;
 					}
 				
 				case '3':
 					$errorAndValids = $this->validatePage2($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage3($getVars);
+						$this->template = 'apply-4';
+						break;
+					} else {
 						$this->template = 'apply-3';
 						break;
-					} 
+					}
 					
 				case '4':
 					$errorAndValids = $this->validatePage3($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage4($getVars);
+						$this->template = 'apply-5';
+						break;
+					} else {
 						$this->template = 'apply-4';
 						break;
 					}
 					
 				case '5':
 					$errorAndValids = $this->validatePage4($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 2)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage5($getVars);
+						$this->template = 'apply-6';
+						break;
+					} else {
 						$this->template = 'apply-5';
 						break;
 					}
 				
 				case '6':
 					$errorAndValids = $this->validatePage5($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 0)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage6($getVars);
+						$this->template = 'apply-7';
+						break;
+					} else {
 						$this->template = 'apply-6';
 						break;
 					}
 				
 				case '7':
 					$errorAndValids = $this->validatePage6($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$errorAndValids = $this->validatePage7($getVars);
+						$this->template = 'apply-8';
+						break;
+					} else {
 						$this->template = 'apply-7';
 						break;
 					}
 				
 				case '8':
 					$errorAndValids = $this->validatePage7($getVars);
-					if (count($errorAndValids['errors']) > 0 || count($errorAndValids['valids']) == 1)
+					if (isset($getVars['navigation']) && $getVars['navigation'] == 'next' && count($errorAndValids['errors']) == 0)
 					{
+						$completedForm = $this->getCompletedFormArray();
+						$this->template = 'apply-9';
+						break;
+					} else {
 						$this->template = 'apply-8';
 						break;
 					}
@@ -90,10 +125,10 @@ class Apply_Controller
 				case '10':
 					$this->template = 'apply-10';
 				break;
+				
 			}
 		
 		}
-		
 		
 		//If we are going to very first page, clear session variables to begin
 		if ($this->template == 'apply')
@@ -104,14 +139,22 @@ class Apply_Controller
 			session_write_close();
 			setcookie(session_name(),'',0,'/');
 			session_regenerate_id(true);
+			
+			$header = new View_Model('header');
+			$footer = new View_Model('footer');
+		} else {
+			$header = new View_Model('header-application');
+			$footer = new View_Model('footer-application');
 		}
+		
+		
+		$header->assign('active_nav','apply');
 		
 		//create a new view and pass it our template
 		$view = new View_Model($this->template);
 		$view->assign('header', $header->render(FALSE));
 		$view->assign('footer', $footer->render(FALSE));
-		//assign article data to view
-		//$view->assign('article' , $article);
+		
 		
 		//assign the errors array to the template data
 		$view->assign('errors', $errorAndValids['errors']);
@@ -121,8 +164,6 @@ class Apply_Controller
 		{
 			$view->assign('completedPages', $completedForm);
 		}
-		
-		echo count($_SESSION);
 		
 		$view->render();
 	}
@@ -143,6 +184,12 @@ class Apply_Controller
 				$errorAndValids['valids']['biztype'] = $fieldValues['biztype'];
 			}
 		}
+		if (isset($_SESSION['biztype']) && !isset($errorAndValids['errors']['biztype']))
+		{
+			$errorAndValids['valids']['biztype'] = $_SESSION['biztype'];
+		} elseif (isset($_SESSION['biztype'])) {
+			unset($_SESSION['biztype']);
+		}
 		
 		if (isset($fieldValues['businessName']))
 		{
@@ -156,6 +203,13 @@ class Apply_Controller
 				$errorAndValids['valids']['businessName'] = $fieldValues['businessName'];
 			}
 		}
+		if (isset($_SESSION['businessName']) && !isset($errorAndValids['errors']['businessName']))
+		{
+			$errorAndValids['valids']['businessName'] = $_SESSION['businessName'];
+		} elseif (isset($_SESSION['businessName'])) {
+			unset($_SESSION['businessName']);
+		}
+		
 		
 		if (isset($fieldValues['tradingName']))
 		{
@@ -169,18 +223,30 @@ class Apply_Controller
 				$errorAndValids['valids']['tradingName'] = $fieldValues['tradingName'];
 			}
 		}
+		if (isset($_SESSION['tradingName']) && !isset($errorAndValids['errors']['tradingName']))
+		{
+			$errorAndValids['valids']['tradingName'] = $_SESSION['tradingName'];
+		} elseif (isset($_SESSION['tradingName'])) {
+			unset($_SESSION['tradingName']);
+		}
 		
 		if (isset($fieldValues['yearBizStart']))
 		{
 			if (strlen($fieldValues['yearBizStart']) == 0 )
 			{
 				$errorAndValids['errors']['yearBizStart'] = 'Business start year must not be empty.';
-			} elseif (strlen($fieldValues['yearBizStart']) != 4) { 
+			} elseif (strlen($fieldValues['yearBizStart']) != 4 || !$this->stringIsInteger($fieldValues['yearBizStart'])) { 
 				$errorAndValids['errors']['yearBizStart'] = 'Business start year must be valid.';
 			} else {
 				$_SESSION['yearBizStart'] = $fieldValues['yearBizStart'];
 				$errorAndValids['valids']['yearBizStart'] = $fieldValues['yearBizStart'];
 			}
+		}
+		if (isset($_SESSION['yearBizStart']) && !isset($errorAndValids['errors']['yearBizStart']))
+		{
+			$errorAndValids['valids']['yearBizStart'] = $_SESSION['yearBizStart'];
+		} elseif (isset($_SESSION['yearBizStart'])) {
+			unset($_SESSION['yearBizStart']);
 		}
 		
 		if (isset($fieldValues['abn']))
@@ -188,12 +254,18 @@ class Apply_Controller
 			if (strlen($fieldValues['abn']) == 0 )
 			{
 				$errorAndValids['errors']['abn'] = 'ABN/ACN not be empty.';
-			} elseif (strlen($fieldValues['abn']) > 11) { 
+			} elseif (strlen($fieldValues['abn']) > 11 || !$this->stringIsInteger($fieldValues['abn'])) { 
 				$errorAndValids['errors']['abn'] = 'ABN/ACN must be 11 digits or less.';
 			} else {
 				$_SESSION['abn'] = $fieldValues['abn'];
 				$errorAndValids['valids']['abn'] = $fieldValues['abn'];
 			}
+		}
+		if (isset($_SESSION['abn']) && !isset($errorAndValids['errors']['abn']))
+		{
+			$errorAndValids['valids']['abn'] = $_SESSION['abn'];
+		} elseif (isset($_SESSION['abn'])) {
+			unset($_SESSION['abn']);
 		}
 		
 		if (isset($fieldValues['operations']))
@@ -208,6 +280,12 @@ class Apply_Controller
 				$errorAndValids['valids']['operations'] = $fieldValues['operations'];
 			}
 		}
+		if (isset($_SESSION['operations']) && !isset($errorAndValids['errors']['operations']))
+		{
+			$errorAndValids['valids']['operations'] = $_SESSION['operations'];
+		} elseif (isset($_SESSION['operations'])) {
+			unset($_SESSION['operations']);
+		}
 		
 		if (isset($fieldValues['contactFirstName']))
 		{
@@ -220,6 +298,12 @@ class Apply_Controller
 				$_SESSION['contactFirstName'] = $fieldValues['contactFirstName'];
 				$errorAndValids['valids']['contactFirstName'] = $fieldValues['contactFirstName'];
 			}
+		}
+		if (isset($_SESSION['contactFirstName']) && !isset($errorAndValids['errors']['contactFirstName']))
+		{
+			$errorAndValids['valids']['contactFirstName'] = $_SESSION['contactFirstName'];
+		} elseif (isset($_SESSION['contactFirstName'])) {
+			unset($_SESSION['contactFirstName']);
 		}
 		
 		if (isset($fieldValues['contactLastName']))
@@ -234,6 +318,12 @@ class Apply_Controller
 				$errorAndValids['valids']['contactLastName'] = $fieldValues['contactLastName'];
 			}
 		}
+		if (isset($_SESSION['contactLastName']) && !isset($errorAndValids['errors']['contactLastName']))
+		{
+			$errorAndValids['valids']['contactLastName'] = $_SESSION['contactLastName'];
+		} elseif (isset($_SESSION['contactLastName'])) {
+			unset($_SESSION['contactLastName']);
+		}
 		
 		if (isset($fieldValues['inputPosition']))
 		{
@@ -247,18 +337,30 @@ class Apply_Controller
 				$errorAndValids['valids']['inputPosition'] = $fieldValues['inputPosition'];
 			}
 		}
+		if (isset($_SESSION['inputPosition']) && !isset($errorAndValids['errors']['inputPosition']))
+		{
+			$errorAndValids['valids']['inputPosition'] = $_SESSION['inputPosition'];
+		} elseif (isset($_SESSION['inputPosition'])) {
+			unset($_SESSION['inputPosition']);
+		}
 		
 		if (isset($fieldValues['inputPhone']))
 		{
 			if (strlen($fieldValues['inputPhone']) == 0 )
 			{
 				$errorAndValids['errors']['inputPhone'] = 'Phone must not be empty.';
-			} elseif (strlen($fieldValues['inputPhone']) > 10) { 
+			} elseif (strlen($fieldValues['inputPhone']) > 10 || !$this->stringIsInteger($fieldValues['inputPhone'])) { 
 				$errorAndValids['errors']['inputPhone'] = 'Phone number must be 10 digits or less.';
 			} else {
 				$_SESSION['inputPhone'] = $fieldValues['inputPhone'];
 				$errorAndValids['valids']['inputPhone'] = $fieldValues['inputPhone'];
 			}
+		}
+		if (isset($_SESSION['inputPhone']) && !isset($errorAndValids['errors']['inputPhone']))
+		{
+			$errorAndValids['valids']['inputPhone'] = $_SESSION['inputPhone'];
+		} elseif (isset($_SESSION['inputPhone'])) {
+			unset($_SESSION['inputPhone']);
 		}
 		
 		if (isset($fieldValues['inputFax']))
@@ -266,12 +368,18 @@ class Apply_Controller
 			if (strlen($fieldValues['inputFax']) == 0 )
 			{
 				$errorAndValids['errors']['inputFax'] = 'Fax must not be empty.';
-			} elseif (strlen($fieldValues['inputFax']) > 10) { 
+			} elseif (strlen($fieldValues['inputFax']) > 10 || !$this->stringIsInteger($fieldValues['inputFax'])) { 
 				$errorAndValids['errors']['inputFax'] = 'Fax number must be 10 digits or less.';
 			} else {
 				$_SESSION['inputFax'] = $fieldValues['inputFax'];
 				$errorAndValids['valids']['inputFax'] = $fieldValues['inputFax'];
 			}
+		}
+		if (isset($_SESSION['inputFax']) && !isset($errorAndValids['errors']['inputFax']))
+		{
+			$errorAndValids['valids']['inputFax'] = $_SESSION['inputFax'];
+		} elseif (isset($_SESSION['inputFax'])) {
+			unset($_SESSION['inputFax']);
 		}
 		
 		if (isset($fieldValues['inputMobile']))
@@ -279,12 +387,18 @@ class Apply_Controller
 			if (strlen($fieldValues['inputMobile']) == 0 )
 			{
 				$errorAndValids['errors']['inputMobile'] = 'Mobile must not be empty.';
-			} elseif (strlen($fieldValues['inputMobile']) > 10) { 
+			} elseif (strlen($fieldValues['inputMobile']) > 10 || !$this->stringIsInteger($fieldValues['inputMobile'])) { 
 				$errorAndValids['errors']['inputMobile'] = 'Mobile number must be 10 digits or less.';
 			} else {
 				$_SESSION['inputMobile'] = $fieldValues['inputMobile'];
 				$errorAndValids['valids']['inputMobile'] = $fieldValues['inputMobile'];
 			}
+		}
+		if (isset($_SESSION['inputMobile']) && !isset($errorAndValids['errors']['inputMobile']))
+		{
+			$errorAndValids['valids']['inputMobile'] = $_SESSION['inputMobile'];
+		} elseif (isset($_SESSION['inputMobile'])) {
+			unset($_SESSION['inputMobile']);
 		}
 		
 		if (isset($fieldValues['inputEmail1']))
@@ -299,18 +413,40 @@ class Apply_Controller
 				$errorAndValids['valids']['inputEmail1'] = $fieldValues['inputEmail1'];
 			}
 		}
+		if (isset($_SESSION['inputEmail1']) && !isset($errorAndValids['errors']['inputEmail1']))
+		{
+			$errorAndValids['valids']['inputEmail1'] = $_SESSION['inputEmail1'];
+		} elseif (isset($_SESSION['inputEmail1'])) {
+			unset($_SESSION['inputEmail1']);
+		}
+		
 		
 		if (isset($fieldValues['creditLimit']))
 		{
 			if (strlen($fieldValues['creditLimit']) == 0 )
 			{
 				$errorAndValids['errors']['creditLimit'] = 'Credit limit must not be empty.';
-			} elseif (strlen($fieldValues['creditLimit']) > 5) { 
+			} elseif (strlen($fieldValues['creditLimit']) > 5 || !$this->stringIsInteger($fieldValues['creditLimit'])) { 
 				$errorAndValids['errors']['creditLimit'] = 'Credit limit must be 5 digits or less.';
 			} else {
 				$_SESSION['creditLimit'] = $fieldValues['creditLimit'];
 				$errorAndValids['valids']['creditLimit'] = $fieldValues['creditLimit'];
 			}
+		}
+		if (isset($_SESSION['creditLimit']) && !isset($errorAndValids['errors']['creditLimit']))
+		{
+			$errorAndValids['valids']['creditLimit'] = $_SESSION['creditLimit'];
+		} elseif (isset($_SESSION['creditLimit'])) {
+			unset($_SESSION['creditLimit']);
+		}
+		
+		
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page1valid'] = true;
+		} else {
+			 $_SESSION['page1valid'] = false;
 		}
 		
 		
@@ -320,7 +456,10 @@ class Apply_Controller
 	
 	private function validatePage2($fieldValues)
 	{
-		session_start();
+		if(!isset($_SESSION)) 
+		{ 
+			session_start(); 
+		} 
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -336,18 +475,30 @@ class Apply_Controller
 				$errorAndValids['valids']['refName1'] = $fieldValues['refName1'];
 			}
 		}
+		if (isset($_SESSION['refName1']) && !isset($errorAndValids['errors']['refName1']))
+		{
+			$errorAndValids['valids']['refName1'] = $_SESSION['refName1'];
+		} elseif (isset($_SESSION['refName1'])) {
+			unset($_SESSION['refName1']);
+		}
 		
 		if (isset($fieldValues['refPhone1']))
 		{
 			if (strlen($fieldValues['refPhone1']) == 0)
 			{
 				$errorAndValids['errors']['refPhone1'] = 'Reference phone must not be empty.';
-			} elseif (strlen($fieldValues['refPhone1']) > 10) { 
+			} elseif (strlen($fieldValues['refPhone1']) > 10 || !$this->stringIsInteger($fieldValues['refPhone1'])) { 
 				$errorAndValids['errors']['refPhone1'] = 'Reference phone number must be 10 digits or less.';
 			} else {
 				$_SESSION['refPhone1'] = $fieldValues['refPhone1'];
 				$errorAndValids['valids']['refPhone1'] = $fieldValues['refPhone1'];
 			}
+		}
+		if (isset($_SESSION['refPhone1']) && !isset($errorAndValids['errors']['refPhone1']))
+		{
+			$errorAndValids['valids']['refPhone1'] = $_SESSION['refPhone1'];
+		} elseif (isset($_SESSION['refPhone1'])) {
+			unset($_SESSION['refPhone1']);
 		}
 		
 		if (isset($fieldValues['refName2']))
@@ -362,18 +513,30 @@ class Apply_Controller
 				$errorAndValids['valids']['refName2'] = $fieldValues['refName2'];
 			}
 		}
+		if (isset($_SESSION['refName2']) && !isset($errorAndValids['errors']['refName2']))
+		{
+			$errorAndValids['valids']['refName2'] = $_SESSION['refName2'];
+		} elseif (isset($_SESSION['refName2'])) {
+			unset($_SESSION['refName2']);
+		}
 		
 		if (isset($fieldValues['refPhone2']))
 		{
 			if (strlen($fieldValues['refPhone2']) == 0)
 			{
 				$errorAndValids['errors']['refPhone2'] = 'Reference phone must not be empty.';
-			} elseif (strlen($fieldValues['refPhone2']) > 10) { 
+			} elseif (strlen($fieldValues['refPhone2']) > 10  || !$this->stringIsInteger($fieldValues['refPhone2'])) { 
 				$errorAndValids['errors']['refPhone2'] = 'Reference phone number must be 10 digits or less.';
 			} else {
 				$_SESSION['refPhone2'] = $fieldValues['refPhone2'];
 				$errorAndValids['valids']['refPhone2'] = $fieldValues['refPhone2'];
 			}
+		}
+		if (isset($_SESSION['refPhone2']) && !isset($errorAndValids['errors']['refPhone2']))
+		{
+			$errorAndValids['valids']['refPhone2'] = $_SESSION['refPhone2'];
+		} elseif (isset($_SESSION['refPhone2'])) {
+			unset($_SESSION['refPhone2']);
 		}
 		
 		
@@ -389,18 +552,39 @@ class Apply_Controller
 				$errorAndValids['valids']['fuelSupplierName'] = $fieldValues['fuelSupplierName'];
 			}
 		}
+		if (isset($_SESSION['fuelSupplierName']) && !isset($errorAndValids['errors']['fuelSupplierName']))
+		{
+			$errorAndValids['valids']['fuelSupplierName'] = $_SESSION['fuelSupplierName'];
+		} elseif (isset($_SESSION['fuelSupplierName'])) {
+			unset($_SESSION['fuelSupplierName']);
+		}
+		
 		
 		if (isset($fieldValues['fuelSupplierPhone']))
 		{
 			if (strlen($fieldValues['fuelSupplierPhone']) == 0)
 			{
 				$errorAndValids['errors']['fuelSupplierPhone'] = 'Fuel supplier phone must not be empty.';
-			} elseif (strlen($fieldValues['fuelSupplierPhone']) > 10) { 
+			} elseif (strlen($fieldValues['fuelSupplierPhone']) > 10 || !$this->stringIsInteger($fieldValues['fuelSupplierPhone'])) { 
 				$errorAndValids['errors']['fuelSupplierPhone'] = 'Fuel supplier phone number must be 10 digits or less.';
 			} else {
 				$_SESSION['fuelSupplierPhone'] = $fieldValues['fuelSupplierPhone'];
 				$errorAndValids['valids']['fuelSupplierPhone'] = $fieldValues['fuelSupplierPhone'];
 			}
+		}
+		if (isset($_SESSION['fuelSupplierPhone']) && !isset($errorAndValids['errors']['fuelSupplierPhone']))
+		{
+			$errorAndValids['valids']['fuelSupplierPhone'] = $_SESSION['fuelSupplierPhone'];
+		} elseif (isset($_SESSION['fuelSupplierPhone'])) {
+			unset($_SESSION['fuelSupplierPhone']);
+		}
+		
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page2valid'] = true;
+		} else {
+			 $_SESSION['page2valid'] = false;
 		}
 		
 		return $errorAndValids;
@@ -421,16 +605,24 @@ class Apply_Controller
 	*/
 	private function validatePage3($fieldValues)
 	{
-		session_start();
+		if(!isset($_SESSION)) 
+		{ 
+			session_start(); 
+		} 
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 
-		if (isset($fieldValues['numberOfPartners']))
+		if (isset($fieldValues['numberOfPartners']) || isset($_SESSION['numberOfPartners']))
 		{
-			$errorAndValids['valids']['numberOfPartners'] = $fieldValues['numberOfPartners'];
-			$numberPartners = (int)$fieldValues['numberOfPartners'];
-			$_SESSION['numberOfPartners'] = $numberPartners;
-		
+			if (isset($fieldValues['numberOfPartners']))
+			{
+				$errorAndValids['valids']['numberOfPartners'] = $fieldValues['numberOfPartners'];
+				$numberPartners = (int)$fieldValues['numberOfPartners'];
+				$_SESSION['numberOfPartners'] = $numberPartners;
+			} else {
+				$errorAndValids['valids']['numberOfPartners'] = $_SESSION['numberOfPartners'];
+				$numberPartners = (int)$_SESSION['numberOfPartners'];
+			}
 			
 			// The string prefixes used to get passed field values and set error and valid fields for return
 			// Each input box has name="" set to the matching prefix below with a number attached at the end 
@@ -457,6 +649,13 @@ class Apply_Controller
 						$errorAndValids['valids'][$partnerNameIdentifier.$i] = $fieldValues[$partnerNameIdentifier.$i];
 					}
 				}
+				if (isset($_SESSION[$partnerNameIdentifier.$i]) && !isset($errorAndValids['errors'][$partnerNameIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$partnerNameIdentifier.$i] = $_SESSION[$partnerNameIdentifier.$i];
+				} elseif (isset($_SESSION[$partnerNameIdentifier.$i])) {
+					unset($_SESSION[$partnerNameIdentifier.$i]);
+				}
+				
 				
 				// Phone for partner
 				if (isset($fieldValues[$partnerPhoneIdentifier.$i]))
@@ -464,12 +663,18 @@ class Apply_Controller
 					if (strlen($fieldValues[$partnerPhoneIdentifier.$i]) == 0 )
 					{
 						$errorAndValids['errors'][$partnerPhoneIdentifier.$i] = 'Business partner phone must not be empty.';
-					} elseif (strlen($fieldValues[$partnerPhoneIdentifier.$i]) > 40) { 
+					} elseif (strlen($fieldValues[$partnerPhoneIdentifier.$i]) > 10 || !$this->stringIsInteger($fieldValues[$partnerPhoneIdentifier.$i])) { 
 						$errorAndValids['errors'][$partnerPhoneIdentifier.$i] = 'Business partner phone must be 10 digits or less.';
 					} else {
 						$_SESSION[$partnerPhoneIdentifier.$i] = $fieldValues[$partnerPhoneIdentifier.$i];
 						$errorAndValids['valids'][$partnerPhoneIdentifier.$i] = $fieldValues[$partnerPhoneIdentifier.$i];
 					}
+				}
+				if (isset($_SESSION[$partnerPhoneIdentifier.$i]) && !isset($errorAndValids['errors'][$partnerPhoneIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$partnerPhoneIdentifier.$i] = $_SESSION[$partnerPhoneIdentifier.$i];
+				} elseif (isset($_SESSION[$partnerPhoneIdentifier.$i])) {
+					unset($_SESSION[$partnerPhoneIdentifier.$i]);
 				}
 				
 				// Address string for partner
@@ -485,6 +690,12 @@ class Apply_Controller
 						$errorAndValids['valids'][$partnerAddressIdentifier.$i] = $fieldValues[$partnerAddressIdentifier.$i];
 					}
 				}
+				if (isset($_SESSION[$partnerAddressIdentifier.$i]) && !isset($errorAndValids['errors'][$partnerAddressIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$partnerAddressIdentifier.$i] = $_SESSION[$partnerAddressIdentifier.$i];
+				} elseif (isset($_SESSION[$partnerAddressIdentifier.$i])) {
+					unset($_SESSION[$partnerAddressIdentifier.$i]);
+				}
 				
 				// State select box for partner, just check if its not on first 'select...' option
 				if (isset($fieldValues[$partnerStateIdentifier.$i]))
@@ -497,6 +708,12 @@ class Apply_Controller
 						$errorAndValids['valids'][$partnerStateIdentifier.$i] = $fieldValues[$partnerStateIdentifier.$i];
 					}
 				}
+				if (isset($_SESSION[$partnerStateIdentifier.$i]) && !isset($errorAndValids['errors'][$partnerStateIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$partnerStateIdentifier.$i] = $_SESSION[$partnerStateIdentifier.$i];
+				} elseif (isset($_SESSION[$partnerStateIdentifier.$i])) {
+					unset($_SESSION[$partnerStateIdentifier.$i]);
+				}
 				
 				// Postcode for partner
 				if (isset($fieldValues[$partnerPostcodeIdentifier.$i]))
@@ -504,17 +721,31 @@ class Apply_Controller
 					if (strlen($fieldValues[$partnerPostcodeIdentifier.$i]) == 0 )
 					{
 						$errorAndValids['errors'][$partnerPostcodeIdentifier.$i] = 'Business partner postcode must not be empty.';
-					} elseif (strlen($fieldValues[$partnerPostcodeIdentifier.$i]) != 4) { 
+					} elseif (strlen($fieldValues[$partnerPostcodeIdentifier.$i]) != 4 || !$this->stringIsInteger($fieldValues[$partnerPostcodeIdentifier.$i])) { 
 						$errorAndValids['errors'][$partnerPostcodeIdentifier.$i] = 'Business partner postcode must be 4 digits.';
 					} else {
 						$_SESSION[$partnerPostcodeIdentifier.$i] = $fieldValues[$partnerPostcodeIdentifier.$i];
 						$errorAndValids['valids'][$partnerPostcodeIdentifier.$i] = $fieldValues[$partnerPostcodeIdentifier.$i];
 					}
 				}
+				if (isset($_SESSION[$partnerPostcodeIdentifier.$i]) && !isset($errorAndValids['errors'][$partnerPostcodeIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$partnerPostcodeIdentifier.$i] = $_SESSION[$partnerPostcodeIdentifier.$i];
+				} elseif (isset($_SESSION[$partnerPostcodeIdentifier.$i])) {
+					unset($_SESSION[$partnerPostcodeIdentifier.$i]);
+				}
 			
 			}
 		} else {
 			$errorAndValids['valids']['numberOfPartners'] = 1;
+		}
+		
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page3valid'] = true;
+		} else {
+			 $_SESSION['page3valid'] = false;
 		}
 		
 		return $errorAndValids;
@@ -523,7 +754,10 @@ class Apply_Controller
 	
 	private function validatePage4($fieldValues)
 	{
-		session_start();
+		if(!isset($_SESSION)) 
+		{ 
+			session_start(); 
+		} 
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -540,6 +774,12 @@ class Apply_Controller
 				$errorAndValids['valids']['tradingNameFuelCard'] = $fieldValues['tradingNameFuelCard'];
 			}
 		}
+		if (isset($_SESSION['tradingNameFuelCard']) && !isset($errorAndValids['errors']['tradingNameFuelCard']))
+		{
+			$errorAndValids['valids']['tradingNameFuelCard'] = $_SESSION['tradingNameFuelCard'];
+		} elseif (isset($_SESSION['tradingNameFuelCard'])) {
+			unset($_SESSION['tradingNameFuelCard']);
+		}
 		
 		$cardHolderNameIdentifier = 'cardHolderName';
 		$cardHolderRegistrationIdentifier = 'registrationNo';
@@ -547,11 +787,17 @@ class Apply_Controller
 		$cardHolderProductsIdentifier = 'fuelCardProducts';
 		$cardHolderPinRequiredIdentifier = 'pinRequired';
 		
-		if (isset($fieldValues['numberOfCardholders']))
+		if (isset($fieldValues['numberOfCardholders']) || isset($_SESSION['numberOfCardholders']))
 		{
-			$errorAndValids['valids']['numberOfCardholders'] = $fieldValues['numberOfCardholders'];
-			$numberCardholders = (int)$fieldValues['numberOfCardholders'];
-			$_SESSION['numberOfCardholders'] = $numberCardholders;
+			if (isset($fieldValues['numberOfCardholders']))
+			{
+				$errorAndValids['valids']['numberOfCardholders'] = $fieldValues['numberOfCardholders'];
+				$numberCardholders = (int)$fieldValues['numberOfCardholders'];
+				$_SESSION['numberOfCardholders'] = $numberCardholders;
+			} else {
+				$errorAndValids['valids']['numberOfCardholders'] = $_SESSION['numberOfCardholders'];
+				$numberCardholders = (int)$_SESSION['numberOfCardholders'];
+			}
 
 			for ($i = 1; $i <= $numberCardholders; $i++)
 			{
@@ -568,6 +814,12 @@ class Apply_Controller
 						$errorAndValids['valids'][$cardHolderNameIdentifier.$i] = $fieldValues[$cardHolderNameIdentifier.$i];
 					}
 				}
+				if (isset($_SESSION[$cardHolderNameIdentifier.$i]) && !isset($errorAndValids['errors'][$cardHolderNameIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$cardHolderNameIdentifier.$i] = $_SESSION[$cardHolderNameIdentifier.$i];
+				} elseif (isset($_SESSION[$cardHolderNameIdentifier.$i])) {
+					unset($_SESSION[$cardHolderNameIdentifier.$i]);
+				}
 				
 				// Card Holder registration number
 				if (isset($fieldValues[$cardHolderRegistrationIdentifier.$i]))
@@ -582,6 +834,12 @@ class Apply_Controller
 						$errorAndValids['valids'][$cardHolderRegistrationIdentifier.$i] = $fieldValues[$cardHolderRegistrationIdentifier.$i];
 					}
 				}
+				if (isset($_SESSION[$cardHolderRegistrationIdentifier.$i]) && !isset($errorAndValids['errors'][$cardHolderRegistrationIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$cardHolderRegistrationIdentifier.$i] = $_SESSION[$cardHolderRegistrationIdentifier.$i];
+				} elseif (isset($_SESSION[$cardHolderRegistrationIdentifier.$i])) {
+					unset($_SESSION[$cardHolderRegistrationIdentifier.$i]);
+				}
 				
 				// Pin required select box
 				if (isset($fieldValues[$cardHolderPinRequiredIdentifier.$i]))
@@ -589,55 +847,77 @@ class Apply_Controller
 					$_SESSION[$cardHolderPinRequiredIdentifier.$i] = $fieldValues[$cardHolderPinRequiredIdentifier.$i];
 					$errorAndValids['valids'][$cardHolderPinRequiredIdentifier.$i] = $fieldValues[$cardHolderPinRequiredIdentifier.$i];
 				}
+				if (isset($_SESSION[$cardHolderPinRequiredIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$cardHolderPinRequiredIdentifier.$i] = $_SESSION[$cardHolderPinRequiredIdentifier.$i];
+				}
 				
 				// Checked products, initially create array for all product options as false for unselected
-				$errorAndValids['valids'][$cardHolderProductsIdentifier.$i] = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );
 				if (isset($fieldValues[$cardHolderProductsIdentifier.$i]))
 				{
 					if (count($fieldValues[$cardHolderProductsIdentifier.$i]) == 0 )
 					{
 						$errorAndValids['errors'][$cardHolderProductsIdentifier.$i] = 'Must select at least one product for fuel card.';
-					} else {
-						$_SESSION[$cardHolderProductsIdentifier.$i] = $fieldValues[$cardHolderProductsIdentifier.$i];
+					} elseif (isset($fieldValues[$cardHolderProductsIdentifier.$i])) {
+						$errorAndValids['valids'][$cardHolderProductsIdentifier.$i] = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );
 						// add for each selected item to be set to true in the array of all product options
 						foreach ($fieldValues[$cardHolderProductsIdentifier.$i] as $selectedProductVal)
 						{
 							$errorAndValids['valids'][$cardHolderProductsIdentifier.$i][$selectedProductVal] = true;
 						}
+						$_SESSION[$cardHolderProductsIdentifier.$i] = $errorAndValids['valids'][$cardHolderProductsIdentifier.$i];
 					}
-				} else {
+					
+				} elseif (!isset($_SESSION[$cardHolderProductsIdentifier.$i])) {
 					$errorAndValids['errors'][$cardHolderProductsIdentifier.$i] = 'Must select at least one product for fuel card.';
 				}
-			
+				
+				if (isset($_SESSION[$cardHolderProductsIdentifier.$i]) && !isset($errorAndValids['errors'][$cardHolderProductsIdentifier.$i]))
+				{
+					$errorAndValids['valids'][$cardHolderProductsIdentifier.$i] = $_SESSION[$cardHolderProductsIdentifier.$i];
+				} 
 			}
-			
 			
 		} else {
 			$errorAndValids['valids']['numberOfCardholders'] = 1;
 			// have to setup array of fuel card options 
 			$errorAndValids['valids'][$cardHolderProductsIdentifier.'1'] = array( "unleaded" => false, "biodiesel" => false, "unleadedMax" => false, "lpg" => false, "gas" => false, "carWash" => false, "shop" => false, "premiumUnleaded" => false, "octane" => false );
 		}	
-
+		
+		
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page4valid'] = true;
+		} else {
+			 $_SESSION['page4valid'] = false;
+		}
 	
 		return $errorAndValids;
 	}
 	
 	private function validatePage5($fieldValues)
 	{
-		session_start();
+		if(!isset($_SESSION)) 
+		{ 
+			session_start(); 
+		} 
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
-		if (isset($fieldValues['paymentType']))
+		if (isset($fieldValues['paymentType']) || isset($_SESSION['paymentType']))
 		{
-			if ($fieldValues['paymentType'] == 'select')
+			if (isset($fieldValues['paymentType']) && $fieldValues['paymentType'] == 'select')
 			{
 				$errorAndValids['errors']['paymentType'] = 'Must select and complete a payment option.';
 			} else {
-				$_SESSION['paymentType'] = $fieldValues['paymentType'];
-				$errorAndValids['valids']['paymentType'] = $fieldValues['paymentType'];
+				if (isset($fieldValues['paymentType']) && $fieldValues['paymentType'] != 'select')
+				{
+					$_SESSION['paymentType'] = $fieldValues['paymentType'];
+					$errorAndValids['valids']['paymentType'] = $fieldValues['paymentType'];
+				}
 				
-				if ($fieldValues['paymentType'] == 'directDebit')
+				if ((isset($fieldValues['paymentType']) && $fieldValues['paymentType'] == 'directDebit') || (isset($_SESSION['paymentType']) && $_SESSION['paymentType'] == 'directDebit'))
 				{
 					$directDebitAuthorizeIdentifier = 'ddAuthoriseName';
 					$directDebitAccountTypeIdentifier = 'accountType';
@@ -660,6 +940,12 @@ class Apply_Controller
 							$errorAndValids['valids'][$directDebitAuthorizeIdentifier] = $fieldValues[$directDebitAuthorizeIdentifier];
 						}
 					}
+					if (isset($_SESSION[$directDebitAuthorizeIdentifier]) && !isset($errorAndValids['errors'][$directDebitAuthorizeIdentifier]))
+					{
+						$errorAndValids['valids'][$directDebitAuthorizeIdentifier] = $_SESSION[$directDebitAuthorizeIdentifier];
+					} elseif (isset($_SESSION[$directDebitAuthorizeIdentifier])) {
+						unset($_SESSION[$directDebitAuthorizeIdentifier]);
+					}
 					
 					// Account type
 					if (isset($fieldValues[$directDebitAccountTypeIdentifier]))
@@ -671,6 +957,12 @@ class Apply_Controller
 							$_SESSION[$directDebitAccountTypeIdentifier] = $fieldValues[$directDebitAccountTypeIdentifier];
 							$errorAndValids['valids'][$directDebitAccountTypeIdentifier] = $fieldValues[$directDebitAccountTypeIdentifier];
 						}
+					}
+					if (isset($_SESSION[$directDebitAccountTypeIdentifier]) && !isset($errorAndValids['errors'][$directDebitAccountTypeIdentifier]))
+					{
+						$errorAndValids['valids'][$directDebitAccountTypeIdentifier] = $_SESSION[$directDebitAccountTypeIdentifier];
+					} elseif (isset($_SESSION[$directDebitAccountTypeIdentifier])) {
+						unset($_SESSION[$directDebitAccountTypeIdentifier]);
 					}
 					
 					// Bank name
@@ -686,6 +978,12 @@ class Apply_Controller
 							$errorAndValids['valids'][$directDebitBankNameIdentifier] = $fieldValues[$directDebitBankNameIdentifier];
 						}
 					}
+					if (isset($_SESSION[$directDebitBankNameIdentifier]) && !isset($errorAndValids['errors'][$directDebitBankNameIdentifier]))
+					{
+						$errorAndValids['valids'][$directDebitBankNameIdentifier] = $_SESSION[$directDebitBankNameIdentifier];
+					} elseif (isset($_SESSION[$directDebitBankNameIdentifier])) {
+						unset($_SESSION[$directDebitBankNameIdentifier]);
+					}
 					
 					// Account name
 					if (isset($fieldValues[$directDebitAccountNameIdentifier]))
@@ -700,6 +998,12 @@ class Apply_Controller
 							$errorAndValids['valids'][$directDebitAccountNameIdentifier] = $fieldValues[$directDebitAccountNameIdentifier];
 						}
 					}
+					if (isset($_SESSION[$directDebitAccountNameIdentifier]) && !isset($errorAndValids['errors'][$directDebitAccountNameIdentifier]))
+					{
+						$errorAndValids['valids'][$directDebitAccountNameIdentifier] = $_SESSION[$directDebitAccountNameIdentifier];
+					} elseif (isset($_SESSION[$directDebitAccountNameIdentifier])) {
+						unset($_SESSION[$directDebitAccountNameIdentifier]);
+					}
 					
 					// BSB
 					if (isset($fieldValues[$directDebitBSBIdentifier]))
@@ -707,12 +1011,18 @@ class Apply_Controller
 						if (strlen($fieldValues[$directDebitBSBIdentifier]) == 0 )
 						{
 							$errorAndValids['errors'][$directDebitBSBIdentifier] = 'BSB must not be empty.';
-						} elseif (strlen($fieldValues[$directDebitBSBIdentifier]) != 6) { 
+						} elseif (strlen($fieldValues[$directDebitBSBIdentifier]) != 6 || !$this->stringIsInteger($fieldValues[$directDebitBSBIdentifier])) { 
 							$errorAndValids['errors'][$directDebitBSBIdentifier] = 'BSB must be 6 digits.';
 						} else {
 							$_SESSION[$directDebitBSBIdentifier] = $fieldValues[$directDebitBSBIdentifier];
 							$errorAndValids['valids'][$directDebitBSBIdentifier] = $fieldValues[$directDebitBSBIdentifier];
 						}
+					}
+					if (isset($_SESSION[$directDebitBSBIdentifier]) && !isset($errorAndValids['errors'][$directDebitBSBIdentifier]))
+					{
+						$errorAndValids['valids'][$directDebitBSBIdentifier] = $_SESSION[$directDebitBSBIdentifier];
+					} elseif (isset($_SESSION[$directDebitBSBIdentifier])) {
+						unset($_SESSION[$directDebitBSBIdentifier]);
 					}
 					
 					// Account number
@@ -721,12 +1031,18 @@ class Apply_Controller
 						if (strlen($fieldValues[$directDebitAccountNumberIdentifier]) == 0 )
 						{
 							$errorAndValids['errors'][$directDebitAccountNumberIdentifier] = 'Account number must not be empty.';
-						} elseif (strlen($fieldValues[$directDebitAccountNumberIdentifier]) > 9) { 
+						} elseif (strlen($fieldValues[$directDebitAccountNumberIdentifier]) > 9 || !$this->stringIsInteger($fieldValues[$directDebitAccountNumberIdentifier])) { 
 							$errorAndValids['errors'][$directDebitAccountNumberIdentifier] = 'Account number must be 9 digits or less.';
 						} else {
 							$_SESSION[$directDebitAccountNumberIdentifier] = $fieldValues[$directDebitAccountNumberIdentifier];
 							$errorAndValids['valids'][$directDebitAccountNumberIdentifier] = $fieldValues[$directDebitAccountNumberIdentifier];
 						}
+					}
+					if (isset($_SESSION[$directDebitAccountNumberIdentifier]) && !isset($errorAndValids['errors'][$directDebitAccountNumberIdentifier]))
+					{
+						$errorAndValids['valids'][$directDebitAccountNumberIdentifier] = $_SESSION[$directDebitAccountNumberIdentifier];
+					} elseif (isset($_SESSION[$directDebitAccountNumberIdentifier])) {
+						unset($_SESSION[$directDebitAccountNumberIdentifier]);
 					}
 					
 					// Acknowledgement name
@@ -741,6 +1057,12 @@ class Apply_Controller
 							$_SESSION[$directDebitAcknowledgeIdentifier] = $fieldValues[$directDebitAcknowledgeIdentifier];
 							$errorAndValids['valids'][$directDebitAcknowledgeIdentifier] = $fieldValues[$directDebitAcknowledgeIdentifier];
 						}
+					}
+					if (isset($_SESSION[$directDebitAcknowledgeIdentifier]) && !isset($errorAndValids['errors'][$directDebitAcknowledgeIdentifier]))
+					{
+						$errorAndValids['valids'][$directDebitAcknowledgeIdentifier] = $_SESSION[$directDebitAcknowledgeIdentifier];
+					} elseif (isset($_SESSION[$directDebitAcknowledgeIdentifier])) {
+						unset($_SESSION[$directDebitAcknowledgeIdentifier]);
 					}
 					
 				} else {
@@ -768,6 +1090,12 @@ class Apply_Controller
 							$errorAndValids['valids'][$creditCardAuthorizeIdentifier] = $fieldValues[$creditCardAuthorizeIdentifier];
 						}
 					}
+					if (isset($_SESSION[$creditCardAuthorizeIdentifier]) && !isset($errorAndValids['errors'][$creditCardAuthorizeIdentifier]))
+					{
+						$errorAndValids['valids'][$creditCardAuthorizeIdentifier] = $_SESSION[$creditCardAuthorizeIdentifier];
+					} elseif (isset($_SESSION[$creditCardAuthorizeIdentifier])) {
+						unset($_SESSION[$creditCardAuthorizeIdentifier]);
+					}
 					
 					// Monthly Payment Date
 					if (isset($fieldValues[$creditCardPaymentDateIdentifier]))
@@ -779,6 +1107,12 @@ class Apply_Controller
 							$_SESSION[$creditCardPaymentDateIdentifier] = $fieldValues[$creditCardPaymentDateIdentifier];
 							$errorAndValids['valids'][$creditCardPaymentDateIdentifier] = $fieldValues[$creditCardPaymentDateIdentifier];
 						}
+					}
+					if (isset($_SESSION[$creditCardPaymentDateIdentifier]) && !isset($errorAndValids['errors'][$creditCardPaymentDateIdentifier]))
+					{
+						$errorAndValids['valids'][$creditCardPaymentDateIdentifier] = $_SESSION[$creditCardPaymentDateIdentifier];
+					} elseif (isset($_SESSION[$creditCardPaymentDateIdentifier])) {
+						unset($_SESSION[$creditCardPaymentDateIdentifier]);
 					}
 					
 					//Credit card name
@@ -794,6 +1128,12 @@ class Apply_Controller
 							$errorAndValids['valids'][$creditCardNameIdentifier] = $fieldValues[$creditCardNameIdentifier];
 						}
 					}
+					if (isset($_SESSION[$creditCardNameIdentifier]) && !isset($errorAndValids['errors'][$creditCardNameIdentifier]))
+					{
+						$errorAndValids['valids'][$creditCardNameIdentifier] = $_SESSION[$creditCardNameIdentifier];
+					} elseif (isset($_SESSION[$creditCardNameIdentifier])) {
+						unset($_SESSION[$creditCardNameIdentifier]);
+					}
 					
 					//Credit card number
 					if (isset($fieldValues[$creditCardNumberIdentifier]))
@@ -801,37 +1141,54 @@ class Apply_Controller
 						if (strlen($fieldValues[$creditCardNumberIdentifier]) == 0 )
 						{
 							$errorAndValids['errors'][$creditCardNumberIdentifier] = 'Credit card number must not be empty.';
-						} elseif (strlen($fieldValues[$creditCardNumberIdentifier]) != 16) { 
+						} elseif (strlen($fieldValues[$creditCardNumberIdentifier]) != 16 || !$this->stringIsInteger($fieldValues[$creditCardNumberIdentifier])) { 
 							$errorAndValids['errors'][$creditCardNumberIdentifier] = 'Credit card number must be 16 digits.';
 						} else {
 							$_SESSION[$creditCardNumberIdentifier] = $fieldValues[$creditCardNumberIdentifier];
 							$errorAndValids['valids'][$creditCardNumberIdentifier] = $fieldValues[$creditCardNumberIdentifier];
 						}
 					}
-					
-					// Expiry Date
-					if ($fieldValues[$creditCardExpiryMonthIdentifier] == 'select' || $fieldValues[$creditCardExpiryYearIdentifier] == 'select')
+					if (isset($_SESSION[$creditCardNumberIdentifier]) && !isset($errorAndValids['errors'][$creditCardNumberIdentifier]))
 					{
-						$errorAndValids['errors'][$creditCardExpiryDateIdentifier] = 'You must select an expiry date.';
-						
-						if ($fieldValues[$creditCardExpiryMonthIdentifier] != 'select')
+						$errorAndValids['valids'][$creditCardNumberIdentifier] = $_SESSION[$creditCardNumberIdentifier];
+					} elseif (isset($_SESSION[$creditCardNumberIdentifier])) {
+						unset($_SESSION[$creditCardNumberIdentifier]);
+					}
+					
+					//Expiry Date Month
+					if (isset($fieldValues[$creditCardExpiryMonthIdentifier]))
+					{
+						if ($fieldValues[$creditCardExpiryMonthIdentifier] == 'select')
 						{
+							$errorAndValids['errors'][$creditCardExpiryDateIdentifier] = 'You must select an expiry date.';
+						} else {
 							$_SESSION[$creditCardExpiryMonthIdentifier] = $fieldValues[$creditCardExpiryMonthIdentifier];
 							$errorAndValids['valids'][$creditCardExpiryMonthIdentifier] = $fieldValues[$creditCardExpiryMonthIdentifier];
 						}
-						
-						if ($fieldValues[$creditCardExpiryYearIdentifier] != 'select')
+					}
+					if (isset($_SESSION[$creditCardExpiryMonthIdentifier]) && !(isset($fieldValues[$creditCardExpiryMonthIdentifier]) && $fieldValues[$creditCardExpiryMonthIdentifier] == 'select'))
+					{
+						$errorAndValids['valids'][$creditCardExpiryMonthIdentifier] = $_SESSION[$creditCardExpiryMonthIdentifier];
+					} elseif (isset($_SESSION[$creditCardExpiryMonthIdentifier])) {
+						unset($_SESSION[$creditCardExpiryMonthIdentifier]);
+					}
+					
+					//Expiry Date Year
+					if (isset($fieldValues[$creditCardExpiryYearIdentifier]))
+					{
+						if ($fieldValues[$creditCardExpiryYearIdentifier] == 'select')
 						{
+							$errorAndValids['errors'][$creditCardExpiryDateIdentifier] = 'You must select an expiry date.';
+						} else {
 							$_SESSION[$creditCardExpiryYearIdentifier] = $fieldValues[$creditCardExpiryYearIdentifier];
 							$errorAndValids['valids'][$creditCardExpiryYearIdentifier] = $fieldValues[$creditCardExpiryYearIdentifier];
-						}	
-						
-					} else {
-						$_SESSION[$creditCardExpiryMonthIdentifier] = $fieldValues[$creditCardExpiryMonthIdentifier];
-						$errorAndValids['valids'][$creditCardExpiryMonthIdentifier] = $fieldValues[$creditCardExpiryMonthIdentifier];
-						
-						$_SESSION[$creditCardExpiryYearIdentifier] = $fieldValues[$creditCardExpiryYearIdentifier];
-						$errorAndValids['valids'][$creditCardExpiryYearIdentifier] = $fieldValues[$creditCardExpiryYearIdentifier];
+						}
+					}
+					if (isset($_SESSION[$creditCardExpiryYearIdentifier]) && !(isset($fieldValues[$creditCardExpiryYearIdentifier]) && $fieldValues[$creditCardExpiryYearIdentifier] == 'select'))
+					{
+						$errorAndValids['valids'][$creditCardExpiryYearIdentifier] = $_SESSION[$creditCardExpiryYearIdentifier];
+					} elseif (isset($_SESSION[$creditCardExpiryYearIdentifier])) {
+						unset($_SESSION[$creditCardExpiryYearIdentifier]);
 					}
 					
 					// Card type
@@ -844,6 +1201,12 @@ class Apply_Controller
 							$_SESSION[$creditCardTypeIdentifier] = $fieldValues[$creditCardTypeIdentifier];
 							$errorAndValids['valids'][$creditCardTypeIdentifier] = $fieldValues[$creditCardTypeIdentifier];
 						}
+					}
+					if (isset($_SESSION[$creditCardTypeIdentifier]) && !isset($errorAndValids['errors'][$creditCardTypeIdentifier]))
+					{
+						$errorAndValids['valids'][$creditCardTypeIdentifier] = $_SESSION[$creditCardTypeIdentifier];
+					} elseif (isset($_SESSION[$creditCardTypeIdentifier])) {
+						unset($_SESSION[$creditCardTypeIdentifier]);
 					}
 					
 					// Acknowledgement name
@@ -859,9 +1222,28 @@ class Apply_Controller
 							$errorAndValids['valids'][$creditCardAcknowledgeIdentifier] = $fieldValues[$creditCardAcknowledgeIdentifier];
 						}
 					}
+					if (isset($_SESSION[$creditCardAcknowledgeIdentifier]) && !isset($errorAndValids['errors'][$creditCardAcknowledgeIdentifier]))
+					{
+						$errorAndValids['valids'][$creditCardAcknowledgeIdentifier] = $_SESSION[$creditCardAcknowledgeIdentifier];
+					} elseif (isset($_SESSION[$creditCardAcknowledgeIdentifier])) {
+						unset($_SESSION[$creditCardAcknowledgeIdentifier]);
+					}
 					
 				}
 			}
+		}
+		if (isset($_SESSION['paymentType']) && !isset($errorAndValids['errors']['paymentType']))
+		{
+			$errorAndValids['valids']['paymentType'] = $_SESSION['paymentType'];
+		} elseif (isset($_SESSION['paymentType'])) {
+			unset($_SESSION['paymentType']);
+		}
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page5valid'] = true;
+		} else {
+			 $_SESSION['page5valid'] = false;
 		}
 		
 		return $errorAndValids;
@@ -869,10 +1251,12 @@ class Apply_Controller
 	
 	private function validatePage6($fieldValues)
 	{
-		session_start();
+		if(!isset($_SESSION)) 
+		{ 
+			session_start(); 
+		} 
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
-		
 		
 		if (isset($_SESSION['numberOfPartners']))
 		{
@@ -903,7 +1287,50 @@ class Apply_Controller
 						$errorAndValids['valids'][$authoriseAckNameIdentifier] = $fieldValues[$authoriseAckNameIdentifier];
 					}
 				}
+				if (isset($_SESSION[$authoriseAckNameIdentifier]) && !isset($errorAndValids['errors'][$authoriseAckNameIdentifier]))
+				{
+					$errorAndValids['valids'][$authoriseAckNameIdentifier] = $_SESSION[$authoriseAckNameIdentifier];
+				} elseif (isset($_SESSION[$authoriseAckNameIdentifier])) {
+					unset($_SESSION[$authoriseAckNameIdentifier]);
+				}
 				
+				// Date of Birth Day
+				if (isset($fieldValues[$authoriseAckDOBDayIdentifier]))
+				{
+					if ($fieldValues[$authoriseAckDOBDayIdentifier] == 'select')
+					{
+						$errorAndValids['errors'][$authoriseAckDOBIdentifier] = 'You must select a date of birth day and month.';
+					} else {
+						$_SESSION[$authoriseAckDOBDayIdentifier] = $fieldValues[$authoriseAckDOBDayIdentifier];
+						$errorAndValids['valids'][$authoriseAckDOBDayIdentifier] = $fieldValues[$authoriseAckDOBDayIdentifier];
+					}
+				}
+				if (isset($_SESSION[$authoriseAckDOBDayIdentifier]) && !isset($errorAndValids['errors'][$authoriseAckDOBDayIdentifier]))
+				{
+					$errorAndValids['valids'][$authoriseAckDOBDayIdentifier] = $_SESSION[$authoriseAckDOBDayIdentifier];
+				} elseif (isset($_SESSION[$authoriseAckDOBDayIdentifier])) {
+					unset($_SESSION[$authoriseAckDOBDayIdentifier]);
+				}
+				
+				// Date of Birth Month
+				if (isset($fieldValues[$authoriseAckDOBMonthIdentifier]))
+				{
+					if ($fieldValues[$authoriseAckDOBMonthIdentifier] == 'select')
+					{
+						$errorAndValids['errors'][$authoriseAckDOBIdentifier] = 'You must select a date of birth day and month.';
+					} else {
+						$_SESSION[$authoriseAckDOBMonthIdentifier] = $fieldValues[$authoriseAckDOBMonthIdentifier];
+						$errorAndValids['valids'][$authoriseAckDOBMonthIdentifier] = $fieldValues[$authoriseAckDOBMonthIdentifier];
+					}
+				}
+				if (isset($_SESSION[$authoriseAckDOBMonthIdentifier]) && !isset($errorAndValids['errors'][$authoriseAckDOBMonthIdentifier]))
+				{
+					$errorAndValids['valids'][$authoriseAckDOBMonthIdentifier] = $_SESSION[$authoriseAckDOBMonthIdentifier];
+				} elseif (isset($_SESSION[$authoriseAckDOBMonthIdentifier])) {
+					unset($_SESSION[$authoriseAckDOBMonthIdentifier]);
+				}
+				
+				/*
 				// Date of Birth
 				if (isset($fieldValues[$authoriseAckDOBDayIdentifier]) && isset($fieldValues[$authoriseAckDOBMonthIdentifier]))
 				{
@@ -931,6 +1358,7 @@ class Apply_Controller
 						$errorAndValids['valids'][$authoriseAckDOBMonthIdentifier] = $fieldValues[$authoriseAckDOBMonthIdentifier];
 					}
 				}
+				*/
 				
 				// Date of birth year
 				if (isset($fieldValues[$authoriseAckDOBYearIdentifier]))
@@ -938,12 +1366,18 @@ class Apply_Controller
 					if (strlen($fieldValues[$authoriseAckDOBYearIdentifier]) == 0 )
 					{
 						$errorAndValids['errors'][$authoriseAckDOBYearIdentifier] = 'Date of birth year must not be empty.';
-					} elseif (strlen($fieldValues[$authoriseAckDOBYearIdentifier]) != 4) { 
+					} elseif (strlen($fieldValues[$authoriseAckDOBYearIdentifier]) != 4 || !$this->stringIsInteger($fieldValues[$authoriseAckDOBYearIdentifier])) { 
 						$errorAndValids['errors'][$authoriseAckDOBYearIdentifier] = 'Date of birth year must be 4 digits.';
 					} else {
 						$_SESSION[$authoriseAckDOBYearIdentifier] = $fieldValues[$authoriseAckDOBYearIdentifier];
 						$errorAndValids['valids'][$authoriseAckDOBYearIdentifier] = $fieldValues[$authoriseAckDOBYearIdentifier];
 					}
+				}
+				if (isset($_SESSION[$authoriseAckDOBYearIdentifier]) && !isset($errorAndValids['errors'][$authoriseAckDOBYearIdentifier]))
+				{
+					$errorAndValids['valids'][$authoriseAckDOBYearIdentifier] = $_SESSION[$authoriseAckDOBYearIdentifier];
+				} elseif (isset($_SESSION[$authoriseAckDOBYearIdentifier])) {
+					unset($_SESSION[$authoriseAckDOBYearIdentifier]);
 				}
 				
 				// Driver Licence
@@ -959,6 +1393,12 @@ class Apply_Controller
 						$errorAndValids['valids'][$authoriseAckLicenceIdentifier] = $fieldValues[$authoriseAckLicenceIdentifier];
 					}
 				}
+				if (isset($_SESSION[$authoriseAckLicenceIdentifier]) && !isset($errorAndValids['errors'][$authoriseAckLicenceIdentifier]))
+				{
+					$errorAndValids['valids'][$authoriseAckLicenceIdentifier] = $_SESSION[$authoriseAckLicenceIdentifier];
+				} elseif (isset($_SESSION[$authoriseAckLicenceIdentifier])) {
+					unset($_SESSION[$authoriseAckLicenceIdentifier]);
+				}
 				
 				// Signature, must be the same as the full name provided
 				if (isset($fieldValues[$authoriseAckSignatureIdentifier]))
@@ -973,14 +1413,22 @@ class Apply_Controller
 						$errorAndValids['valids'][$authoriseAckSignatureIdentifier] = $fieldValues[$authoriseAckSignatureIdentifier];
 					}
 				}
-				
-			
+				if (isset($_SESSION[$authoriseAckSignatureIdentifier]) && !isset($errorAndValids['errors'][$authoriseAckSignatureIdentifier]))
+				{
+					$errorAndValids['valids'][$authoriseAckSignatureIdentifier] = $_SESSION[$authoriseAckSignatureIdentifier];
+				} elseif (isset($_SESSION[$authoriseAckSignatureIdentifier])) {
+					unset($_SESSION[$authoriseAckSignatureIdentifier]);
+				}
 			}
-			
-			
 		} else {
-			
 			$errorAndValids['errors']['numberOfPartners'] = 'You have not filled out the business partners. Please go back to page 3 (Partners) and complete that form.';
+		}
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page6valid'] = true;
+		} else {
+			 $_SESSION['page6valid'] = false;
 		}
 		
 		return $errorAndValids;
@@ -988,7 +1436,10 @@ class Apply_Controller
 	
 	private function validatePage7($fieldValues)
 	{
-		session_start();
+		if(!isset($_SESSION)) 
+		{ 
+			session_start(); 
+		} 
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -1016,6 +1467,12 @@ class Apply_Controller
 						$errorAndValids['valids'][$acceptNameIdentifier] = $fieldValues[$acceptNameIdentifier];
 					}
 				}
+				if (isset($_SESSION[$acceptNameIdentifier]) && !isset($errorAndValids['errors'][$acceptNameIdentifier]))
+				{
+					$errorAndValids['valids'][$acceptNameIdentifier] = $_SESSION[$acceptNameIdentifier];
+				} elseif (isset($_SESSION[$acceptNameIdentifier])) {
+					unset($_SESSION[$acceptNameIdentifier]);
+				}
 				
 				// Signature, must be the same as the full name provided
 				if (isset($fieldValues[$acceptSignatureIdentifier]))
@@ -1030,12 +1487,25 @@ class Apply_Controller
 						$errorAndValids['valids'][$acceptSignatureIdentifier] = $fieldValues[$acceptSignatureIdentifier];
 					}
 				}
+				if (isset($_SESSION[$acceptSignatureIdentifier]) && !isset($errorAndValids['errors'][$acceptSignatureIdentifier]))
+				{
+					$errorAndValids['valids'][$acceptSignatureIdentifier] = $_SESSION[$acceptSignatureIdentifier];
+				} elseif (isset($_SESSION[$acceptSignatureIdentifier])) {
+					unset($_SESSION[$acceptSignatureIdentifier]);
+				}
 			}
 			
 			
 		} else {
 			
 			$errorAndValids['errors']['numberOfPartners'] = 'You have not filled out the business partners. Please go back to page 3 (Partners) and complete that form.';
+		}
+		
+		if (count($errorAndValids['errors']) == 0)
+		{
+			 $_SESSION['page7valid'] = true;
+		} else {
+			 $_SESSION['page7valid'] = false;
 		}
 		
 		return $errorAndValids;

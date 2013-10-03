@@ -2,57 +2,65 @@
 
 <!-- Main component for a primary marketing message or call to action -->
 <div class="container" id="apply-page">
-	<h1 class="spacing-under">Application - Page 1 - Business Details</h1>
 	<div class="row">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			<b>Details</b>
-		</div>
-		<div class="col-md-1 apply-progress">
-			Rerferences
-		</div>
-		<div class="col-md-1 apply-progress">
-			Partners
-		</div>
-		<div class="col-md-1 apply-progress">
-			Fuel Cards
-		</div>
-		<div class="col-md-1 apply-progress">
-			Payment Details
-		</div>
-		<div class="col-md-1 apply-progress">
-			Authorization
-		</div>
-		<div class="col-md-1 apply-progress">
-			Terms and Conditions
-		</div>
-		<div class="col-md-1 apply-progress">
-			Review and Finish
+		<div class="col-md-12 center">
+		<h2 class="spacing-under">Page 1 of 8 - Business Details</h2>
 		</div>
 	</div>
-	<div class="row" id="progress-circles">
-		<div class="col-md-1 col-md-offset-2 apply-progress">
-			<img src="images/progress-green-left.jpeg" />
+	<div class="row">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+				<b>Details</b>
+			</div>
+			<div class="apply-progress">
+				Rerferences
+			</div>
+			<div class="apply-progress">
+				Partners
+			</div>
+			<div class="apply-progress">
+				Fuel Cards
+			</div>
+			<div class="apply-progress">
+				Payment Details
+			</div>
+			<div class="apply-progress">
+				Authorization
+			</div>
+			<div class="apply-progress">
+				Terms and Conditions
+			</div>
+			<div class="apply-progress">
+				Review and Finish
+			</div>
 		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-middle.jpeg" />
-		</div>
-		<div class="col-md-1 apply-progress">
-			<img src="images/progress-grey-right.jpeg" />
+	</div>
+	<div class="row spacing-under">
+		<div class="col-md-12 center">
+			<div class="apply-progress">
+			<img src="images/progress-green-left-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-middle-big.jpeg" />
+			</div>
+			<div class="apply-progress">
+				<img src="images/progress-grey-right-big.jpeg" />
+			</div>
 		</div>
 	</div>
 	
@@ -68,13 +76,15 @@
 			   </div>
 			  </div>
 			  <input type="hidden" class="form-control" name="page" id="page" value="2">
+			  <input type="hidden" class="form-control" name="navigation" id="navigation" value="next">
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="busType" class="col-lg-2 control-label">Business Type</label>
+					<label for="busType" class="control-label">Business Type</label>
 				  </div>
 				  <div class="col-md-4">
 					<select name="biztype">
-						<?php if (isset($data['valids']['biztype'])) { 
+						<?php 
+						if (isset($data['valids']['biztype'])) { 
 							$selected_value = $data['valids']['biztype'];
 						?>
 						<option value="select">Select...</option>
@@ -103,7 +113,7 @@
 			  </div>	
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="businessName" class="col-lg-2 control-label">Registered Business Name</label>
+					<label for="businessName" class="control-label">Registered Business Name</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['businessName'])) { ?>
@@ -121,7 +131,7 @@
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="tradingName" class="col-lg-2 control-label">Trading Name</label>
+					<label for="tradingName" class="control-label">Trading Name</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['tradingName'])) { ?>
@@ -139,7 +149,7 @@
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="yearBizStart" class="col-lg-2 control-label">Year Business Commenced</label>
+					<label for="yearBizStart" class="control-label">Year Business Commenced</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['yearBizStart'])) { ?>
@@ -157,7 +167,7 @@
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="abn" class="col-lg-2 control-label">ABN/ACN</label>
+					<label for="abn" class="control-label">ABN/ACN</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['abn'])) { ?>
@@ -176,7 +186,7 @@
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="operations" class="col-lg-2 control-label">Nature of Operations</label>
+					<label for="operations" class="control-label">Nature of Operations</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['operations'])) { ?>
@@ -200,7 +210,7 @@
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="contactFirstName" class="col-lg-2 control-label">Contact First Name</label>
+					<label for="contactFirstName" class="control-label">Contact First Name</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['contactFirstName'])) { ?>
@@ -218,7 +228,7 @@
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="contactLastName" class="col-lg-2 control-label">Contact Last Name</label>
+					<label for="contactLastName" class="control-label">Contact Last Name</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['contactLastName'])) { ?>
@@ -236,7 +246,7 @@
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputPosition" class="col-lg-2 control-label">Position</label>
+					<label for="inputPosition" class="control-label">Position</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['inputPosition'])) { ?>
@@ -253,7 +263,7 @@
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputPhone" class="col-lg-2 control-label">Phone Number</label>
+					<label for="inputPhone" class="control-label">Phone Number</label>
 				  </div>
 				  <div class="col-md-4">
 					 <?php if (isset($data['valids']['inputPhone'])) { ?>
@@ -270,7 +280,7 @@
 			  </div>
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputFax" class="col-lg-2 control-label">Fax</label>
+					<label for="inputFax" class="control-label">Fax</label>
 				  </div>
 				  <div class="col-md-4">
 					 <?php if (isset($data['valids']['inputFax'])) { ?>
@@ -288,7 +298,7 @@
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputMobile" class="col-lg-2 control-label">Mobile</label>
+					<label for="inputMobile" class="control-label">Mobile</label>
 				  </div>
 				  <div class="col-md-4">
 					 <?php if (isset($data['valids']['inputMobile'])) { ?>
@@ -306,7 +316,7 @@
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="inputEmail1" class="col-lg-2 control-label">Email</label>
+					<label for="inputEmail1" class="control-label">Email</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['inputEmail1'])) { ?>
@@ -331,7 +341,7 @@
 			  
 			  <div class="row">
 				  <div class="col-md-3">
-					<label for="creditLimit" class="col-lg-2 control-label">Monthly Credit Limit</label>
+					<label for="creditLimit" class="control-label">Monthly Credit Limit</label>
 				  </div>
 				  <div class="col-md-4">
 					<?php if (isset($data['valids']['creditLimit'])) { ?>
