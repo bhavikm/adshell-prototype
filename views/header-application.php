@@ -37,7 +37,7 @@
       <div class="navbar navbar-default">
 		
         <div class="col-md-4">
-          <a class="navbar-brand" href=""><img src="images/adshell-logo-grey.gif" /></a>
+          <a class="navbar-brand" data-toggle="modal" data-target="#myModal" href="#myModal"><img src="images/adshell-logo-grey.gif" /></a>
         </div>
 		<div class="col-md-5" style="margin-top: 10px;">
          <h1>Fuel Card Application</h1>
