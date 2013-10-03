@@ -83,7 +83,8 @@
 				  </div>
 				  <div class="col-md-4">
 					<select name="biztype">
-						<?php if (isset($data['valids']['biztype'])) { 
+						<?php 
+						if (isset($data['valids']['biztype'])) { 
 							$selected_value = $data['valids']['biztype'];
 						?>
 						<option value="select">Select...</option>

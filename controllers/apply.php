@@ -8,6 +8,16 @@ class Apply_Controller
 	 */
 	public $template = 'apply';
 	
+	public function stringIsInteger($string)
+	{
+		if (preg_match("/^[0-9]+$/",$string))
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * This is the default function that will be called by router.php
 	 * 
@@ -15,7 +25,6 @@ class Apply_Controller
 	 */
 	public function main(array $getVars)
 	{	
-	
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -226,7 +235,7 @@ class Apply_Controller
 			if (strlen($fieldValues['yearBizStart']) == 0 )
 			{
 				$errorAndValids['errors']['yearBizStart'] = 'Business start year must not be empty.';
-			} elseif (strlen($fieldValues['yearBizStart']) != 4) { 
+			} elseif (strlen($fieldValues['yearBizStart']) != 4 || !$this->stringIsInteger($fieldValues['yearBizStart'])) { 
 				$errorAndValids['errors']['yearBizStart'] = 'Business start year must be valid.';
 			} else {
 				$_SESSION['yearBizStart'] = $fieldValues['yearBizStart'];
@@ -245,7 +254,7 @@ class Apply_Controller
 			if (strlen($fieldValues['abn']) == 0 )
 			{
 				$errorAndValids['errors']['abn'] = 'ABN/ACN not be empty.';
-			} elseif (strlen($fieldValues['abn']) > 11) { 
+			} elseif (strlen($fieldValues['abn']) > 11 || !$this->stringIsInteger($fieldValues['abn'])) { 
 				$errorAndValids['errors']['abn'] = 'ABN/ACN must be 11 digits or less.';
 			} else {
 				$_SESSION['abn'] = $fieldValues['abn'];
@@ -340,7 +349,7 @@ class Apply_Controller
 			if (strlen($fieldValues['inputPhone']) == 0 )
 			{
 				$errorAndValids['errors']['inputPhone'] = 'Phone must not be empty.';
-			} elseif (strlen($fieldValues['inputPhone']) > 10) { 
+			} elseif (strlen($fieldValues['inputPhone']) > 10 || !$this->stringIsInteger($fieldValues['inputPhone'])) { 
 				$errorAndValids['errors']['inputPhone'] = 'Phone number must be 10 digits or less.';
 			} else {
 				$_SESSION['inputPhone'] = $fieldValues['inputPhone'];
@@ -359,7 +368,7 @@ class Apply_Controller
 			if (strlen($fieldValues['inputFax']) == 0 )
 			{
 				$errorAndValids['errors']['inputFax'] = 'Fax must not be empty.';
-			} elseif (strlen($fieldValues['inputFax']) > 10) { 
+			} elseif (strlen($fieldValues['inputFax']) > 10 || !$this->stringIsInteger($fieldValues['inputFax'])) { 
 				$errorAndValids['errors']['inputFax'] = 'Fax number must be 10 digits or less.';
 			} else {
 				$_SESSION['inputFax'] = $fieldValues['inputFax'];
@@ -378,7 +387,7 @@ class Apply_Controller
 			if (strlen($fieldValues['inputMobile']) == 0 )
 			{
 				$errorAndValids['errors']['inputMobile'] = 'Mobile must not be empty.';
-			} elseif (strlen($fieldValues['inputMobile']) > 10) { 
+			} elseif (strlen($fieldValues['inputMobile']) > 10 || !$this->stringIsInteger($fieldValues['inputMobile'])) { 
 				$errorAndValids['errors']['inputMobile'] = 'Mobile number must be 10 digits or less.';
 			} else {
 				$_SESSION['inputMobile'] = $fieldValues['inputMobile'];
@@ -417,7 +426,7 @@ class Apply_Controller
 			if (strlen($fieldValues['creditLimit']) == 0 )
 			{
 				$errorAndValids['errors']['creditLimit'] = 'Credit limit must not be empty.';
-			} elseif (strlen($fieldValues['creditLimit']) > 5) { 
+			} elseif (strlen($fieldValues['creditLimit']) > 5 || !$this->stringIsInteger($fieldValues['creditLimit'])) { 
 				$errorAndValids['errors']['creditLimit'] = 'Credit limit must be 5 digits or less.';
 			} else {
 				$_SESSION['creditLimit'] = $fieldValues['creditLimit'];
@@ -478,7 +487,7 @@ class Apply_Controller
 			if (strlen($fieldValues['refPhone1']) == 0)
 			{
 				$errorAndValids['errors']['refPhone1'] = 'Reference phone must not be empty.';
-			} elseif (strlen($fieldValues['refPhone1']) > 10) { 
+			} elseif (strlen($fieldValues['refPhone1']) > 10 || !$this->stringIsInteger($fieldValues['refPhone1'])) { 
 				$errorAndValids['errors']['refPhone1'] = 'Reference phone number must be 10 digits or less.';
 			} else {
 				$_SESSION['refPhone1'] = $fieldValues['refPhone1'];
@@ -516,7 +525,7 @@ class Apply_Controller
 			if (strlen($fieldValues['refPhone2']) == 0)
 			{
 				$errorAndValids['errors']['refPhone2'] = 'Reference phone must not be empty.';
-			} elseif (strlen($fieldValues['refPhone2']) > 10) { 
+			} elseif (strlen($fieldValues['refPhone2']) > 10  || !$this->stringIsInteger($fieldValues['refPhone2'])) { 
 				$errorAndValids['errors']['refPhone2'] = 'Reference phone number must be 10 digits or less.';
 			} else {
 				$_SESSION['refPhone2'] = $fieldValues['refPhone2'];
@@ -556,7 +565,7 @@ class Apply_Controller
 			if (strlen($fieldValues['fuelSupplierPhone']) == 0)
 			{
 				$errorAndValids['errors']['fuelSupplierPhone'] = 'Fuel supplier phone must not be empty.';
-			} elseif (strlen($fieldValues['fuelSupplierPhone']) > 10) { 
+			} elseif (strlen($fieldValues['fuelSupplierPhone']) > 10 || !$this->stringIsInteger($fieldValues['fuelSupplierPhone'])) { 
 				$errorAndValids['errors']['fuelSupplierPhone'] = 'Fuel supplier phone number must be 10 digits or less.';
 			} else {
 				$_SESSION['fuelSupplierPhone'] = $fieldValues['fuelSupplierPhone'];
@@ -654,7 +663,7 @@ class Apply_Controller
 					if (strlen($fieldValues[$partnerPhoneIdentifier.$i]) == 0 )
 					{
 						$errorAndValids['errors'][$partnerPhoneIdentifier.$i] = 'Business partner phone must not be empty.';
-					} elseif (strlen($fieldValues[$partnerPhoneIdentifier.$i]) > 40) { 
+					} elseif (strlen($fieldValues[$partnerPhoneIdentifier.$i]) > 10 || !$this->stringIsInteger($fieldValues[$partnerPhoneIdentifier.$i])) { 
 						$errorAndValids['errors'][$partnerPhoneIdentifier.$i] = 'Business partner phone must be 10 digits or less.';
 					} else {
 						$_SESSION[$partnerPhoneIdentifier.$i] = $fieldValues[$partnerPhoneIdentifier.$i];
@@ -712,7 +721,7 @@ class Apply_Controller
 					if (strlen($fieldValues[$partnerPostcodeIdentifier.$i]) == 0 )
 					{
 						$errorAndValids['errors'][$partnerPostcodeIdentifier.$i] = 'Business partner postcode must not be empty.';
-					} elseif (strlen($fieldValues[$partnerPostcodeIdentifier.$i]) != 4) { 
+					} elseif (strlen($fieldValues[$partnerPostcodeIdentifier.$i]) != 4 || !$this->stringIsInteger($fieldValues[$partnerPostcodeIdentifier.$i])) { 
 						$errorAndValids['errors'][$partnerPostcodeIdentifier.$i] = 'Business partner postcode must be 4 digits.';
 					} else {
 						$_SESSION[$partnerPostcodeIdentifier.$i] = $fieldValues[$partnerPostcodeIdentifier.$i];
@@ -1002,7 +1011,7 @@ class Apply_Controller
 						if (strlen($fieldValues[$directDebitBSBIdentifier]) == 0 )
 						{
 							$errorAndValids['errors'][$directDebitBSBIdentifier] = 'BSB must not be empty.';
-						} elseif (strlen($fieldValues[$directDebitBSBIdentifier]) != 6) { 
+						} elseif (strlen($fieldValues[$directDebitBSBIdentifier]) != 6 || !$this->stringIsInteger($fieldValues[$directDebitBSBIdentifier])) { 
 							$errorAndValids['errors'][$directDebitBSBIdentifier] = 'BSB must be 6 digits.';
 						} else {
 							$_SESSION[$directDebitBSBIdentifier] = $fieldValues[$directDebitBSBIdentifier];
@@ -1022,7 +1031,7 @@ class Apply_Controller
 						if (strlen($fieldValues[$directDebitAccountNumberIdentifier]) == 0 )
 						{
 							$errorAndValids['errors'][$directDebitAccountNumberIdentifier] = 'Account number must not be empty.';
-						} elseif (strlen($fieldValues[$directDebitAccountNumberIdentifier]) > 9) { 
+						} elseif (strlen($fieldValues[$directDebitAccountNumberIdentifier]) > 9 || !$this->stringIsInteger($fieldValues[$directDebitAccountNumberIdentifier])) { 
 							$errorAndValids['errors'][$directDebitAccountNumberIdentifier] = 'Account number must be 9 digits or less.';
 						} else {
 							$_SESSION[$directDebitAccountNumberIdentifier] = $fieldValues[$directDebitAccountNumberIdentifier];
@@ -1132,7 +1141,7 @@ class Apply_Controller
 						if (strlen($fieldValues[$creditCardNumberIdentifier]) == 0 )
 						{
 							$errorAndValids['errors'][$creditCardNumberIdentifier] = 'Credit card number must not be empty.';
-						} elseif (strlen($fieldValues[$creditCardNumberIdentifier]) != 16) { 
+						} elseif (strlen($fieldValues[$creditCardNumberIdentifier]) != 16 || !$this->stringIsInteger($fieldValues[$creditCardNumberIdentifier])) { 
 							$errorAndValids['errors'][$creditCardNumberIdentifier] = 'Credit card number must be 16 digits.';
 						} else {
 							$_SESSION[$creditCardNumberIdentifier] = $fieldValues[$creditCardNumberIdentifier];
@@ -1357,7 +1366,7 @@ class Apply_Controller
 					if (strlen($fieldValues[$authoriseAckDOBYearIdentifier]) == 0 )
 					{
 						$errorAndValids['errors'][$authoriseAckDOBYearIdentifier] = 'Date of birth year must not be empty.';
-					} elseif (strlen($fieldValues[$authoriseAckDOBYearIdentifier]) != 4) { 
+					} elseif (strlen($fieldValues[$authoriseAckDOBYearIdentifier]) != 4 || !$this->stringIsInteger($fieldValues[$authoriseAckDOBYearIdentifier])) { 
 						$errorAndValids['errors'][$authoriseAckDOBYearIdentifier] = 'Date of birth year must be 4 digits.';
 					} else {
 						$_SESSION[$authoriseAckDOBYearIdentifier] = $fieldValues[$authoriseAckDOBYearIdentifier];
