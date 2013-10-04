@@ -27,7 +27,7 @@
 ================================================== -->
   <body>
      
-	<div class="container">
+	<div class="container outer-container">
 
 	<!-- Static navbar -->
 	  <div class="row login">
@@ -83,6 +83,9 @@
           </ul>
         </div><!--/.nav-collapse -->
       </div>
+	  
+	  <div class="row header-container">
+	  </div>
 	  
 	  </div>
 	  

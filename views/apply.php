@@ -2,8 +2,10 @@
 
 <!-- Main component for a primary marketing message or call to action -->
 <div class="container" id="apply-page1">
+	<div class="col-xs-12 col-sm-6 col-md-12">
 	<h1 class="spacing-under">Apply for Adshell Chemicals Fuel Card Program</h1>
-	<div class="col-xs-12 col-sm-6 col-md-7 col-md-offset-1">
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-6">
 		<p>The Adshell Chemicals fuel card program is designed for businesses who need to keep track of purchases.</p>
 		<p>
 		Before we begin please ensure you have the following:
@@ -19,7 +21,7 @@
 		  <a class="btn btn btn-primary" href="index.php?apply&page=2">Start Your Application &raquo;</a>
 		</p>
 	</div>
-	<div class="col-xs-6 col-sm-6 col-md-4">
+	<div class="col-xs-6 col-sm-6 col-md-6">
 		<img src="images/fuel-card.jpg" />
 	</div>
 </div>

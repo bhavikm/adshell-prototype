@@ -21,6 +21,8 @@ class Customer_Controller
 		$header->assign('user_name','Customer Name');
 		$footer = new View_Model('footer');
 		
+		$content = new View_Model('customer-notifications');
+		
 		if (isset($getVars['action']))
 		{
 			switch($getVars['action'])
@@ -56,6 +58,7 @@ class Customer_Controller
 				case 'changepass':
 					$content = new View_Model('customer-change-pass');
 				break;
+				
 			}
 		}
 		

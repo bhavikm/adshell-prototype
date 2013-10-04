@@ -38,7 +38,7 @@ function __autoload($className)
 
 	//compose file name
 	$file = SERVER_ROOT . $folder . strtolower($filename) . '.php';
-	
+
 	//fetch file
 	if (file_exists($file))
 	{

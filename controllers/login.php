@@ -19,7 +19,6 @@ class Login_Controller
 		$header->assign('active_nav','');
 		$footer = new View_Model('footer');
 		
-		$valid_user = 'not checked';
 		
 		if (isset($getVars['logtype']))
 		{
@@ -29,106 +28,72 @@ class Login_Controller
 					$heading = 'Customer Login';	
 				break;
 			
-				case 'card-holder':
-					$heading = 'Fuel Card Holder Login';
-				break;
-			
 				case 'staff':
 					$heading = 'Adshell Staff Login';
 				break;
 				
 				case 'forgot':
-					$this->template = 'forgot';
-					$heading = '';
-				break;
-			}
-		} else {
-			$heading = 'Login';
-		}
-		
-		if (isset($getVars['action']) && isset($getVars['email']))
-		{
-			switch($getVars['action'])
-			{	
-				case 'forgot':
-					$this->template = 'forgot';
-					//create a new view and pass it our template
-					$view = new View_Model($this->template);
-					$view->assign('header', $header->render(FALSE));
-					$view->assign('footer', $footer->render(FALSE));
-					
-					$email = $getVars['email'];
-					if ($email == 'employee@adshell.com.au' || $email == 'customer@email.com' ||
-						$email == 'cardholder@email.com')
-					{
-						$valid_user = 'confirmed';
-					} else {
-						$valid_user = 'incorrect';
-					}
-					// title for login page
-					$view->assign('valid_user' , $valid_user);
-					
-					$view->render();
+					$heading = 'Forgot Password';
 				break;
 				
-				case 'login':
-					if (isset($getVars['password']) && ($getVars['password'] == 'password'))
-					{
-						$email = $getVars['email'];
-						if ($email == 'employee@adshell.com.au')
-						{
-							header('Location: index.php?employee&user='.$email);
-						}
-						elseif ($email == 'customer@email.com') 
-						{
-							header('Location: index.php?customer&user='.$email);
-						}
-						elseif ($email == 'cardholder@email.com')
-						{
-							header('Location: index.php?cardholder&user='.$email);
-						}
-						else {
-							$valid_user = 'incorrect';
-						}
-					} else {
-						$valid_user = 'incorrect';
-					}
-					//create a new view and pass it our template
-					$view = new View_Model($this->template);
-					$view->assign('header', $header->render(FALSE));
-					$view->assign('footer', $footer->render(FALSE));
-					
-					// title for login page
-					$view->assign('heading' , $heading);
-					
-					
-					$view->assign('valid_user' , $valid_user);
-					
-					
-					$view->render();
-							
+				default:
+					$heading = 'Customer Login';
 				break;
-			
 			}
-			
-			
-			
 		} else {
-			
-			//create a new view and pass it our template
-			$view = new View_Model($this->template);
-			$view->assign('header', $header->render(FALSE));
-			$view->assign('footer', $footer->render(FALSE));
-			
-			// title for login page
-			$view->assign('heading' , $heading);
-			
-			
-			$view->assign('valid_user' , $valid_user);
-			
-			
-			$view->render();
+			$heading = 'Customer Login';
 		}
+		
+		$error = false;
+		
+		if (isset($getVars['username']) && isset($getVars['password']))
+		{
+			if (strlen($getVars['username']) == 0 || strlen($getVars['password']) == 0)
+			{
+				$error = true;
+				$error_message = "User name and password must not be empty.";
+			} else {
+				echo $getVars['logtype'].'<br />';
+				echo $getVars['username'].'<br />';
+				echo $getVars['password'].'<br />';
+				$loginModel = new Login_Model;
+				$login_correct = $loginModel->is_valid_login($getVars['username'],$getVars['password']);
+				echo $login_correct;
+				if ($login_correct)
+				{
+					switch($getVars['logtype'])
+					{	
+						case 'customer':
+							header("Location: index.php?customer");	
+						break;
+					
+						case 'staff':
+							header("Location: index.php?employee");
+						break;
+					}
+					
+				} else {
+					$error = true;
+					$error_message = "User name or password is incorrect.";
+				}
+			}
+		}
+		
+		
+		//create a new view and pass it our template
+		$view = new View_Model($this->template);
+		$view->assign('header', $header->render(FALSE));
+		$view->assign('footer', $footer->render(FALSE));
+		
+		// title for login page
+		$view->assign('heading' , $heading);
+		$view->assign('error' , $error);
+		if ($error)
+		{
+			$view->assign('error_message' , $error_message);
+		}
+		
+		$view->render();
 	}
 }
 
