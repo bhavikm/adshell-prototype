@@ -32,8 +32,16 @@
 	<!-- Static navbar -->
 	  <div class="row login">
 		<div class="pull-right">
-		 <?php if (isset($data['logged_in'])) { ?>
-		 Welcome,  <?php echo $data['user_name']; ?> (<a href="index.php?login">Log Out</a>)
+		 <?php session_start(); ?>
+		 <?php if (isset($_SESSION['user_logged_in'])) { ?>
+		 Welcome,  <?php echo $_SESSION['user_name_logged']; ?> (<a href="index.php?login&action=logout">Log Out</a>)
+		 |
+			<?php if ($_SESSION['user_type'] == 'customer') { ?>
+			<a href="index.php?customer"> Account Home</a>
+			<?php } else {?>
+			<a href="index.php?employee"> Account Home</a>
+			<?php } ?>
+		 
 		 <?php } else {?>
 			<a href="index.php?login">Login</a>
 		<?php } ?>

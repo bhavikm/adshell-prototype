@@ -46,37 +46,74 @@ class Login_Controller
 		
 		$error = false;
 		
-		if (isset($getVars['username']) && isset($getVars['password']))
+		if (isset($getVars['action']))
 		{
-			if (strlen($getVars['username']) == 0 || strlen($getVars['password']) == 0)
-			{
-				$error = true;
-				$error_message = "User name and password must not be empty.";
-			} else {
-				echo $getVars['logtype'].'<br />';
-				echo $getVars['username'].'<br />';
-				echo $getVars['password'].'<br />';
-				$loginModel = new Login_Model;
-				$login_correct = $loginModel->is_valid_login($getVars['username'],$getVars['password']);
-				echo $login_correct;
-				if ($login_correct)
-				{
-					switch($getVars['logtype'])
-					{	
-						case 'customer':
-							header("Location: index.php?customer");	
-						break;
-					
-						case 'staff':
-							header("Location: index.php?employee");
-						break;
+			switch($getVars['action'])
+			{	
+				case 'login':
+					if (isset($getVars['username']) && isset($getVars['password']))
+					{
+						if (strlen($getVars['username']) == 0 || strlen($getVars['password']) == 0)
+						{
+							$error = true;
+							$error_message = "User name and password must not be empty.";
+						} else {
+							echo $getVars['logtype'].'<br />';
+							echo $getVars['username'].'<br />';
+							echo $getVars['password'].'<br />';
+							$loginModel = new Login_Model;
+							$login_correct = $loginModel->is_valid_login($getVars['username'],$getVars['password']);
+							
+							if ($login_correct)
+							{
+								session_start();
+								$_SESSION['user_logged_in'] = true;
+								$_SESSION['user_name_logged'] = $getVars['username'];
+								
+								switch($getVars['logtype'])
+								{	
+									case 'customer':
+										$_SESSION['user_type'] = 'customer';
+										header("Location: index.php?customer");	
+									break;
+								
+									case 'staff':
+										$_SESSION['user_type'] = 'staff';
+										header("Location: index.php?employee");
+									break;
+								}
+								
+							} else {
+								$error = true;
+								$error_message = "User name or password is incorrect.";
+							}
+						}
 					}
-					
-				} else {
-					$error = true;
-					$error_message = "User name or password is incorrect.";
-				}
+				break;
+			
+				case 'forgot':
+					if (isset($getVars['username']))
+					{
+						if (strlen($getVars['username']) == 0 )
+						{
+							$error = true;
+							$error_message = "User name must not be empty.";
+						} else {
+						
+						}
+					}
+				break;
+				
+				case 'logout':
+					session_start();
+					session_unset();
+					session_destroy();
+					session_write_close();
+					setcookie(session_name(),'',0,'/');
+					session_regenerate_id(true);
+				break;
 			}
+		
 		}
 		
 		
