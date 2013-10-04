@@ -62,7 +62,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php"><img src="images/adshell-logo-grey.gif" /></a>
+          <a class="navbar-brand" href="index.php"><img src="images/adshell-logo-pinkback.gif" /></a>
         </div>
 		
         <div class="navbar-collapse collapse">
