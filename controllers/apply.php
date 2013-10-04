@@ -131,7 +131,7 @@ class Apply_Controller
 		}
 		
 		//If we are going to very first page, clear session variables to begin
-		if ($this->template == 'apply')
+		if ($this->template == 'apply' || $this->template == 'apply-10')
 		{
 			session_start();
 			session_unset();
