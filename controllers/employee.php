@@ -21,6 +21,8 @@ class Employee_Controller
 		$header->assign('active_nav','');
 		$footer = new View_Model('footer');
 		
+		$content = new View_Model('customer-notifications');
+		
 		if (isset($getVars['action']))
 		{
 			switch($getVars['action'])

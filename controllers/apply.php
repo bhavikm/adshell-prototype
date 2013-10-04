@@ -25,6 +25,19 @@ class Apply_Controller
 	 */
 	public function main(array $getVars)
 	{	
+		//If we are going to very first page, clear session variables to begin
+		if (isset($getVars['apply']) && $getVars['apply'] == 'start')
+		{
+			if(!isset($_SESSION)) 
+			{ 
+				session_start(); 
+			} 
+			session_unset();
+			session_destroy();
+			session_write_close();
+			setcookie(session_name(),'',0,'/');
+			session_regenerate_id(true);
+		}
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -129,17 +142,9 @@ class Apply_Controller
 			}
 		
 		}
-		
-		//If we are going to very first page, clear session variables to begin
-		if ($this->template == 'apply')
-		{
-			session_start();
-			session_unset();
-			session_destroy();
-			session_write_close();
-			setcookie(session_name(),'',0,'/');
-			session_regenerate_id(true);
 			
+		if ($this->template == 'apply' || $this->template == 'apply-10') 
+		{
 			$header = new View_Model('header');
 			$footer = new View_Model('footer');
 		} else {
@@ -170,8 +175,8 @@ class Apply_Controller
 	
 	private function validatePage1($fieldValues)
 	{
-		session_start();
-		
+		session_start(); 
+
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
 		if (isset($fieldValues['biztype']))

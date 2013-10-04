@@ -7,7 +7,7 @@ class Validation
 	
 	}
 	
-	public function stringIsInteger($string)
+	public static function stringIsInteger($string)
 	{
 		if (preg_match('/^\d+$/',$string))
 		{

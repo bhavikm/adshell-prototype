@@ -27,18 +27,26 @@
 ================================================== -->
   <body>
      
-	<div class="container">
+	<div class="container outer-container">
 
 	<!-- Static navbar -->
 	  <div class="row login">
-		<div class="pull-left">
-		 <?php if (isset($data['logged_in'])) { ?>
-		 Welcome,  <?php echo $data['user_name']; ?> (<a href="index.php?login">Log Out</a>)
+		<div class="pull-right">
+		 <?php session_start(); ?>
+		 <?php if (isset($_SESSION['user_logged_in'])) { ?>
+		 Welcome,  <?php echo $_SESSION['user_name_logged']; ?> (<a href="index.php?login&action=logout">Log Out</a>)
+		 |
+			<?php if ($_SESSION['user_type'] == 'customer') { ?>
+			<a href="index.php?customer"> Account Home</a>
+			<?php } else {?>
+			<a href="index.php?employee"> Account Home</a>
+			<?php } ?>
+		 
 		 <?php } else {?>
 			<a href="index.php?login">Login</a>
 		<?php } ?>
 		</div>
-		<div class="pull-right search">
+		<div class="pull-left search">
 			<div class="button-search"></div>
 			<form class="form-signin" action="index.php">
 				<input type="hidden" name="search" value="" />
@@ -54,7 +62,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php"><img src="images/adshell-logo-grey.gif" /></a>
+          <a class="navbar-brand" href="index.php"><img src="images/adshell-logo-pinkback.gif" /></a>
         </div>
 		
         <div class="navbar-collapse collapse">
@@ -83,6 +91,9 @@
           </ul>
         </div><!--/.nav-collapse -->
       </div>
+	  
+	  <div class="row header-container">
+	  </div>
 	  
 	  </div>
 	  
