@@ -242,4 +242,53 @@ class Apply_Model {
 		$statement->execute();
 		$statement->closeCursor();	
 	}
+	
+	//////////////////
+	// GET METHODS
+	//////////////////
+	
+	public function getBriefApplicationDetails($status)
+	{
+		$query = "SELECT application.*,businessdetails.* FROM application, businessdetails
+				  WHERE application.applicationID = businessdetails.applicationID
+				  AND application.applicationStatus = :status
+				  ORDER BY applicationDate DESC";
+		
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':status',$status);
+		$statement->execute();
+		$results = $statement->fetchAll();
+		$statement->closeCursor();
+		
+		if (count($results) > 0 )
+		{
+			return $results;
+		} else {
+			return false;
+		}
+	
+	}
+	
+	public function getDetailedApplication($applicationID)
+	{
+		$query = "SELECT application.*,businessdetails.*,businesstype.businessType as biztype FROM application, businessdetails, businesstype
+				  WHERE application.applicationID = businessdetails.applicationID
+				  AND businessdetails.businessTypeID = businessType.businessTypeID
+				  AND application.applicationID = :applicationID";
+		
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':applicationID',$applicationID);
+		$statement->execute();
+		$results = $statement->fetchAll();
+		$statement->closeCursor();
+		
+		if (count($results) > 0 )
+		{
+			return $results;
+		} else {
+			return false;
+		}
+	
+	}
+	
 }
