@@ -25,7 +25,8 @@ class Apply_Model {
 		$statement->bindValue(':firstName',$firstName);
 		$statement->bindValue(':lastName',$lastName);
 		$statement->bindValue(':email',$email);
-		$statement->bindValue(':phone',$position);
+		$statement->bindValue(':phone',$phone);
+		$statement->bindValue(':position',$position);
 		$statement->bindValue(':fax',$fax);
 		$statement->bindValue(':existingSuppPhone',$existingSupplierPhone);
 		$statement->bindValue(':mobile',$mobile);
@@ -41,7 +42,7 @@ class Apply_Model {
 	public function addApplicationReferences($applicationID,$name,$phone)
 	{
 		$query = "INSERT INTO applicationreferences (applicationID,refPhone,referenceName)
-				  VALUES (:applicationID,:name,:phone)";
+				  VALUES (:applicationID,:phone,:name)";
 		
 		$statement = $this->database->db->prepare($query);
 		$statement->bindValue(':applicationID',$applicationID);
@@ -73,13 +74,14 @@ class Apply_Model {
 	public function addApplicationBusinessDetails($applicationID,$businessTypeID,$abn,$startYear,$busName,$operations,$tradingName)
 	{
 		$query = "INSERT INTO businessdetails
-				  VALUES (:applicationID,:businessType,:abn,:startYear,:name,:operations,:tradingName)";
+				  VALUES (:applicationID,:businessTypeID,:abn,:startYear,:name,:operations,:tradingName)";
 		
 		$statement = $this->database->db->prepare($query);
 		$statement->bindValue(':applicationID',$applicationID);
 		$statement->bindValue(':businessTypeID',$businessTypeID);
 		$statement->bindValue(':abn',$abn);
-		$statement->bindValue(':startYear',$busName);
+		$statement->bindValue(':startYear',$startYear);
+		$statement->bindValue(':name',$busName);
 		$statement->bindValue(':operations',$operations);
 		$statement->bindValue(':tradingName',$tradingName);
 		$statement->execute();
@@ -116,7 +118,7 @@ class Apply_Model {
 		$statement = $this->database->db->prepare($query);
 		$statement->bindValue(':applicationID',$applicationID);
 		$statement->bindValue(':name',$name);
-		$statement->bindValue(':registration',$registration
+		$statement->bindValue(':registration',$registration);
 		if ($pinRequired == 'yes')
 		{
 			$statement->bindValue(':pinRequired',TRUE);
@@ -129,12 +131,12 @@ class Apply_Model {
 		return $this->database->db->lastInsertId('fuelcards');	
 	}
 	
-	public function getProductTypeID($productName)
+	public function getProductTypeIDByKey($productKey)
 	{
-		$query = "SELECT productTypeID FROM producttype WHERE productName = :productName";
+		$query = "SELECT productTypeID FROM producttype WHERE productKey = :productKey";
 		
 		$statement = $this->database->db->prepare($query);
-		$statement->bindValue(':productName',$productName);
+		$statement->bindValue(':productKey',$productKey);
 		$statement->execute();
 		$result = $statement->fetch();
 		$statement->closeCursor();
@@ -151,12 +153,10 @@ class Apply_Model {
 	{
 		foreach ($productIDs as $productID)
 		{
-			$query = "INSERT INTO fuelcardprodcuts
+			$query = "INSERT INTO fuelcardproducts
 					  (fuelCardID,productTypeID)
 					  VALUES (:fuelCardID,:productTypeID)";
 				
-			//cardStatus can take values 'enabled','disabled','cancelled'
-		
 			$statement = $this->database->db->prepare($query);
 			$statement->bindValue(':fuelCardID',$fuelcardID);
 			$statement->bindValue(':productTypeID',$productID);
@@ -191,12 +191,12 @@ class Apply_Model {
 		$statement->closeCursor();	
 	}
 	
-	public function getCreditCardTypeID($creditCardName)
+	public function getCreditCardTypeID($creditCardKey)
 	{
-		$query = "SELECT creditCardTypeID FROM creditcardtype WHERE creditCardType = :creditCardName";
+		$query = "SELECT creditCardTypeID FROM creditcardtype WHERE creditCardKey = :creditCardKey";
 		
 		$statement = $this->database->db->prepare($query);
-		$statement->bindValue(':creditCardName',$creditCardName);
+		$statement->bindValue(':creditCardKey',$creditCardKey);
 		$statement->execute();
 		$result = $statement->fetch();
 		$statement->closeCursor();
@@ -236,10 +236,9 @@ class Apply_Model {
 		$statement = $this->database->db->prepare($query);
 		$statement->bindValue(':bizPartnerID',$businessPartnerID);
 		$statement->bindValue(':licence',$licenceNo);
-		
 		$statement->bindValue(':DOB',$dateOfBirth);
 		$statement->bindValue(':sigObtained',$sigObtained);
-		$statement->bindValue(':acceptedTerms',$acceptedTerms);
+		$statement->bindValue(':termsAccepted',$acceptedTerms);
 		$statement->execute();
 		$statement->closeCursor();	
 	}

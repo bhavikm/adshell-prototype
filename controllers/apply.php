@@ -2,6 +2,7 @@
 
 class Apply_Controller
 {
+	private $bizTypeKeyToFull = array("sole" => "Sole Trader", "company" => "Company","partnership" => "Partnership","trust" => "Trust","government" => "Government" );
 	/**
 	 * This template variable will hold the 'view' portion of our MVC for this 
 	 * controller
@@ -18,6 +19,19 @@ class Apply_Controller
 		}
 	}
 	
+	private function clearSession()
+	{
+		if(!isset($_SESSION)) 
+		{ 
+			session_start(); 
+		} 
+		session_unset();
+		session_destroy();
+		session_write_close();
+		setcookie(session_name(),'',0,'/');
+		session_regenerate_id(true);
+	}
+	
 	/**
 	 * This is the default function that will be called by router.php
 	 * 
@@ -26,18 +40,11 @@ class Apply_Controller
 	public function main(array $getVars)
 	{	
 		//If we are going to very first page, clear session variables to begin
-		if (isset($getVars['apply']) && $getVars['apply'] == 'start')
+		if (isset($getVars['apply']) && $getVars['apply'] == 'clear')
 		{
-			if(!isset($_SESSION)) 
-			{ 
-				session_start(); 
-			} 
-			session_unset();
-			session_destroy();
-			session_write_close();
-			setcookie(session_name(),'',0,'/');
-			session_regenerate_id(true);
+			$this->clearSession();
 		}
+		
 		
 		$errorAndValids = array('errors' => array(), 'valids' => array());
 		
@@ -136,6 +143,9 @@ class Apply_Controller
 				break;
 				
 				case '10':
+					$completedForm = $this->getCompletedFormArray();
+					$applicationID = $this->insertNewApplication($completedForm);
+					$this->clearSession();
 					$this->template = 'apply-10';
 				break;
 				
@@ -164,6 +174,11 @@ class Apply_Controller
 		//assign the errors array to the template data
 		$view->assign('errors', $errorAndValids['errors']);
 		$view->assign('valids', $errorAndValids['valids']);
+		
+		if ($this->template == 'apply-10') 
+		{
+			$view->assign('applicationID',$applicationID);
+		}
 		
 		if ($this->template == 'apply-9')
 		{
@@ -1520,6 +1535,11 @@ class Apply_Controller
 	{
 		$completedPages = array();
 		
+		if(!isset($_SESSION)) 
+		{ 
+			session_start(); 
+		} 
+		
 		//Page 1
 		$completedPages['page1'] = array();
 		
@@ -1619,7 +1639,10 @@ class Apply_Controller
 				{
 					foreach ($_SESSION['fuelCardProducts'.$i] as $product => $true)
 					{
-						$fuelCardProducts[$product] = true;
+						if ($true)
+						{
+							$fuelCardProducts[$product] = true;
+						}
 					}
 				}
 				$cardHolderDetails['fuelCardProducts'] = $fuelCardProducts;
@@ -1719,7 +1742,82 @@ class Apply_Controller
 			}
 		}
 		
+		//print_r($completedPages);
+		
 		return $completedPages;
+	}
+	
+	private function insertNewApplication($completedPages)
+	{
+		//print_r($completedPages);
+		$applyModel = new Apply_Model;
+		$businessTypeID = $applyModel->getBusinessTypeID($completedPages['page1']['biztype']);
+		if ($businessTypeID)
+		{
+			// Add core application and get applicationID to use in other insertions
+			$applicationID = $applyModel->addApplication($completedPages['page1']['contactFirstName'],$completedPages['page1']['contactLastName'],$completedPages['page1']['inputEmail1'],$completedPages['page1']['inputPhone'],$completedPages['page1']['inputPosition'],$completedPages['page1']['inputFax'],$completedPages['page2']['fuelSupplierPhone'],$completedPages['page1']['inputMobile'],$completedPages['page1']['creditLimit'],$completedPages['page2']['fuelSupplierName'],$completedPages['page4']['tradingNameFuelCard']);
+			
+			// Add application business details
+			$applyModel->addApplicationBusinessDetails($applicationID,$businessTypeID,$completedPages['page1']['abn'],$completedPages['page1']['yearBizStart'],$completedPages['page1']['businessName'],$completedPages['page1']['operations'],$completedPages['page1']['tradingName']);
+			
+			// Add trade references
+			$applyModel->addApplicationReferences($applicationID,$completedPages['page2']['refName1'],$completedPages['page2']['refPhone1']);
+			$applyModel->addApplicationReferences($applicationID,$completedPages['page2']['refName2'],$completedPages['page2']['refPhone2']);
+
+			// Add business partners
+			$businessPartnerIDs = array();
+			for ($i = 0; $i < (int)$completedPages['page3']['numberOfPartners']; $i++) 
+			{
+				$bizPartnerID = $applyModel->addBusinessPartner($applicationID,$completedPages['page3']['partnerDetails'][$i]['partnerName'],$completedPages['page3']['partnerDetails'][$i]['partnerPhone'],$completedPages['page3']['partnerDetails'][$i]['partnerPostcode'],$completedPages['page3']['partnerDetails'][$i]['partnerAddress'],$completedPages['page3']['partnerDetails'][$i]['partnerState']);
+				
+				$businessPartnerIDs[] = $bizPartnerID;
+			} 
+			
+			// Add Fuel Cards
+			for ($i = 0; $i < (int)$completedPages['page4']['numberOfCardholders']; $i++)
+			{
+				$fuelCardID = $applyModel->addFuelCards($applicationID,$completedPages['page4']['cardHolderDetails'][$i]['cardHolderName'],$completedPages['page4']['cardHolderDetails'][$i]['registrationNo'],$completedPages['page4']['cardHolderDetails'][$i]['pinRequired']);
+				
+				//Add Fuel Card Products
+				$productIDs = array();
+				foreach ($completedPages['page4']['cardHolderDetails'][$i]['fuelCardProducts'] as $product => $boolProduct) 
+				{
+					if ($boolProduct)
+					{	
+						$productID = $applyModel->getProductTypeIDByKey($product);
+						$productIDs[] = $productID;
+					}
+				}
+				$applyModel->addFuelcardProducts($fuelCardID,$productIDs);
+			}
+			
+			// Add payment information
+			if ($completedPages['page5']['paymentType'] == 'directDebit')
+			{
+				$applyModel->addDirectDebitInfo($applicationID,$completedPages['page5']['bankName'],$completedPages['page5']['accountType'],$completedPages['page5']['accountName'],$completedPages['page5']['accountNo'],$completedPages['page5']['bsbNo']);
+				//need to add authorise name to schema ? $completedPages['page5']['ddAuthoriseName']
+			
+			} else {
+			
+				$creditCardTypeID = $applyModel->getCreditCardTypeID($$completedPages['page5']['ccType']);
+				$expiryDate = trim($completedPages['page5']['ccExpiryYear']).'-'.trim($completedPages['page5']['ccExpiryMonth']).'-01';
+				$applyModel->addCreditCard($applicationID,$creditCardTypeID,$completedPages['page5']['ccNo'],$completedPages['page5']['ccName'],$completedPages['page5']['ccPaymentDate'],$expiryDate);
+			}
+			
+			// Partner Authorisations and Agreements
+			foreach ($businessPartnerIDs as $index => $businessPartnerID) 
+			{
+				$DOB = trim($completedPages['page6']['partnerAuthorisations'][$index]['authoriseAckDOBYear']).'-'.trim($completedPages['page6']['partnerAuthorisations'][$index]['authoriseAckDOBMonth']).'-'.trim($completedPages['page6']['partnerAuthorisations'][$index]['authoriseAckDOBDay']);
+				$applyModel->addBusinessPartnerAuthorisations($businessPartnerID,$completedPages['page6']['partnerAuthorisations'][$index]['authoriseAckLicence'],$DOB,1,1);
+			} 
+			
+			return $applicationID;
+			
+		} else {
+			echo "Error getting Business Type ID";
+			return false;
+		}
+
 	}
 
 }

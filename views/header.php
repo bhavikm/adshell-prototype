@@ -32,7 +32,13 @@
 	<!-- Static navbar -->
 	  <div class="row login">
 		<div class="pull-right">
-		 <?php session_start(); ?>
+		 <?php 
+			if(!isset($_SESSION)) 
+			{ 
+				session_start(); 
+			}  
+		 ?>
+		 
 		 <?php if (isset($_SESSION['user_logged_in'])) { ?>
 		 Welcome,  <?php echo $_SESSION['user_name_logged']; ?> (<a href="index.php?login&action=logout">Log Out</a>)
 		 |
