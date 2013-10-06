@@ -54,7 +54,7 @@ class Apply_Model {
 	
 	public function getBusinessTypeID($businessType)
 	{
-		$query = "SELECT businessTypeID FROM BusinessType WHERE businessType = :businessType";
+		$query = "SELECT businessTypeID FROM businesstype WHERE businessType = :businessType";
 		
 		$statement = $this->database->db->prepare($query);
 		$statement->bindValue(':businessType',$businessType);
@@ -271,16 +271,17 @@ class Apply_Model {
 	
 	public function getDetailedApplication($applicationID)
 	{
-		$query = "SELECT application.*,businessdetails.*,businesstype.businessType as biztype FROM application, businessdetails, businesstype
+		$query = "SELECT application.*,businessdetails.* ,businesstype.businessType as biztype FROM application, businessdetails, businesstype
 				  WHERE application.applicationID = businessdetails.applicationID
-				  AND businessdetails.businessTypeID = businessType.businessTypeID
+				  AND businessdetails.businessTypeID = businesstype.businessTypeID
 				  AND application.applicationID = :applicationID";
-		
+
 		$statement = $this->database->db->prepare($query);
 		$statement->bindValue(':applicationID',$applicationID);
 		$statement->execute();
 		$results = $statement->fetchAll();
 		$statement->closeCursor();
+		
 		
 		if (count($results) > 0 )
 		{
