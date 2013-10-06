@@ -58,11 +58,18 @@ class Login_Controller
 							$error = true;
 							$error_message = "User name and password must not be empty.";
 						} else {
-							echo $getVars['logtype'].'<br />';
-							echo $getVars['username'].'<br />';
-							echo $getVars['password'].'<br />';
 							$loginModel = new Login_Model;
-							$login_correct = $loginModel->is_valid_login($getVars['username'],$getVars['password']);
+							switch($getVars['logtype'])
+							{	
+								case 'customer':
+									$login_correct = $loginModel->is_valid_login_customer($getVars['username'],$getVars['password']);
+								break;
+							
+								case 'staff':
+									$login_correct = $loginModel->is_valid_login_employee($getVars['username'],$getVars['password']);
+								break;
+							}
+							
 							
 							if ($login_correct)
 							{
@@ -103,6 +110,7 @@ class Login_Controller
 						}
 					}
 				break;
+				
 				
 				case 'logout':
 					session_start();

@@ -305,3 +305,8 @@ background-color: #e7e7e7;
 	color: #fff;
 	background-color: #563d7c;
 }
+.account-menu > li > a.active-sidebar-link {
+	background-color: #563d7c;
+	color: #fff;
+	font-weight:bold;
+}

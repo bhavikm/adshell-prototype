@@ -18,7 +18,7 @@
 		</ul>
 		</p>
 		<p>
-		  <a class="btn btn btn-primary" href="index.php?apply&page=2&apply=start">Start Your Application &raquo;</a>
+		  <a class="btn btn btn-primary" href="index.php?apply&page=2&apply=clear">Start Your Application &raquo;</a>
 		</p>
 	</div>
 	<div class="col-xs-6 col-sm-6 col-md-6">

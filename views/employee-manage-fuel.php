@@ -1,6 +1,5 @@
 
-<h4 class="red-text">Manage Customer Accounts</h4>
-
+<h4 class="red-text">Manage Customer Fuel Cards</h4>
 <br />
 
 <table class="table table-striped">
@@ -24,8 +23,8 @@
 			<td><?php echo $briefCustomer['contactFirstName'].' '.$briefCustomer['contactLastName']; ?></td>
 			<td><?php echo $briefCustomer['cardsCount']; ?></td>
 			<td><?php echo $briefCustomer['creditLimit']; ?></td>
-			<td><a class="btn btn-warning" href="index.php?employee&action=managecust&second=manage&appid=<?php echo $briefCustomer['applicationID']; ?>">Manage &raquo;</a></td>
-			<td><a class="btn btn-primary" href="index.php?employee&action=managecust&second=view&appid=<?php echo $briefCustomer['applicationID']; ?>">View &raquo;</a></td>
+			<td><a class="btn btn-warning" href="index.php?employee&action=managefuel&second=manage&appid=<?php echo $briefCustomer['applicationID']; ?>">Manage &raquo;</a></td>
+			<td><a class="btn btn-primary" href="index.php?employee&action=managefuel&second=view&appid=<?php echo $briefCustomer['applicationID']; ?>">View &raquo;</a></td>
 		</tr>
 		<?php } ?>
 		<?php } ?>

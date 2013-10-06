@@ -23,6 +23,13 @@ class Search_Controller
 		$view->assign('header', $header->render(FALSE));
 		$view->assign('footer', $footer->render(FALSE));
 		
+		if (isset($getVars['query']) && strlen(trim($getVars['query'])) != 0)
+		{
+			$searchModel = new Search_Model;
+			$searchResults = $searchModel->searchInformationPages(trim($getVars['query']));
+			
+			$view->assign('results' , $searchResults);
+		}
 		$view->assign('query' , $getVars['query']);
 		
 		$view->render();

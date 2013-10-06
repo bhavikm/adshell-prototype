@@ -726,7 +726,7 @@
 					<br />
 					<br />
 					 <a class="btn btn btn-primary" href="index.php?apply&page=8">&laquo; Back</a>
-					 <a class="btn btn btn-danger pull-right" href="index.php?apply&page=10&apply=start">Complete and Submit Application &raquo;</a>
+					 <a class="btn btn btn-danger pull-right" href="index.php?apply&page=10">Complete and Submit Application &raquo;</a>
 					 <br />
 					<br />
 				  </div>
