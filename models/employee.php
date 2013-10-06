@@ -44,7 +44,7 @@ class Employee_Model {
 	
 	public function updateEmployeeDetails()
 	{
-	
+		
 	}
 	
 }

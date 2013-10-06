@@ -4,42 +4,29 @@
     <h1>Search Results</h1>
     <p>Here are the results for your search <b><?=$data['query'];?></b>:</p>
 	<br />
+	
+	<?php if ($data['results']) { ?>
+	<?php foreach ($data['results'] as $result) { ?>
 	<div class="row spacing-under-small">
 		<div class="col-md-7">
-		<a href="index.php" style="color: blue;">About Us</a><br />
-		This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.
+		<a href="index.php?<?php echo $result['pageControllerKey']; ?>" style="color: blue;"><?php echo $result['pageName']; ?></a><br />
+		<?php 
+			$words = explode(" ",$result['content']);
+			$limitedString = implode(" ", array_splice($words, 0, 20));
+			echo $limitedString." ..."; 
+		?>
 		<br />
-		<span style="color: green;">www.adshell.com.au/index.php?about</span>
+		<a style="color: green;">www.adshell.com.au/index.php?<?php echo $result['pageControllerKey']; ?></a>
 		</div>
 	</div>
-	
+	<?php } ?>
+	<?php } else { ?>
 	<div class="row spacing-under-small">
 		<div class="col-md-7">
-		<a href="index.php" style="color: blue;">Calculator</a><br />
-		This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.
-		<br />
-		<span style="color: green;">www.adshell.com.au/index.php?calculator</span>
+		<b>Your search produced no results</b>
 		</div>
 	</div>
-	
-	<div class="row spacing-under-small">
-		<div class="col-md-7">
-		<a href="index.php" style="color: blue;">Franchises</a><br />
-		This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.
-		<br />
-		<span style="color: green;">www.adshell.com.au/index.php?franchises</span>
-		</div>
-	</div>
-	
-	<div class="row spacing-under-small">
-		<div class="col-md-7">
-		<a href="index.php" style="color: blue;">Contact</a><br />
-		This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.
-		<br />
-		<span style="color: green;">www.adshell.com.au/index.php?contact</span>
-		</div>
-	</div>
-	
+	<?php } ?>
 </div>
 
 <?=$data['footer'];?>

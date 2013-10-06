@@ -98,10 +98,35 @@ class Employee_Controller
 				
 				case 'searchemployee':
 					$content = new View_Model('employee-search-directory');
+					
 				break;
 				
 				case 'changepass':
-					$content = new View_Model('customer-change-pass');
+					$content = new View_Model('account-change-pass');
+					$content->assign('accountType', 'employee');
+					if (isset($getVars['second']))
+					{
+						$error = false;
+						// Check if old password is correct first
+						$loginModel = new Login_Model;
+						if ($loginModel->is_valid_login_employee($_SESSION['user_name_logged'],$getVars['passwordCurrent']))
+						{
+							// make sure new passwords are matching
+							if (strlen($getVars['newPassword1']) != 0 && ($getVars['newPassword1'] == $getVars['newPassword2']))
+							{
+								//then update to new password
+								$loginModel->update_login_password($_SESSION['user_name_logged'],$getVars['newPassword1']);
+							} elseif (strlen($getVars['newPassword1']) == 0) { 
+								$error = "Your new password can not be empty.";
+							} else {
+								$error = "Your new passwords do not match.";
+							}
+						} else {
+							$error = "Your current password is incorrect.";
+						}
+						
+						$content->assign('error', $error);
+					} 
 				break;
 			}
 		} else {
