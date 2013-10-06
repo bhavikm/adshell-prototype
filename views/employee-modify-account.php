@@ -1,5 +1,19 @@
 <div class="col-xs-12 col-sm-6 col-md-10">
-
+	<?php if (isset($data['error'])) { ?>
+		<?php if ($data['error']) { ?>
+		<div class="row spacing-under-small">
+			  <div class="col-md-9">
+				<div class="alert alert-danger">There was an error updating your details.</div>
+			  </div>
+		</div>
+		<?php } else { ?>
+		<div class="row spacing-under-small">
+			  <div class="col-md-9">
+				<div class="alert alert-success">Your details were succesfully updated.</div>
+			  </div>
+		</div>
+		<?php } ?>
+	<?php } ?>
 		
 			<form class="form" role="form" action="index.php?employee" method="post">
 				
@@ -10,7 +24,7 @@
 			   <h4>Employee Details</h4>
 			   </div>
 			  </div>	
-			  <div class="row spacing-under-small">
+			  <div class="row">
 				  <div class="col-md-5">
 					<label for="empName" class="control-label">Employee Name</label>
 				  </div>
@@ -19,6 +33,13 @@
 				  </div>
 			  </div>
 			  <div class="row spacing-under-small">
+				  <div class="col-md-7 col-md-offset-5 red-text">
+					<?php if (isset($data['error_messages']['empName'])) { ?>
+					<?php echo $data['error_messages']['empName']; ?>
+					<?php } ?>
+				  </div>
+			  </div>
+			  <div class="row">
 				  <div class="col-md-5">
 					<label for="empAddress" class="control-label">Employee Address</label>
 				  </div>
@@ -27,6 +48,13 @@
 				  </div>
 			  </div>
 			  <div class="row spacing-under-small">
+				  <div class="col-md-7 col-md-offset-5 red-text">
+					<?php if (isset($data['error_messages']['empAddress'])) { ?>
+					<?php echo $data['error_messages']['empAddress']; ?>
+					<?php } ?>
+				  </div>
+			  </div>
+			  <div class="row">
 				  <div class="col-md-5">
 					<label for="empPhone" class="control-label">Employee Phone Number</label>
 				  </div>
@@ -35,6 +63,13 @@
 				  </div>
 			  </div>
 			  <div class="row spacing-under-small">
+				  <div class="col-md-7 col-md-offset-5 red-text">
+					<?php if (isset($data['error_messages']['empPhone'])) { ?>
+					<?php echo $data['error_messages']['empPhone']; ?>
+					<?php } ?>
+				  </div>
+			  </div>
+			  <div class="row">
 				  <div class="col-md-5">
 					<label for="jobDesc" class="control-label">Employee Address</label>
 				  </div>
@@ -42,10 +77,17 @@
 					<textarea type="text" class="form-control" id="jobDesc" name="jobDesc"><?php echo $data['employeeDetails']['jobDescription']; ?></textarea>
 				  </div>
 			  </div>
+			  <div class="row spacing-under-small">
+				  <div class="col-md-7 col-md-offset-5 red-text">
+					<?php if (isset($data['error_messages']['jobDescription'])) { ?>
+					<?php echo $data['error_messages']['jobDescription']; ?>
+					<?php } ?>
+				  </div>
+			  </div>
 			  <div class="row">
 				  <div class="col-md-6 col-md-offset-5">
 					 <br />
-					 <a class="btn btn btn-primary" href="">Apply Changes &raquo;</a>
+					 <button class="btn btn btn-primary" type="submit">Apply Changes &raquo;</button>
 				  </div>
 			  </div>
 			</form>

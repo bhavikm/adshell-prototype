@@ -1,4 +1,4 @@
-<p>Customer Accounts:</p>
+<h4 class="red-text">View Customer Requests</h4>
 <br />
 
 <table class="table table-striped">

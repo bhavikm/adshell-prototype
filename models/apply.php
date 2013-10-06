@@ -269,6 +269,27 @@ class Apply_Model {
 	
 	}
 	
+	public function getApplicationByID($applicationID)
+	{
+		$query = "SELECT application.*,businessdetails.* FROM application, businessdetails
+				  WHERE application.applicationID = businessdetails.applicationID
+				  AND application.applicationID = :applicationID";
+		
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':applicationID',$applicationID);
+		$statement->execute();
+		$result = $statement->fetch();
+		$statement->closeCursor();
+		
+		if (count($result) > 0 )
+		{
+			return $result;
+		} else {
+			return false;
+		}
+	
+	}
+	
 	public function getDetailedApplication($applicationID)
 	{
 		$query = "SELECT application.*,businessdetails.* ,businesstype.businessType as biztype FROM application, businessdetails, businesstype
@@ -290,6 +311,67 @@ class Apply_Model {
 			return false;
 		}
 	
+	}
+	
+	//////////////////
+	// APPROVE AND REJECT APPLICATIONS
+	//////////////////
+	
+	public function approveApplication($applicationID,$employeeID)
+	{
+		//first change status of application to 'approved'
+		$query = "UPDATE application SET applicationStatus = 'approved', employeeID = :employeeID WHERE applicationID = :applicationID";
+
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':applicationID',$applicationID);
+		$statement->bindValue(':employeeID',$employeeID);
+		$statement->execute();
+		$statement->closeCursor();	
+		
+		//create an account
+		$applicationInfo = $this->getApplicationByID($applicationID);
+		$loginModel = new Login_Model;
+		$accountID = $loginModel->add_user($applicationInfo['email'],'password');
+		
+		if ($accountID)
+		{
+			//create a customer account
+			$query = "INSERT INTO customer
+					  (applicationID,accountID,accountCreated,customerStatus)
+					  VALUES (:applicationID,:accountID,CURDATE(),'active')";
+
+			$statement = $this->database->db->prepare($query);
+			$statement->bindValue(':applicationID',$applicationID);
+			$statement->bindValue(':accountID',$accountID);
+			$statement->execute();
+			$statement->closeCursor();	
+			
+			$customerID = $this->database->db->lastInsertId('customer');
+
+			if ($customerID)
+			{
+				//activate fuel cards
+				$query = "UPDATE fuelcards SET cardStatus = 'enabled' WHERE applicationID = :applicationID";
+
+				$statement = $this->database->db->prepare($query);
+				$statement->bindValue(':applicationID',$applicationID);
+				$statement->execute();
+				$statement->closeCursor();	
+			}
+		}
+	}
+	
+	public function rejectApplication($applicationID,$employeeID)
+	{
+		//first change status of application to 'approved'
+		$query = "UPDATE application SET applicationStatus = 'rejected', employeeID = :employeeID WHERE applicationID = :applicationID";
+
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':applicationID',$applicationID);
+		$statement->bindValue(':employeeID',$employeeID);
+		$statement->execute();
+		$statement->closeCursor();	
+		
 	}
 	
 }

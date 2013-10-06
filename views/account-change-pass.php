@@ -1,4 +1,4 @@
-<p><b>Change your login password:</b></p>
+<p><h4 class="red-text">Change your login password</h4></p>
   <br />
 <div class="col-xs-12 col-sm-6 col-md-12">
 	<?php if (isset($data['error'])) { ?>

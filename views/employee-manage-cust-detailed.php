@@ -1,6 +1,6 @@
 <div class="col-xs-12 col-sm-6 col-md-12">
 	<div class="row spacing-under">
-		<h4 class="red-text">Application Detailed View</h4>
+		 <h4 class="red-text">Customer Detailed View</h4>
 	</div>
 	
 	<div class="row form-subheading">
@@ -14,9 +14,9 @@
 		 </div>
 		 <div class="col-md-4">
 			<?php
-				if (isset($data['detailedApplication']['biztype']))
+				if (isset($data['detailedCustomer']['biztype']))
 				  {	
-					echo $data['detailedApplication']['biztype']; 
+					echo $data['detailedCustomer']['biztype']; 
 				  }
 			?>
 		 </div>
@@ -27,9 +27,9 @@
 		 </div>
 		 <div class="col-md-4">
 			<?php 
-				  if (isset($data['detailedApplication']['businessName']))
+				  if (isset($data['detailedCustomer']['businessName']))
 				  {	
-					echo $data['detailedApplication']['businessName']; 
+					echo $data['detailedCustomer']['businessName']; 
 				  }
 			?>
 		 </div>
@@ -40,9 +40,9 @@
 		 </div>
 		 <div class="col-md-4">
 			<?php 
-				   if (isset($data['detailedApplication']['tradingName']))
+				   if (isset($data['detailedCustomer']['tradingName']))
 				  {	
-					echo $data['detailedApplication']['tradingName']; 
+					echo $data['detailedCustomer']['tradingName']; 
 				  }
 			?>
 		 </div>
@@ -53,9 +53,9 @@
 		 </div>
 		 <div class="col-md-4">
 			<?php 
-				   if (isset($data['detailedApplication']['businessStartYear']))
+				   if (isset($data['detailedCustomer']['businessStartYear']))
 				  {	
-					echo $data['detailedApplication']['businessStartYear']; 
+					echo $data['detailedCustomer']['businessStartYear']; 
 				  }
 			?>
 		 </div>
@@ -66,9 +66,9 @@
 		 </div>
 		 <div class="col-md-4">
 			<?php 
-				    if (isset($data['detailedApplication']['abn']))
+				    if (isset($data['detailedCustomer']['abn']))
 				  {	
-					echo $data['detailedApplication']['abn']; 
+					echo $data['detailedCustomer']['abn']; 
 				  }
 			?>
 		 </div>
@@ -79,9 +79,9 @@
 		 </div>
 		 <div class="col-md-4">
 			<?php
-				    if (isset($data['detailedApplication']['operationsNaure']))
+				    if (isset($data['detailedCustomer']['operationsNaure']))
 				  {	
-					echo $data['detailedApplication']['operationsNaure']; 
+					echo $data['detailedCustomer']['operationsNaure']; 
 				  }
 			?>
 		 </div>
@@ -92,9 +92,9 @@
 			<b>Contact First Name:</b>
 		 </div>
 		 <div class="col-md-4">
-			<?php   if (isset($data['detailedApplication']['contactFirstName']))
+			<?php   if (isset($data['detailedCustomer']['contactFirstName']))
 				  {	
-					echo $data['detailedApplication']['contactFirstName']; 
+					echo $data['detailedCustomer']['contactFirstName']; 
 				  }
 			?>
 		 </div>
@@ -104,9 +104,9 @@
 			<b>Contact Last Name:</b>
 		 </div>
 		 <div class="col-md-4">
-			<?php   if (isset($data['detailedApplication']['contactLastName']))
+			<?php   if (isset($data['detailedCustomer']['contactLastName']))
 				  {	
-					echo $data['detailedApplication']['contactLastName']; 
+					echo $data['detailedCustomer']['contactLastName']; 
 				  }
 			?>
 		 </div>
@@ -116,9 +116,9 @@
 			<b>Contact Position:</b>
 		 </div>
 		 <div class="col-md-4">
-			<?php    if (isset($data['detailedApplication']['position']))
+			<?php    if (isset($data['detailedCustomer']['position']))
 				  {	
-					echo $data['detailedApplication']['position']; 
+					echo $data['detailedCustomer']['position']; 
 				  }
 			?>
 		 </div>
@@ -128,9 +128,9 @@
 			<b>Contact Phone Number:</b>
 		 </div>
 		 <div class="col-md-4">
-			<?php    if (isset($data['detailedApplication']['phone']))
+			<?php    if (isset($data['detailedCustomer']['phone']))
 				  {	
-					echo $data['detailedApplication']['phone']; 
+					echo $data['detailedCustomer']['phone']; 
 				  }
 			?>
 		 </div>
@@ -140,9 +140,9 @@
 			<b>Contact Fax Number:</b>
 		 </div>
 		 <div class="col-md-4">
-			<?php    if (isset($data['detailedApplication']['fax']))
+			<?php    if (isset($data['detailedCustomer']['fax']))
 				  {	
-					echo $data['detailedApplication']['fax']; 
+					echo $data['detailedCustomer']['fax']; 
 				  }
 			?>
 		 </div>
@@ -152,9 +152,9 @@
 			<b>Contact Mobile Number:</b>
 		 </div>
 		 <div class="col-md-4">
-			<?php    if (isset($data['detailedApplication']['mobile']))
+			<?php    if (isset($data['detailedCustomer']['mobile']))
 				  {	
-					echo $data['detailedApplication']['mobile']; 
+					echo $data['detailedCustomer']['mobile']; 
 				  }
 			?>
 		 </div>
@@ -164,41 +164,27 @@
 			<b>Contact Email:</b>
 		 </div>
 		 <div class="col-md-4">
-			<?php    if (isset($data['detailedApplication']['email']))
+			<?php    if (isset($data['detailedCustomer']['email']))
 				  {	
-					echo $data['detailedApplication']['email']; 
+					echo $data['detailedCustomer']['email']; 
 				  }
 			?>
 		 </div>
 	  </div>
 	  <br />
-	  <div class="row">
+	  <div class="row spacing-under">
 		 <div class="col-md-offset-1 col-md-5">
 			<b>Account Credit Limit:</b>
 		 </div>
 		 <div class="col-md-4">
-			<?php    if (isset($data['detailedApplication']['creditLimit']))
+			<?php    if (isset($data['detailedCustomer']['creditLimit']))
 				  {	
-					echo $data['detailedApplication']['creditLimit']; 
+					echo $data['detailedCustomer']['creditLimit']; 
 				  }
 			?>
 		 </div>
 	  </div>
 	  <!-- -----------------PAGE 1 END-------------------- -->
 	  
-	  <br /><br />
-	  <?php    if (isset($data['detailedApplication']['applicationStatus']) && $data['detailedApplication']['applicationStatus'] == 'pending')
-				  {	
-	   ?>
 	  
-	  <div class="row">
-		 <div class="col-md-4">
-			<a class="btn btn-success" href="index.php?employee&action=approveapp&appid=<?php echo $data['detailedApplication']['applicationID'];?>">Approve Application</a>
-		 </div>
-		 <div class="col-md-4">
-			<a class="btn btn-danger" href="index.php?employee&action=rejectapp&appid=<?php echo $data['detailedApplication']['applicationID'];?>">Reject Application</a>
-		 </div>
-	  </div>
-	  
-	  <?php } ?>
 </div>
