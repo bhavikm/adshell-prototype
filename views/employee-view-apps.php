@@ -18,7 +18,7 @@
 		<?php if (isset($data['briefApplications']) && count($data['briefApplications']) > 0 && $data['briefApplications']) { ?>
 		<?php foreach ($data['briefApplications'] as $index => $briefApplication) { ?>
 		<tr>
-			<td><?php echo $index+1; ?></td>
+			<td><?php echo $briefApplication['applicationID']; ?></td>
 			<td><?php echo $briefApplication['applicationDate']; ?></td>
 			<td><?php echo $briefApplication['businessName']; ?></td>
 			<td><?php echo $briefApplication['applicationStatus']; ?></td>
@@ -46,7 +46,7 @@
 		<?php if (isset($data['briefApplicationsApproved']) && count($data['briefApplicationsApproved']) > 0 && $data['briefApplicationsApproved']) { ?>
 		<?php foreach ($data['briefApplicationsApproved'] as $index => $briefApplication) { ?>
 		<tr>
-			<td><?php echo $index+1; ?></td>
+			<td><?php echo $briefApplication['applicationID']; ?></td>
 			<td><?php echo $briefApplication['applicationDate']; ?></td>
 			<td><?php echo $briefApplication['businessName']; ?></td>
 			<td><?php echo $briefApplication['applicationStatus']; ?></td>
@@ -74,7 +74,7 @@
 		<?php if (isset($data['briefApplicationsRejected']) && count($data['briefApplicationsRejected']) > 0 && $data['briefApplicationsRejected']) { ?>
 		<?php foreach ($data['briefApplicationsRejected'] as $index => $briefApplication) { ?>
 		<tr>
-			<td><?php echo $index+1; ?></td>
+			<td><?php echo $briefApplication['applicationID']; ?></td>
 			<td><?php echo $briefApplication['applicationDate']; ?></td>
 			<td><?php echo $briefApplication['businessName']; ?></td>
 			<td><?php echo $briefApplication['applicationStatus']; ?></td>
