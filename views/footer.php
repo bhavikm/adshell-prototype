@@ -7,7 +7,51 @@
 
     </div><!-- /.container -->
 	
-	
+	<!-- Modal -->
+		  <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header" >
+				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				  <h4 class="modal-title">Get Help</h4>
+				</div>
+				<div class="modal-body">
+				  <form>
+					<div class="row">
+					<div class="col-md-3">
+					<label> Name*</labe>
+					</div>
+					<div class="col-md-5">
+					<input type="text" >
+					</div>
+					</div>
+					<br />
+					<div class="row">
+					<div class="col-md-3">
+					<label> Email*</labe>
+					</div>
+					<div class="col-md-5">
+					<input type="text" >
+					</div>
+					</div>
+					<br />
+					<div class="row">
+					<div class="col-md-3">
+					<label> Message*</labe>
+					</div>
+					<div class="col-md-5">
+					<textarea type="text" ></textarea>
+					</div>
+					</div>
+				  </form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				  <a type="button" class="btn btn-primary" href="">Get Help</a>
+				</div>
+			  </div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		  </div><!-- /.modal -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

@@ -98,6 +98,9 @@
         </div><!--/.nav-collapse -->
       </div>
 	  
+	  <a data-toggle="modal" data-target="#helpModal" href="#helpModal" id="lhn_help_btn" class="lhn_help_btn" style="right: 0px;"></a>
+	 
+	  
 	  <div class="row header-container">
 	  </div>
 	  

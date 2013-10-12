@@ -347,7 +347,7 @@
 					<?php if (isset($data['valids']['creditLimit'])) { ?>
 					<input type="text" class="form-control" id="creditLimit" name="creditLimit" placeholder="Credit Limit" value="<?php echo $data['valids']['creditLimit'];?>" >
 					<?php } else { ?>
-					<input type="text" class="form-control" id="creditLimit" name="creditLimit" placeholder="Credit Limit">
+					<input type="text" class="form-control" id="creditLimit" name="creditLimit" placeholder="Credit Limit" data-toggle="tooltip" title="Monthly credit limit to be set for your account. Will determine the limit for spending over all your fuel cards." data-placement="right">
 					<?php } ?>
 				  </div>
 				  
@@ -372,5 +372,9 @@
 	</div>
 	
 </div>
-
+<script type="text/javascript">
+$(document).ready(function(){
+$('#creditLimit').tooltip();
+});
+</script>
 <?=$data['footer'];?>
