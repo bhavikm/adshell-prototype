@@ -3,9 +3,23 @@ background-image: url('image/wood-background.jpg');
 
 }
 
+body:nth-child(2)
+{
+	padding-bottom: 50px;
+}
+
 .container {
 	background-color: #FFF;
 	padding-top:15px;
+}
+
+.body-container {
+	background-color: #FFF;
+	padding-top:15px;
+	padding-bottom:60px;
+	-webkit-box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+	-moz-box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
 
 .outer-container {
@@ -16,11 +30,20 @@ background-image: url('image/wood-background.jpg');
 	margin-bottom: 40px;
 }
 
+.footer-container {
+	background-color: #FFF;
+	padding-top:25px;
+	margin-top:40px;
+	-webkit-box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+	-moz-box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
 
 .header-container {
 	padding-bottom: 25px;
 	border-bottom: 1px solid #C0C0C0;
 }
+
 
 
 .navbar-default .navbar-nav > li > a {
@@ -29,8 +52,8 @@ background-image: url('image/wood-background.jpg');
 }
 
 footer {
-	margin-top: 150px;
-	padding-top: 25px;
+	
+	padding-top: 15px;
 	border-top: 1px solid #C0C0C0;
 }
 
@@ -53,6 +76,7 @@ footer {
 	background-image: url('image/banner-lighter-back2.jpg');
 	height: 600px;
 	margin-bottom: 40px;
+	padding-left:0px;
 }
 #front-banner > div  {
 	padding-left:100px;
@@ -77,7 +101,19 @@ footer {
 	margin-bottom:10px;
 }
 
+.footer-col {
+	text-align:center;
+}
 
+.footer-row {
+	
+	margin-bottom:20px;
+	padding-bottom:15px;
+}
+
+.footer-row > ul {
+	list-style-type:none;
+}
 
 .question-answer {
 	margin: 30px 0px;

@@ -30,7 +30,7 @@ class Employee_Controller
 	 */
 	public function main(array $getVars)
 	{
-		if (!isset($_SESSION['employee_name']))
+		if (!isset($_SESSION['emp_name']))
 		{
 			$this->getEmployeeDetails();
 		}
@@ -61,18 +61,60 @@ class Employee_Controller
 						switch($getVars['second'])
 						{	
 							case 'manage':
-								$content = new View_Model('employee-update-fuelcards');
+								$content = new View_Model('employee-manage-fuel-detailed');
 								$customerModel = new Customer_Model;
 								$fuelCards = $customerModel->getCustomerFuelCards($getVars['appid']);
 								$content->assign('fuelCards', $fuelCards);
 							break;
-						
-							case 'view':
-								$content = new View_Model('employee-view-cust-fuelcards');
+							
+							case 'resetpin':
+								$content = new View_Model('employee-manage-fuel-detailed');
+								$fuelcardModel = new Fuelcard_Model;
+								$fuelcardModel->resetCardPin($getVars['cardid']);
 								$customerModel = new Customer_Model;
 								$fuelCards = $customerModel->getCustomerFuelCards($getVars['appid']);
 								$content->assign('fuelCards', $fuelCards);
+								$content->assign('notification', 'Pin Reset for Fuel Card ID '.$getVars['cardid']);
 							break;
+							
+							case 'updatestatus':
+								$content = new View_Model('employee-manage-fuel-detailed');
+								$empModel = new Employee_Model;
+								$empDetails = $empModel->getEmployeeForAccount($_SESSION['user_name_logged']);
+								$fuelcardModel = new Fuelcard_Model;
+								$fuelcardModel->updateCardStatus($getVars['cardid'],$getVars['status'],$empDetails['employeeID']);
+								$customerModel = new Customer_Model;
+								$fuelCards = $customerModel->getCustomerFuelCards($getVars['appid']);
+								$content->assign('fuelCards', $fuelCards);
+								$content->assign('notification', 'Status updated for Fuel Card ID '.$getVars['cardid']);
+							break;
+							
+							case 'changeproducts':
+								$content = new View_Model('employee-manage-fuel-card-products');
+								$fuelcardModel = new Fuelcard_Model;
+								$fuelCard = $fuelcardModel->getFuelCard($getVars['cardid']);
+								$content->assign('fuelCard', $fuelCard);
+							break;
+							
+							case 'updateproducts':
+								if (isset($getVars['fuelCardProducts']) && count($getVars['fuelCardProducts']) != 0)
+								{
+									$content = new View_Model('employee-manage-fuel-card-products');
+									$fuelcardModel = new Fuelcard_Model;
+									$fuelcardModel->updateFuelCardProducts($getVars['fuelCardProducts'],$getVars['cardid']);
+									$fuelCard = $fuelcardModel->getFuelCard($getVars['cardid']);
+									$content->assign('fuelCard', $fuelCard);
+								} else {
+									$content = new View_Model('employee-manage-fuel-card-products');
+									$fuelcardModel = new Fuelcard_Model;
+									$fuelCard = $fuelcardModel->getFuelCard($getVars['cardid']);
+									$content->assign('fuelCard', $fuelCard);
+									$content->assign('notification', 'You must select at least one product');
+									$content->assign('notification-type', 'warning');
+								}
+							break;
+							
+							
 						}
 					} else {
 						$content = new View_Model('employee-manage-fuel');

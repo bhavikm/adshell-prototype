@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container">
+<div class="container body-container">
 	<div class="page-header">
 		<h1>Card Holder</h1>
 	</div>

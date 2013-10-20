@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container login-wrap">
+<div class="container body-container login-wrap">
     <h1>Forgot Password</h1>
     <div class="col-xs-12 col-sm-6 col-md-8">
 		<form class="form-signin" action="index.php">

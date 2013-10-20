@@ -1,8 +1,38 @@
   <!-- FOOTER -->
-    <div class="container">
+  
+    <div class="container footer-container" >
       <footer>
+		<div class="container">
+			<div class="row footer-row">
+				 <div class="col-md-3 footer-col">
+					<h4>Information</h4>
+						<a href="">Home</a><br />
+						<a href="">About Us</a><br />
+						<a href="">FAQs</a><br />
+						<a href="">Franchises</a><br />
+						<a href="">Calculator</a>
+				 </div>
+				 <div class="col-md-3 footer-col">
+					<h4>Fuel Card Program</h4>
+					<a href="">Apply</a><br />
+					<a href="">Customer Login</a><br />
+					<a href="">Fuel Card Holder Login</a><br />
+					<a href="">Adshell Staff Login</a><br />
+				 </div>
+				 <div class="col-md-3 footer-col">
+					<h4>Contact</h4>
+					<a href="">Contact Form</a><br />
+					contact@adshell.com.au<br />
+					1800 000 000 
+				 </div>
+				 <div class="col-md-3 footer-col">
+					<img src="images/verisign.jpg" width="200px">
+				 </div>
+			</div>
+		</div>
+	  
         <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2013 Adshell Chemicals, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p>&copy; 2013 Adshell Chemicals, Inc.</p>
       </footer>
 
     </div><!-- /.container -->

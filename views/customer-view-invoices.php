@@ -1,4 +1,5 @@
-<p>Previous Invoices:</p>
+<h4 class="red-text spacing-under-small">View Invoices</h4>
+<br />
 
 <table class="table table-striped">
 	<thead>

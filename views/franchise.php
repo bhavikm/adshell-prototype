@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container">
+<div class="container body-container">
     <h1>Franchises</h1>
 	<h3>Proven System</h3>
     <p>Buying into a franchise is not just buying a successful brand name. You’re also investing into a system that’s been proven to be a profitable enterprise. This feature of franchising means that you start ahead of the competition in terms of optimising your workflow systems, developing a customer base and being able to predict how successful you should be. This is one of the reasons why franchises have a much lower failure rate than start-up small businesses.</p>

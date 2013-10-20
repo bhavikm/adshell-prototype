@@ -1,7 +1,7 @@
 <?=$data['header'];?>
 
 <!-- Main component for a primary marketing message or call to action -->
-<div class="container" id="apply-page1">
+<div class="container body-container" id="apply-page1">
 	<div class="col-xs-12 col-sm-6 col-md-12">
 	<h1 class="spacing-under">Apply for Adshell Chemicals Fuel Card Program</h1>
 	</div>

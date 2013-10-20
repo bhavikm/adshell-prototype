@@ -1,6 +1,5 @@
-<p>You have no new notifications</p>
-
-<p>Previous Notifications:</p>
+<h4 class="red-text spacing-under-small">Notifications</h4>
+<br />
 
 <table class="table table-striped">
 	<thead>

@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container">
+<div class="container body-container">
     <h1>Calculator</h1>
 	<div id="contact-page">
 		<div class="row">

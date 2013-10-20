@@ -1,3 +1,6 @@
+<h4 class="red-text spacing-under-small">Modify Account Details</h4>
+<br />
+
 <div class="col-xs-12 col-sm-6 col-md-10">
 
 		
@@ -7,9 +10,9 @@
 			   <h4>Business Details</h4>
 			   </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="busType" class="col-lg-2 control-label">Business Type</label>
+					<label for="busType" class="control-label">Business Type</label>
 				  </div>
 				  <div class="col-md-9">
 					<label class="checkbox-inline" id="busType">
@@ -29,42 +32,42 @@
 					</label>
 				  </div>
 			  </div>	
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputName" class="col-lg-2 control-label">Registered Business Name</label>
+					<label for="inputName" class="control-label">Registered Business Name</label>
 				  </div>
 				  <div class="col-md-9">
 					<input type="text" class="form-control" id="inputName" placeholder="Registered Business Name">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputName" class="col-lg-2 control-label">Trading Name</label>
+					<label for="inputName" class="control-label">Trading Name</label>
 				  </div>
 				  <div class="col-md-9">
 					<input type="text" class="form-control" id="inputName" placeholder="Trading Name">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputName" class="col-lg-2 control-label">Year Business Commenced</label>
+					<label for="inputName" class="control-label">Year Business Commenced</label>
 				  </div>
 				  <div class="col-md-4">
 					<input type="text" class="form-control" id="inputName" placeholder="Year Business Commenced">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputName" class="col-lg-2 control-label">ABN/ACN</label>
+					<label for="inputName" class="control-label">ABN/ACN</label>
 				  </div>
 				  <div class="col-md-4">
 					<input type="text" class="form-control" id="inputName" placeholder="ABN or ACN">
 				  </div>
 			  </div>
 			  
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputName" class="col-lg-2 control-label">Nature of Operatios</label>
+					<label for="inputName" class="control-label">Nature of Operatios</label>
 				  </div>
 				  <div class="col-md-9">
 					<input type="text" class="form-control" id="inputName" placeholder="Nature of Operatios">
@@ -77,58 +80,58 @@
 				</div>
 			  </div>
 			  
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputEmail1" class="col-lg-2 control-label">Contact Name</label>
+					<label for="inputEmail1" class="control-label">Contact Name</label>
 				  </div>
 				  <div class="col-md-9">
 					<input type="email" class="form-control" id="inputEmail1" placeholder="Contact Name">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputEmail1" class="col-lg-2 control-label">Position</label>
+					<label for="inputEmail1" class="control-label">Position</label>
 				  </div>
 				  <div class="col-md-9">
 					<input type="email" class="form-control" id="inputEmail1" placeholder="Position">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputPhone" class="col-lg-2 control-label">Phone</label>
+					<label for="inputPhone" class="control-label">Phone</label>
 				  </div>
 				  <div class="col-md-4">
 					 <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputPhone" class="col-lg-2 control-label">Fax</label>
+					<label for="inputPhone" class="control-label">Fax</label>
 				  </div>
 				  <div class="col-md-4">
 					 <input type="text" class="form-control" id="inputPhone" placeholder="Fax">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputPhone" class="col-lg-2 control-label">Mobile</label>
+					<label for="inputPhone" class="control-label">Mobile</label>
 				  </div>
 				  <div class="col-md-4">
 					 <input type="text" class="form-control" id="inputPhone" placeholder="Mobile">
 				  </div>
 			  </div>
 			  
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputEmail1" class="col-lg-2 control-label">Email</label>
+					<label for="inputEmail1" class="control-label">Email</label>
 				  </div>
 				  <div class="col-md-9">
 					<input type="email" class="form-control" id="inputEmail1" placeholder="Email">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputEnquiry" class="col-lg-2 control-label">Enquiry</label>
+					<label for="inputEnquiry" class="control-label">Enquiry</label>
 				  </div>
 				  <div class="col-md-9">
 					 <textarea class="form-control" id="inputEnquiry" placeholder="Enquiry" rows="4"></textarea>
@@ -141,15 +144,15 @@
 				</div>
 			  </div>
 			  
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-3">
-					<label for="inputEmail1" class="col-lg-2 control-label">Monthly Credit Limit</label>
+					<label for="inputEmail1" class="control-label">Monthly Credit Limit</label>
 				  </div>
 				  <div class="col-md-4">
 					<input type="email" class="form-control" id="inputEmail1" placeholder="Monthly Credit Limit">
 				  </div>
 			  </div>
-			  <div class="row">
+			  <div class="row spacing-under-small">
 				  <div class="col-md-6 col-md-offset-3">
 					 <br />
 					 <a class="btn btn btn-primary" href="">Apply Changes &raquo;</a>

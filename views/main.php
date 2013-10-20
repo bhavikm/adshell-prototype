@@ -1,4 +1,5 @@
 <?=$data['header'];?>
+<div class="container body-container">
 	<div class="container">
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron" id="front-banner">
@@ -43,6 +44,6 @@
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
 	</div>  
-
+</div>
 
 <?=$data['footer'];?>

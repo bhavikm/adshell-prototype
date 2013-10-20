@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container login-wrap">
+<div class="container body-container login-wrap">
     <h1>Fuel Card Holder Login</h1>
     <div class="col-xs-12 col-sm-6 col-md-8 border-on-right">
 		<form class="form-signin">

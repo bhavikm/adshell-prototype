@@ -1,3 +1,6 @@
+<h4 class="red-text spacing-under-small">Change Credit Limit</h4>
+<br />
+
 <p><b>Your current account limit is $10,000 per month.</b></p>
 <p>Please note your change will need to be approved before it can be applied to your account</p>
 <br />

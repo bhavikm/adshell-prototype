@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container login-wrap">
+<div class="container body-container login-wrap">
     
 	  <div class="col-xs-12 col-sm-6 col-md-8">	
 		 <div class="row spacing-under-small" style="padding-left: 15px;">

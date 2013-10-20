@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container">
+<div class="container body-container">
     <h1>Search Results</h1>
     <p>Here are the results for your search <b><?=$data['query'];?></b>:</p>
 	<br />

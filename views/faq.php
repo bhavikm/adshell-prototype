@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container">
+<div class="container body-container">
     <h1>Frequently Asked Questions</h1>
     <div class="question-answer">
 		<div class="question">

@@ -1,6 +1,6 @@
 <?=$data['header'];?>
 
-<div class="container">
+<div class="container body-container">
 	<div class="col-xs-6 col-sm-6 col-md-3">
 		<div class="row" style="margin-top:139px;">
 			<ul class="nav nav-pills nav-stacked account-menu">

@@ -1,7 +1,12 @@
 
 <h4 class="red-text">Manage Customer Fuel Cards</h4>
 <br />
-
+<?php if (isset($data['notification'])) { ?>
+<div class="alert alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <?php echo $data['notification']; ?>
+</div>
+<?php } ?>
 <table class="table table-striped">
 	<thead>
           <tr>
@@ -11,7 +16,6 @@
 			<th>No. Fuel Cards</th>
 			<th>Monthly Credit Limit</th>
 			<th>Modify</th>
-			<th>View Detailed</th>
           </tr>
     </thead>
 	<tbody>
@@ -24,12 +28,13 @@
 			<td><?php echo $briefCustomer['cardsCount']; ?></td>
 			<td><?php echo $briefCustomer['creditLimit']; ?></td>
 			<td><a class="btn btn-warning" href="index.php?employee&action=managefuel&second=manage&appid=<?php echo $briefCustomer['applicationID']; ?>">Manage &raquo;</a></td>
-			<td><a class="btn btn-primary" href="index.php?employee&action=managefuel&second=view&appid=<?php echo $briefCustomer['applicationID']; ?>">View &raquo;</a></td>
 		</tr>
 		<?php } ?>
 		<?php } ?>
 		<tr>
-			<td colspan="7"></td>
+			<td colspan="7">
+			
+			</td>
 		</tr>
 	</tbody>
 </table>

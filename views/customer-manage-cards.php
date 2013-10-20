@@ -1,4 +1,4 @@
-<p>Fuel Cards:</p>
+<h4 class="red-text spacing-under-small">Manage Fuel Cards</h4>
 <br />
 
 <table class="table table-striped">
@@ -27,7 +27,7 @@
 		</tr>
 		<tr>
 			<td>2</td>
-			<td>Megan Gale</td>
+			<td>Peter Lee</td>
 			<td>Disabled</td>
 			<td>
 				
@@ -37,7 +37,7 @@
 		</tr>
 		<tr>
 			<td>3</td>
-			<td>Jennifer Hawkins</td>
+			<td>Jennifer Kruzal</td>
 			<td>Active</td>
 			<td>
 				Unleaded<br />
