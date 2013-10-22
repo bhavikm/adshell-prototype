@@ -1,7 +1,8 @@
 <?=$data['header'];?>
-
 <div class="container body-container">
-	<div class="col-xs-6 col-sm-6 col-md-3">
+<?php if (isset($data['passReset']) && !$data['passReset']) { ?>
+
+	<div class="col-xs-6 col-sm-6 col-md-3" style="margin-right:40px;">
 		<div class="row" style="margin-top:139px;">
 			<ul class="nav nav-pills nav-stacked account-menu">
 				<li><a href="index.php?employee&action=viewrequests" <?php if ($data['activeLink'] == "viewrequests") { ?>class="active-sidebar-link" <?php } ?>>View Customer Requests</a></li>
@@ -15,7 +16,10 @@
 		</div>	
 	</div>
 	
-	<div class="col-md-offset-1 col-md-7">
+	<div class="col-md-8">
+<?php } else { ?>
+ <div class="col-md-12">
+ <?php } ?>
 		<div class="row page-header">
 			<h1>Employee Account - <?php echo $_SESSION['emp_name']; ?></h1>
 		</div>

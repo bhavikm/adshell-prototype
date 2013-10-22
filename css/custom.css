@@ -382,3 +382,23 @@ background-color:#bbcfac;
 div[class="tooltip-inner"] {
     width: 350px;
 }
+
+
+.innerTableCellWrapper {
+	width: 100%; 
+	height: 255px;
+	position: relative;
+}
+.bottomOfTableCell {
+	position: absolute;
+	bottom: 0;
+}
+
+div.row {
+	margin: 15px 0px;
+}
+
+h4 > a {
+	text-decoration:underline;
+}
+

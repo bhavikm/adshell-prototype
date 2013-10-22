@@ -18,7 +18,8 @@ class Login_Controller
 		$header = new View_Model('header');
 		$header->assign('active_nav','');
 		$footer = new View_Model('footer');
-		
+		//create a new view and pass it our template
+		$view = new View_Model($this->template);
 		
 		if (isset($getVars['logtype']))
 		{
@@ -106,7 +107,17 @@ class Login_Controller
 							$error = true;
 							$error_message = "User name must not be empty.";
 						} else {
-						
+							$loginModel = new Login_Model;
+							$user_correct = $loginModel->valid_user($getVars['username']);
+							if ($user_correct) 
+							{
+								$loginModel->update_login_password($getVars['username'],'temppassword');
+								$view->assign('success' , true);
+								$view->assign('message' ,'Your password was succesfully reset.');
+							} else {
+								$error = true;
+								$error_message = "Incorrect username. Please provide the email address you signed up with.";
+							}	
 						}
 					}
 				break;
@@ -125,8 +136,7 @@ class Login_Controller
 		}
 		
 		
-		//create a new view and pass it our template
-		$view = new View_Model($this->template);
+		
 		$view->assign('header', $header->render(FALSE));
 		$view->assign('footer', $footer->render(FALSE));
 		

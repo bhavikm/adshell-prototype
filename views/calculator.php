@@ -14,29 +14,55 @@
 				<form class="form" role="form">
 
 				  <div class="row">
-					  <div class="col-md-2">
-						<label for="inputName" class="col-lg-2 control-label">Distance (kms)</label>
+					  <div class="col-md-4">
+						<label for="inputName" class="control-label">Distance (kms)</label>
 					  </div>
 					  <div class="col-md-6">
-						<input type="text" class="form-control" id="inputName" placeholder="Distance in kilometers">
+						<input type="text" class="form-control" id="distance" placeholder="Distance in kilometers">
 					  </div>
 				  </div>
 				  <div class="row">
-					  <div class="col-md-2">
-						<label for="inputEmail1" class="col-lg-2 control-label">Fuel Type</label>
+					  <div class="col-md-6 col-md-offset-4 red-text" id="distanceError">
+						 &nbsp;
+					  </div>
+				  </div>
+				  <div class="row">
+					  <div class="col-md-4">
+						<label for="inputEmail1" class="control-label">Fuel Type</label>
 					  </div>
 					  <div class="col-md-6">
-						<select class="form-control">
-						  <option>Unleaded</option>
-						  <option>Bio-Diesel</option>
-						  <option>High Octane</option>
+						<select id="fuelselect" class="form-control">
+						  <option value="134">Unleaded</option>
+						  <option value="105">Bio-Diesel</option>
+						  <option value="198">High Octane</option>
+						  <option value="145">Unleaded Max e10</option>
+						  <option  value="78">LPG</option>
+						  <option  value="64">Gas</option>
+						  <option  value="156">Premium Unleaded </option>
+						  <option  value="140">98 Octane</option>
 						</select>
 					  </div>
 				  </div>
 				  <div class="row">
-					  <div class="col-md-6 col-md-offset-2">
+					<div class="col-md-4">
+						<label for="inputEmail1" class="control-label">Price per unit</label>
+					  </div>
+					  <div class="col-md-6" id="priceunit">
+						 &nbsp;
+					  </div>
+				  </div>
+				  <div class="row">
+					<div class="col-md-4">
+						<label for="inputEmail1" class="control-label">Total Price</label>
+					  </div>
+					  <div class="col-md-6" id="totalPrice">
+						 &nbsp;
+					  </div>
+				  </div>
+				  <div class="row">
+					  <div class="col-md-6 col-md-offset-4">
 						 <br />
-						 <button type="submit" class="btn btn-primary">Calculate</button>
+						 <button type="submit" class="btn btn-primary" id="calcPrice">Calculate</button>
 					  </div>
 				  </div>
 				</form>
@@ -54,5 +80,41 @@
 		</div>
 	</div>
 </div>
-
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	  function IsNumeric(input)
+	  {
+		return (input - 0) == input && (input+'').replace(/^\s+|\s+$/g, "").length > 0;
+	  }
+	  
+	  function checkLength(input, maxLength)
+	  {
+		return (input.length > 0) && (input.length <= maxLength);
+	  }
+	  
+	  $('#calcPrice').on('click', function(event) {
+			event.preventDefault();
+			var fuelprice = $('#fuelselect').find(':selected').attr('value');
+			var fuelprice2 = parseFloat(fuelprice)/100;
+			var calcval = $('#distance').val();
+			console.log();
+			if (IsNumeric(calcval) && checkLength(calcval, 6))
+			{
+				 $('#distanceError').empty();
+				 $('#priceunit').empty();
+				 $('#totalPrice').empty();
+				 $('#priceunit').append(fuelprice2);
+				 $('#totalPrice').append('$'+(fuelprice2 * parseFloat(calcval)).toFixed(1));
+			} else {
+				$('#distanceError').empty();
+				 $('#priceunit').empty();
+				 $('#totalPrice').empty();
+				 
+				 $('#distanceError').append('Invalid Distance');
+			}
+	  });
+	  
+});
+</script>
 <?=$data['footer'];?>

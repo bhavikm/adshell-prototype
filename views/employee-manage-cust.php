@@ -13,6 +13,7 @@
 			<th>Monthly Credit Limit</th>
 			<th>Modify</th>
 			<th>View Detailed</th>
+			<th>Status</th>
           </tr>
     </thead>
 	<tbody>
@@ -26,11 +27,12 @@
 			<td><?php echo $briefCustomer['creditLimit']; ?></td>
 			<td><a class="btn btn-warning" href="index.php?employee&action=managecust&second=manage&appid=<?php echo $briefCustomer['applicationID']; ?>">Manage &raquo;</a></td>
 			<td><a class="btn btn-primary" href="index.php?employee&action=managecust&second=view&appid=<?php echo $briefCustomer['applicationID']; ?>">View &raquo;</a></td>
+			<td><?php echo $briefCustomer['customerStatus']; ?></td>
 		</tr>
 		<?php } ?>
 		<?php } ?>
 		<tr>
-			<td colspan="7"></td>
+			<td colspan="8"></td>
 		</tr>
 	</tbody>
 </table>

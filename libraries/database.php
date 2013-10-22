@@ -12,6 +12,7 @@ class Database_Library {
 				$this->db = new PDO ($this->dsn,
 									 $this->username,
 									 $this->password);
+				$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);						 
 			} catch (PDOException $e) {
 				$error_message = $e->getMessage();
 				echo $error_message;
@@ -26,6 +27,7 @@ class Database_Library {
 				self::$db = new PDO (self::$dsn,
 									 self::$username,
 									 self::$password);
+				self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);					 
 			} catch (PDOException $e) {
 				$error_message = $e->getMessage();
 				echo $error_message;

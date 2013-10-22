@@ -339,6 +339,8 @@ class Apply_Model {
 			$query = "INSERT INTO customer
 					  (applicationID,accountID,accountCreated,customerStatus)
 					  VALUES (:applicationID,:accountID,CURDATE(),'active')";
+					  
+			//status can be 'active','disabled','closed'
 
 			$statement = $this->database->db->prepare($query);
 			$statement->bindValue(':applicationID',$applicationID);

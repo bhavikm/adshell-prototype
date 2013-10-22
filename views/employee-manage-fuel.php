@@ -21,6 +21,7 @@
 	<tbody>
 		<?php if (isset($data['briefCustomers']) && count($data['briefCustomers']) > 0 && $data['briefCustomers']) { ?>
 		<?php foreach ($data['briefCustomers'] as $index => $briefCustomer) { ?>
+		<?php if ($briefCustomer['customerStatus'] != 'cancelled') { ?>
 		<tr>
 			<td><?php echo $index+1; ?></td>
 			<td><?php echo $briefCustomer['businessName']; ?></td>
@@ -29,6 +30,7 @@
 			<td><?php echo $briefCustomer['creditLimit']; ?></td>
 			<td><a class="btn btn-warning" href="index.php?employee&action=managefuel&second=manage&appid=<?php echo $briefCustomer['applicationID']; ?>">Manage &raquo;</a></td>
 		</tr>
+		<?php } ?>
 		<?php } ?>
 		<?php } ?>
 		<tr>

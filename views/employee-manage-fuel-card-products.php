@@ -1,4 +1,4 @@
-<h4 class="red-text">Manage Customer Fuel Cards > Update Fuel Card Products</h4>
+<h4 class="red-text"><a class="red-text"  href="index.php?employee&action=managefuel">Manage Customer Fuel Cards</a> >  <a class="red-text"  href="index.php?employee&action=managefuel&second=manage&appid=<?php echo $data['fuelCard']['applicationID']; ?>"><?php echo $data['businessName']; ?></a> > Update Fuel Card <?php echo $data['fuelCard']['fuelCardID']; ?> Products</h4>
 <br />
 <?php if (isset($data['notification'])) { ?>
 <div class="alert alert-dismissable alert-info">
@@ -80,8 +80,12 @@
   <?php } ?>
 </div>	
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-4">
+<div class="row short-form-row">
+  <div class="col-md-4">
+	<br />
+	<a  class="btn btn btn-primary" href="index.php?employee&action=managefuel&second=manage&appid=<?php echo $data['fuelCard']['applicationID']; ?>">&laquo;  Back</a>
+  </div>
+  <div class="col-md-6">
 	 <br />
 	 <button class="btn btn btn-primary" type="submit">Update &raquo;</button>
   </div>

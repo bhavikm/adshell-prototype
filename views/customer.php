@@ -1,7 +1,8 @@
 <?=$data['header'];?>
 
 <div class="container body-container">
-	<div class="col-xs-6 col-sm-6 col-md-3">
+<?php if (isset($data['passReset']) && !$data['passReset']) { ?>
+	<div class="col-xs-6 col-sm-6 col-md-3"  style="margin-right:40px;">
 		<div class="row" style="margin-top:139px;">
 			<ul class="nav nav-pills nav-stacked account-menu">
 				<li><a href="index.php?customer&action=notifications" <?php if ($data['activeLink'] == "notifications") { ?>class="active-sidebar-link" <?php } ?>>Notifications (0)</a></li>
@@ -16,16 +17,17 @@
 		</div>	
 	</div>
 	
-	<div class="col-md-offset-1 col-md-7">
+<div class="col-md-8">
+<?php } else { ?>
+ <div class="col-md-12">
+ <?php } ?>
 		<div class="row page-header">
-			<h1><?php echo $_SESSION['cust_name']; ?></h1>
+			<h1>Customer Account - <?php echo $_SESSION['cust_name']; ?></h1>
 		</div>
 		<div class="row">
 			<?=$data['content'];?>
 		</div>
 	</div>
-	
-	
 	
 </div>
 

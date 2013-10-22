@@ -121,9 +121,20 @@ class Fuelcard_Model {
 		$statement->closeCursor();
 	}
 	
+	public function updateAllFuelCardStatuses($applicationID, $status, $employeeID)
+	{
+		$query = "UPDATE fuelcards SET cardStatus = :status, employeeReviewID = :employeeID, statusChangeDate = CURDATE() WHERE applicationID = :applicationID";
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':status',$status);
+		$statement->bindValue(':employeeID',$employeeID);
+		$statement->bindValue(':applicationID',$applicationID);
+		$statement->execute();
+		$statement->closeCursor();
+	}
+	
 	public function updateFuelCardProducts($fuelCardProducts,$fuelCardID)
 	{
-		$query = "DELETE FROM fuelcards WHERE fuelCardID = :fuelCardID";
+		$query = "DELETE FROM fuelcardproducts WHERE fuelCardID = :fuelCardID";
 		$statement = $this->database->db->prepare($query);
 		$statement->bindValue(':fuelCardID',$fuelCardID);
 		$statement->execute();
@@ -173,5 +184,70 @@ class Fuelcard_Model {
 		}
 	}
 	
+	public function addFuelCard($applicationID,$name,$registration,$pinRequired,$status)
+	{
+		$query = "INSERT INTO fuelcards
+				  (applicationID,accountID,cardHolderName,cardStatus,dateCreated,registrationNo,pinRequired,pin)
+				  VALUES (:applicationID,NULL,:name,:status,CURDATE(),:registration,:pinRequired,NULL)";
+				
+		//cardStatus can take values 'enabled','disabled','cancelled'
+		
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':applicationID',$applicationID);
+		$statement->bindValue(':name',$name);
+		$statement->bindValue(':registration',$registration);
+		if ($pinRequired == 'yes')
+		{
+			$statement->bindValue(':pinRequired',TRUE);
+		} else {
+			$statement->bindValue(':pinRequired',FALSE);
+		}
+		$statement->bindValue(':status',$status);
+		$statement->execute();
+		$statement->closeCursor();
+		
+		return $this->database->db->lastInsertId('fuelcards');	
+	}
+	
+	public function addFuelCardRequest($applicationID,$name,$registration,$pinRequired,$status)
+	{
+		$query = "INSERT INTO fuelcards_change
+				  (applicationID,accountID,cardHolderName,cardStatus,dateCreated,registrationNo,pinRequired,pin,approval)
+				  VALUES (:applicationID,NULL,:name,:status,CURDATE(),:registration,:pinRequired,NULL,'pending')";
+				
+		//cardStatus can take values 'enabled','disabled','cancelled'
+		
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':applicationID',$applicationID);
+		$statement->bindValue(':name',$name);
+		$statement->bindValue(':registration',$registration);
+		if ($pinRequired == 'yes')
+		{
+			$statement->bindValue(':pinRequired',TRUE);
+		} else {
+			$statement->bindValue(':pinRequired',FALSE);
+		}
+		$statement->bindValue(':status',$status);
+		$statement->execute();
+		$statement->closeCursor();
+		
+		return $this->database->db->lastInsertId('fuelcards_change');	
+	}
+	
+	public function addFuelcardChangeProducts($fuelcardID,$productIDs)
+	{
+		foreach ($productIDs as $productID)
+		{
+			$query = "INSERT INTO fuelcardproducts_change
+					  (fuelCardID,productTypeID,status,changeType,changeDate)
+					  VALUES (:fuelCardID,:productTypeID,'pending','insert',NOW())";
+				
+			$statement = $this->database->db->prepare($query);
+			$statement->bindValue(':fuelCardID',$fuelcardID);
+			$statement->bindValue(':productTypeID',$productID);
+			$statement->execute();
+			$statement->closeCursor();
+		}
+	}
 }
 ?>

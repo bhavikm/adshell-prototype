@@ -38,6 +38,20 @@
 			</div>
 			<?php } ?>
 			
+			<?php if (isset($data['success'])) { ?>
+			<div class="row ">
+				  <div class="col-md-9 col-md-offset-3">
+					<div class="alert alert-success"><?php echo $data['message'];?></div>
+					Please check your email for further instructions.
+				  </div>
+			</div>
+			<div class="row spacing-under-small">
+				  <div class="col-md-9 col-md-offset-3">
+					
+				  </div>
+			</div>
+			<?php } ?>
+			
 			
 			<?php if ($data['heading'] == 'Customer Login') { ?>
 			<div class="row spacing-under-small">

@@ -80,7 +80,19 @@ class Login_Model {
 		$statement->bindValue(':password',$password);
 		$statement->execute();
 		$statement->closeCursor();
+	}
+	
+	public function valid_user($username)
+	{
+		$query = "SELECT accountID FROM account 
+				  WHERE userName = :username";
+		$statement = $this->database->db->prepare($query);
+		$statement->bindValue(':username',$username);
+		$statement->execute();
 		
+		$valid = ($statement->rowCount() == 1);
+		$statement->closeCursor();
+		return $valid;
 	}
 
 }
